@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Combined Form</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Add any necessary CSS or other meta tags here -->
+</head>
+<body>
+    <div class="container">
+        <!-- Course Information Form -->
+        <h1>Course Information Form</h1>
+        <form id="courseForm">
+            <label for="programmeName">1. Name of the Programme:</label>
+            <input type="text" id="programmeName" name="programmeName" /><br />
+            
+            <label for="department">2. Department:</label>
+        <input type="text" id="department" name="department" /><br />
+
+        <label for="courseTeacher"
+          >3. Name of the Course Teacher/Teachers:</label
+        >
+        <input type="text" id="courseTeacher" name="courseTeacher" /><br />
+
+        <label for="courseCode">4. Course Code:</label>
+        <input type="text" id="courseCode" name="courseCode" /><br />
+
+        <label for="semester">5. Semester:</label>
+        <input type="text" id="semester" name="semester" /><br />
+
+        <label for="courseTitle">6. Course Title:</label>
+        <input type="text" id="courseTitle" name="courseTitle" /><br />
+
+        <label for="academicYear">7. Academic Year:</label>
+        <input type="text" id="academicYear" name="academicYear" /><br />
+
+        <label for="batch">8. Batch:</label>
+        <input type="text" id="batch" name="batch" /><br />
+
+        <label for="coThreshold">9. CO Threshold%:</label>
+        <input type="text" id="coThreshold" name="coThreshold" /><br />
+
+        <label for="targetPercentage">10. Institute Target Percentage:</label>
+        <input
+          type="text"
+          id="targetPercentage"
+          name="targetPercentage"
+        /><br />
+
+        <label for="totalCO">11. Total CO:</label>
+        <input type="text" id="totalCO" name="totalCO" /><br />
+
+        <label for="totalPO">12. Total PO:</label>
+        <input type="text" id="totalPO" name="totalPO" /><br />
+
+        <label for="totalPSO">13. Total PSO:</label>
+        <input type="text" id="totalPSO" name="totalPSO" /><br />
+
+        <label for="levelOfAttainments">14. Level of Attainments:</label>
+        <input
+          type="text"
+          id="levelOfAttainments"
+          name="levelOfAttainments"
+        /><br />
+
+            <button type="submit">Submit</button>
+        </form>
+        <div id="displayInfo">
+            <!-- Information will be displayed here -->
+        </div>
+    </div>
+
+    <!-- ISA Mapping Form -->
+    <h1>Marks Entry</h1>
+    <h2>CIE Marks Entry</h2>		
+
+    <input type="file" id="fileInput">
+    <button id="loadButton">Load Excel</button>
+    <div id="gridView"></div>
+    <p id="marksSum">Total: 0</p> 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
