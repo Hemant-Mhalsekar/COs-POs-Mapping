@@ -61,38 +61,115 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var numCOs = parseInt(coInput.value);
 
+//****************************************************************************************************************************************************************************//
+                                          //CREATING FIRST TABLE
+//****************************************************************************************************************************************************************************//
+    
+        numRows = 1;
+        // numCols = parseInt(coInput.value-1);
+
+        var tableContainer1 = document.getElementById("tableContainer1");
+        tableContainer1.innerHTML = "";
+
+        var table = document.createElement("table");
+        var headerRow = document.createElement("tr");
+
+        // Create header cells
+        for (var i = 1; i <= numCOs + 1; i++) {
+            var th = document.createElement("th");
+            th.className= "bg-blue-400";
+            if (i === 1) {
+                th.textContent = "CO-Mapping";
+            } else {
+                th.textContent = "CO" + (i - 1);
+            }
+            headerRow.appendChild(th);
+        }
+
+        table.appendChild(headerRow);
+
+        // Create rows and cells with input fields
+        for (var i = 1; i <= numRows; i++) {
+            var row = document.createElement("tr");
+
+            // Initialize an array to store input elements
+            var inputElements = [];
+
+            for (var j = 1; j <= numCOs + 1; j++) {
+                var td = document.createElement("td");
+                var input = document.createElement("input");
+                input.type = "number"; // Change the input type to "number"
+                input.className = "w-full text-center"; // Add Tailwind width class
+                if (i === 1 && j === 1) { // Check for the first cell in the second row
+                    input.type = "text"; 
+                    input.value = "Total Marks"; // Set the content of the first cell
+                    input.disabled = true;
+                }
+
+                input.id = "table1_row_" + i + "_col_" + j;
+
+                // Add a change event listener to each input element
+                // input.addEventListener("change", updateTotal2);
+
+                td.appendChild(input);
+                row.appendChild(td);
+
+                inputElements.push(input);
+            }
+            table.appendChild(row);
+        }
+
+        tableContainer1.appendChild(table);
+    
+
+//****************************************************************************************************************************************************************************//
+                                          //CREATING SECOND TABLE
+//****************************************************************************************************************************************************************************//
+
+      // Initialize the HTML string for the table
       var html = "<table>";
+
+      // Loop through the rows of JSON data
       for (var i = 0; i < jsonData.length; i++) {
         html += "<tr>";
+
+        // Loop through the columns of the current row
         for (var j = 0; j < jsonData[i].length; j++) {
+          // If it's the first row, create header cells
           if (i === 0) {
             if (j < 3) {
-              html += "<th>" + jsonData[i][j] + "</th>";
+              html += "<th>" + jsonData[i][j] + "</th>"; // Create header cell with data
             }
           } else {
             if (j < 3) {
-              html += "<td>" + jsonData[i][j] + "</td>";
+              html += "<td>" + jsonData[i][j] + "</td>"; // Create data cell with content
             }
           }
 
+          // Check if it's the first row and the specific column for CO columns
           if (i === 0 && j === 2) {
             for (var k = 0; k < numCOs; k++) {
-              html += "<th>CO " + (k + 1) + "</th>";
+              html += "<th>CO " + (k + 1) + "</th> <th>%</th>"; // Create CO column header with colspan
             }
-            html += "<th>Marks</th>";
           }
         }
+
+        // Close the row
         html += "</tr>";
       }
+
+      // Close the table tag
       html += "</table>";
+
+      // Insert the generated HTML into the gridView element
       gridView.innerHTML = html;
 
       var table = gridView.querySelector("table");
       var rows = table.getElementsByTagName("tr");
       for (var i = 1; i < rows.length; i++) {
-        for (var j = 3; j < 3 + numCOs + 1; j++) {
+        for (var j = 3; j < 3 + numCOs * 2; j++) {
           var newCell = document.createElement("td");
-          if (j < 3 + numCOs) {
+          if (j < 3 + numCOs * 2) {
             newCell.setAttribute("contenteditable", "true");
             newCell.addEventListener("input", function () {
               this.textContent = this.textContent.replace(/\D/g, "");
@@ -100,29 +177,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           } else {
             newCell.setAttribute("contenteditable", "false");
-            newCell.classList.add("marks-cell");
+            // newCell.classList.add("marks-cell");
           }
           rows[i].appendChild(newCell);
         }
-      }
-
-      function updateMarks() {
-        var marksCells = document.querySelectorAll(".marks-cell");
-        var totalMarksSum = 0;
-        for (var i = 1; i < rows.length; i++) {
-          var rowCells = rows[i].querySelectorAll('td[contenteditable="true"]');
-          var marksCell = marksCells[i - 1];
-          var totalMarks = 0;
-
-          for (var j = 0; j < rowCells.length; j++) {
-            totalMarks += parseInt(rowCells[j].textContent) || 0;
-          }
-
-          marksCell.textContent = totalMarks;
-          totalMarksSum += totalMarks; // Accumulate marks for total sum
-        }
-
-        marksSumLabel.textContent = "Total: " + totalMarksSum; // Update sum label
       }
     };
 
