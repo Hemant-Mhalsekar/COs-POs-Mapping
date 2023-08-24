@@ -3,12 +3,20 @@
   <head>
     <title>Combined Form</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
     <!-- Add any necessary CSS or other meta tags here -->
   </head>
-  <body>
+  <body
+    style="background-image: linear-gradient(to bottom, #f7fafc, #95b6c8)"
+    class="min-h-screen items-center justify-center"
+  >
     <div class="container">
+      
       <!-- Course Information Form -->
-      <h1>Course Information Form</h1>
+      <h1  class="text-2xl font-semibold mb-4 flex justify-center">Course Information Form</h1>
       <form id="courseForm">
         <label for="programmeName">1. Name of the Programme:</label>
         <input
@@ -50,22 +58,18 @@
           required
           /><br />
 
-        <label for="totalCO">11. Total CO:</label>
+        <label for="totalCO">11. Number of COs:</label>
         <input type="text" id="totalCO" name="totalCO" required/><br />
 
-        <label for="totalPO">12. Total PO:</label>
+        <label for="totalPO">12. Number of POs:</label>
         <input type="text" id="totalPO" name="totalPO" required/><br />
 
-        <label for="totalPSO">13. Total PSO:</label>
+        <label for="totalPSO">13. Number PSO:</label>
         <input type="text" id="totalPSO" name="totalPSO" required/><br />
 
-        <label for="levelOfAttainments">14. Level of Attainments:</label>
-        <input
-          type="text"
-          id="levelOfAttainments"
-          name="levelOfAttainments"
-          required
-        /><br />
+        <label for="totalPSO">14. SEE Marks:</label>
+        <input type="text" required/><br />
+
 
         <button type="submit">Submit</button>
       </form>
@@ -80,6 +84,12 @@
 
     <input type="file" id="fileInput" />
     <button id="loadButton">Load Excel</button>
+
+    <div class="flex justify-center">
+      <div class="mt-8 ml-4 mr-4" id="tableContainer1">
+        <!-- Table content will be generated dynamically -->
+      </div>
+    </div>
     <div id="gridView"></div>
     <p id="marksSum">Total: 0</p>
 
