@@ -9,89 +9,68 @@
   />
     <!-- Add any necessary CSS or other meta tags here -->
   </head>
-  <body
-    style="background-image: linear-gradient(to bottom, #f7fafc, #95b6c8)"
-    class="min-h-screen items-center justify-center"
-  >
-    <div class="container">
-      
+  <body style="background-image: linear-gradient(to bottom, #f7fafc, #95b6c8)">
+  <div>
       <!-- Course Information Form -->
-      <h1  class="text-2xl font-semibold mb-4 flex justify-center">Course Information Form</h1>
+      <div class="flex justify-center items-center w-screen min-h-screen">
+        <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white">
+        <div class="flex justify-center items-center">
+          <h1  class="font-bold uppercase text-5xl ">Course Information Form</h1>
+        </div>
       <form id="courseForm">
-        <label for="programmeName">1. Name of the Programme:</label>
-        <input
-          type="text"
-          id="programmeName"
-          name="programmeName"
-          required
-        /><br />
-
-        <label for="department">2. Department:</label>
-        <input type="text" id="department" name="department" required /><br />
-
-        <label for="courseTeacher">3. Name of the Course Teacher/Teachers:</label>
-        <input type="text" id="courseTeacher" name="courseTeacher" required/><br />
-
-        <label for="courseCode">4. Course Code:</label>
-        <input type="text" id="courseCode" name="courseCode" required/><br />
-
-        <label for="semester">5. Semester:</label>
-        <input type="text" id="semester" name="semester" required/><br />
-
-        <label for="courseTitle">6. Course Title:</label>
-        <input type="text" id="courseTitle" name="courseTitle" required/><br />
-
-        <label for="academicYear">7. Academic Year:</label>
-        <input type="text" id="academicYear" name="academicYear" required/><br />
-
-        <label for="batch">8. Batch:</label>
-        <input type="text" id="batch" name="batch" required/><br />
-
-        <label for="coThreshold">9. CO Threshold%:</label>
-        <input type="text" id="coThreshold" name="coThreshold" required/><br />
-
-        <label for="targetPercentage">10. Institute Target Percentage:</label>
-        <input
-          type="text"
-          id="targetPercentage"
-          name="targetPercentage" 
-          required
-          /><br />
-
-        <label for="totalCO">11. Number of COs:</label>
-        <input type="text" id="totalCO" name="totalCO" required/><br />
-
-        <label for="totalPO">12. Number of POs:</label>
-        <input type="text" id="totalPO" name="totalPO" required/><br />
-
-        <label for="totalPSO">13. Number PSO:</label>
-        <input type="text" id="totalPSO" name="totalPSO" required/><br />
-
-        <label for="totalPSO">14. SEE Marks:</label>
-        <input type="text" required/><br />
-
-
-        <button type="submit">Submit</button>
+        <div class="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="programmeName" name="programmeName" required placeholder="1. Name of the Programme:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="department" name="department" required  placeholder="2. Department:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTeacher" name="courseTeacher" required placeholder="3. Name of the Course Teacher/Teachers:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseCode" name="courseCode" required placeholder="4. Course Code:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="semester" name="semester"  required placeholder="5. Semester:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTitle" name="courseTitle"  required placeholder="6. Course Title:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="academicYear" name="academicYear"  required placeholder="7. Academic Year:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="batch" name="batch" required placeholder="8. Batch:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="coThreshold" name="coThreshold" required placeholder="9. CO Threshold%:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="targetPercentage" name="targetPercentage" required placeholder="10. Institute Target Percentage:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalCO" name="totalCO" required placeholder="11. Number of COs:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPO" name="totalPO" required placeholder="12. Number of POs:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPSO" name="totalPSO" required placeholder="13. Number PSO:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" required placeholder="14. SEE Marks:" />
+        </div>
+        <div class="my-2 w-1/2 lg:w-1/4 mx-auto">
+          <button class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full 
+          focus:outline-none focus:shadow-outline" type="submit">Submit</button>
+        </div>
       </form>
-      <div id="displayInfo">
+    </div>
+  </div>
+      <div id="displayInfo" class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden">
         <!-- Information will be displayed here -->
       </div>
     </div>
 
     <!-- ISA Mapping Form -->
-    <h1>Marks Entry</h1>
-    <h2>CIE Marks Entry</h2>
+    <div >
+      <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white">
 
-    <input type="file" id="fileInput" />
-    <button id="loadButton">Load Excel</button>
+        <div class="flex justify-center items-center mb-4">
+          <h1 class="font-bold uppercase text-3xl">CIE Marks Entry</h1>
+        </div>
 
-    <div class="flex justify-center">
-      <div class="mt-8 ml-4 mr-4" id="tableContainer1">
-        <!-- Table content will be generated dynamically -->
+        <div class="my-2 flex">
+          <input type="file" id="fileInput" class="bg-gray-200 shadow-xl p-2 rounded-l-lg focus:outline-none flex-grow mr-4">
+          <button id="loadButton" class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-r-lg
+            focus:outline-none">Load Excel</button>
+        </div>
+        
       </div>
     </div>
-    <div id="gridView"></div>
-    <p id="marksSum">Total: 0</p>
+    
+   
+   <!-- Table 1 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView1"></div>
+     
+    <!-- Table 2 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView2"></div>
+    
+    <p class="mt-4  text-gray-600" id="marksSum">Total: 0</p>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="script.js"></script>
