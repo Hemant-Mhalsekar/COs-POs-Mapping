@@ -3,10 +3,8 @@
   <head>
     <title>Combined Form</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
-    rel="stylesheet"
-  />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet" />
+
     <!-- Add any necessary CSS or other meta tags here -->
   </head>
   <body style="background-image: linear-gradient(to bottom, #f7fafc, #95b6c8)">
@@ -32,7 +30,7 @@
           <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalCO" name="totalCO" required placeholder="11. Number of COs:" />
           <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPO" name="totalPO" required placeholder="12. Number of POs:" />
           <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPSO" name="totalPSO" required placeholder="13. Number PSO:" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" required placeholder="14. SEE Marks:" />
+          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="TotalMarks" name="TotalMarks" required placeholder="14. SEE Marks:" />
         </div>
         <div class="my-2 w-1/2 lg:w-1/4 mx-auto">
           <button class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full 
@@ -70,6 +68,18 @@
     <!-- Table 2 -->
     <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView2"></div>
     
+    <!-- Table 3 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView3"></div>
+
+     <!-- Table 4 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView4"></div>
+
+    <!-- Table 5 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView5"></div>
+
+    <!-- Table 5 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView6"></div>
+
     <p class="mt-4  text-gray-600" id="marksSum">Total: 0</p>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
