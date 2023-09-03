@@ -19,8 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalCO = document.getElementById("totalCO").value;
     const totalPO = document.getElementById("totalPO").value;
     const totalPSO = document.getElementById("totalPSO").value;
-    const levelOfAttainments =
-      document.getElementById("levelOfAttainments").value;
+    const TotalMarks = document.getElementById("TotalMarks").value;
+
+    document.getElementById("displayInfo").classList.remove("hidden");
 
     // Display the entered information
     displayInfo.innerHTML = `
@@ -38,16 +39,20 @@ document.addEventListener("DOMContentLoaded", function () {
              <p><strong>Total CO:</strong> ${totalCO}</p>
              <p><strong>Total PO:</strong> ${totalPO}</p>
              <p><strong>Total PSO:</strong> ${totalPSO}</p>
-             <p><strong>Level of Attainments:</strong> ${levelOfAttainments}</p>
+             <p><strong>Total Marks:</strong> ${TotalMarks}</p>
+             
         `;
   });
 
   // ISA Mapping Form JavaScript
   document.getElementById("loadButton").addEventListener("click", function () {
     var fileInput = document.getElementById("fileInput");
-    var gridView = document.getElementById("gridView");
+    var gridView1 = document.getElementById("gridView1");
+    var gridView2 = document.getElementById("gridView2");
+
     var coInput = document.getElementById("totalCO");
-    var marksSumLabel = document.getElementById("marksSum"); // Marks sum label
+    var coThreshold = document.getElementById("coThreshold");
+    var TotalMark = document.getElementById("TotalMarks");
 
     var file = fileInput.files[0];
     var reader = new FileReader();
@@ -59,72 +64,99 @@ document.addEventListener("DOMContentLoaded", function () {
       var sheet = workbook.Sheets[sheetName];
       var jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
+      document.getElementById("gridView1").classList.remove("hidden");
+      document.getElementById("gridView2").classList.remove("hidden");
+      document.getElementById("gridView3").classList.remove("hidden");
+      document.getElementById("gridView4").classList.remove("hidden");
+      document.getElementById("gridView5").classList.remove("hidden");
+      document.getElementById("gridView6").classList.remove("hidden");
+
       var numCOs = parseInt(coInput.value);
+      var thresHold = parseInt(coThreshold.value);
+      var Marks = parseInt(TotalMark.value);
 
-//****************************************************************************************************************************************************************************//
-                                          //CREATING FIRST TABLE
-//****************************************************************************************************************************************************************************//
-    
-        numRows = 1;
-        // numCols = parseInt(coInput.value-1);
+      //****************************************************************************************************************************************************************************//
+      //CREATING FIRST TABLE CIE Marks Entry
+      //****************************************************************************************************************************************************************************//
 
-        var tableContainer1 = document.getElementById("tableContainer1");
-        tableContainer1.innerHTML = "";
+      // numCols = parseInt(coInput.value-1);
 
-        var table = document.createElement("table");
-        var headerRow = document.createElement("tr");
+      gridView1.innerHTML = ""; // Clear any previous content
 
-        // Create header cells
-        for (var i = 1; i <= numCOs + 1; i++) {
-            var th = document.createElement("th");
-            th.className= "bg-blue-400";
-            if (i === 1) {
-                th.textContent = "CO-Mapping";
-            } else {
-                th.textContent = "CO" + (i - 1);
-            }
-            headerRow.appendChild(th);
+      var html = "<table>";
+
+      // Header row with CO-Mapping and CO headers
+      html += "<tr>";
+      html +=
+        "<th colspan=" +
+        (1 + numCOs) +
+        " class='text-center'>CIE Marks Entry</th>";
+      html += "</tr>";
+
+      html += "<tr>";
+      html += "<th class='text-center'>CO-Mapping</th>"; // First column header
+      for (var i = 1; i <= numCOs; i++) {
+        html += "<th class='text-center'>CO " + i + "</th>"; // CO headers
+      }
+      html += "</tr>";
+
+      // Row for Total Marks and user input cells
+      html += "<tr>";
+      html += "<td class='text-center'>Total Marks</td>"; // Total Marks cell
+      for (var i = 1; i <= numCOs; i++) {
+        html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
+      }
+      html += "</tr>";
+
+      // Close the table tag
+      html += "</table>";
+
+      // Insert the generated HTML into the gridView element
+      gridView1.innerHTML = html;
+
+      localStorage.clear();
+
+      var table = gridView1.querySelector("table");
+      var rows = table.getElementsByTagName("tr");
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        for (var j = 1; j <= numCOs - numCOs; j++) {
+          var newCell = document.createElement("td");
+          newCell.classList.add("text-center");
+          newCell.setAttribute("contenteditable", "true");
+          newCell.addEventListener("input", function () {
+            this.textContent = this.textContent.replace(/\D/g, "");
+          });
+          row.appendChild(newCell);
         }
+      }
 
-        table.appendChild(headerRow);
+      //Store value in localstorage
+      var inputCells = table.querySelectorAll("td[contenteditable='true']");
+      var columnValues = {}; // Object to store values for each column
 
-        // Create rows and cells with input fields
-        for (var i = 1; i <= numRows; i++) {
-            var row = document.createElement("tr");
+      inputCells.forEach(function (cell) {
+        var colIndex = cell.cellIndex;
 
-            // Initialize an array to store input elements
-            var inputElements = [];
+        cell.addEventListener("input", function () {
+          var enteredValue = parseInt(cell.textContent.replace(/\D/g, ""));
 
-            for (var j = 1; j <= numCOs + 1; j++) {
-                var td = document.createElement("td");
-                var input = document.createElement("input");
-                input.type = "number"; // Change the input type to "number"
-                input.className = "w-full text-center"; // Add Tailwind width class
-                if (i === 1 && j === 1) { // Check for the first cell in the second row
-                    input.type = "text"; 
-                    input.value = "Total Marks"; // Set the content of the first cell
-                    input.disabled = true;
-                }
-
-                input.id = "table1_row_" + i + "_col_" + j;
-
-                // Add a change event listener to each input element
-                // input.addEventListener("change", updateTotal2);
-
-                td.appendChild(input);
-                row.appendChild(td);
-
-                inputElements.push(input);
+          if (!isNaN(enteredValue)) {
+            if (!columnValues[colIndex]) {
+              columnValues[colIndex] = [];
             }
-            table.appendChild(row);
-        }
 
-        tableContainer1.appendChild(table);
-    
+            columnValues[colIndex] = enteredValue;
+            localStorage.setItem("column_values", JSON.stringify(columnValues));
+          }
 
-//****************************************************************************************************************************************************************************//
-                                          //CREATING SECOND TABLE
-//****************************************************************************************************************************************************************************//
+          // console.log("Column-wise values in local storage:", columnValues);
+        });
+      });
+
+      //****************************************************************************************************************************************************************************//
+      //CREATING SECOND TABLE
+      //****************************************************************************************************************************************************************************//
 
       // Initialize the HTML string for the table
       var html = "<table>";
@@ -138,18 +170,21 @@ document.addEventListener("DOMContentLoaded", function () {
           // If it's the first row, create header cells
           if (i === 0) {
             if (j < 3) {
-              html += "<th>" + jsonData[i][j] + "</th>"; // Create header cell with data
+              html += "<th class='text-center'>" + jsonData[i][j] + "</th>"; // Create header cell with data
             }
           } else {
             if (j < 3) {
-              html += "<td>" + jsonData[i][j] + "</td>"; // Create data cell with content
+              html += "<td class='text-center'>" + jsonData[i][j] + "</td>"; // Create data cell with content
             }
           }
 
           // Check if it's the first row and the specific column for CO columns
           if (i === 0 && j === 2) {
             for (var k = 0; k < numCOs; k++) {
-              html += "<th>CO " + (k + 1) + "</th> <th>%</th>"; // Create CO column header with colspan
+              html +=
+                "<th class='text-center'>CO " +
+                (k + 1) +
+                "</th> <th class='text-center'>%</th>"; // Create CO column header with colspan
             }
           }
         }
@@ -162,26 +197,444 @@ document.addEventListener("DOMContentLoaded", function () {
       html += "</table>";
 
       // Insert the generated HTML into the gridView element
-      gridView.innerHTML = html;
+      gridView2.innerHTML = html;
 
-      var table = gridView.querySelector("table");
+      var table = gridView2.querySelector("table");
       var rows = table.getElementsByTagName("tr");
+
+      var columnsAboveThresholdCounts = [];
+
       for (var i = 1; i < rows.length; i++) {
         for (var j = 3; j < 3 + numCOs * 2; j++) {
-          var newCell = document.createElement("td");
-          if (j < 3 + numCOs * 2) {
-            newCell.setAttribute("contenteditable", "true");
-            newCell.addEventListener("input", function () {
-              this.textContent = this.textContent.replace(/\D/g, "");
-              updateMarks();
-            });
-          } else {
-            newCell.setAttribute("contenteditable", "false");
-            // newCell.classList.add("marks-cell");
-          }
-          rows[i].appendChild(newCell);
+          (function (rowIndex, colIndex) {
+            // Use IIFE to capture current values of i and j
+
+            var newCell = document.createElement("td");
+            newCell.classList.add("text-center");
+
+            if (j < 3 + numCOs * 2) {
+              newCell.addEventListener("input", function () {
+                var enteredValue = parseInt(
+                  this.textContent.replace(/\D/g, "")
+                );
+                // console.log("Row:", rowIndex, "Column:", colIndex, "Value:", enteredValue);
+
+                if (!isNaN(enteredValue)) {
+                  var storedColumnValues = JSON.parse(
+                    localStorage.getItem("column_values")
+                  );
+                  var columnNumber = (colIndex - 3) / 2 + 1;
+
+                  if (storedColumnValues && storedColumnValues[columnNumber]) {
+                    var columnValues = storedColumnValues[columnNumber];
+                    var storedValue = columnValues;
+
+                    if (enteredValue > storedValue) {
+                      alert("Enter valid value");
+                      this.textContent = "";
+                      columnsAboveThresholdCounts[columnNumber]--;
+                    } else {
+                      var percentage = (enteredValue / storedValue) * 100;
+
+                      if (percentage >= thresHold) {
+                        if (!columnsAboveThresholdCounts[columnNumber]) {
+                          columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
+                        } else {
+                          columnsAboveThresholdCounts[columnNumber]++; // Increment the count
+                        }
+                      }
+
+                      for (
+                        var column = 0;
+                        column < columnsAboveThresholdCounts.length;
+                        column++
+                      ) {
+                        var count = columnsAboveThresholdCounts[column] || 0;
+                        var percent = (count / (rows.length - 1)) * 100;
+
+                        // console.log("Column", column , ": Count:", count, "Percentage:", percent.toFixed(2) + "%");
+
+                        localStorage.setItem(`column_${column}`, column);
+                        localStorage.setItem(
+                          `percent_${column}`,
+                          percent.toFixed(2)
+                        );
+                      }
+                      updateData();
+
+                      // Set the percentage value in the next cell of the same row
+                      var percentageCellIndex = colIndex + 1;
+                      var percentageCell =
+                        rows[rowIndex].cells[percentageCellIndex];
+                      if (percentageCell) {
+                        percentageCell.setAttribute("contenteditable", "false");
+                      }
+                      // console.log("Percentage : "+percentage);
+
+                      if (percentageCell) {
+                        percentageCell.textContent =
+                          percentage.toFixed(2) + "%";
+                      }
+                    }
+                  }
+                }
+              });
+
+              newCell.classList.add("text-center");
+              newCell.setAttribute("contenteditable", "true");
+            } else {
+              newCell.setAttribute("contenteditable", "false");
+            }
+
+            rows[i].appendChild(newCell);
+          })(i, j); // Pass current values of i and j to the IIFE
         }
       }
+
+      //****************************************************************************************************************************************************************************//
+      //CREATING THIRD TABLE SEE MARKS ENTRY
+      //****************************************************************************************************************************************************************************//
+
+      var gridView3 = document.getElementById("gridView3");
+      gridView3.innerHTML = ""; // Clear any previous content
+
+      var html = "<table>";
+
+      // Header row with CO-Mapping and CO headers
+      html += "<tr>";
+      html += "<th colspan='2' class='text-center'>SEE MARKS ENTRY</th>"; // CIE header
+      html += "</tr>";
+
+      html += "<tr>";
+      for (var i = 1; i <= 1; i++) {
+        html += "<th class='text-center'>Total Marks</th>";
+        html += "<th class='text-center'>" + Marks + "</th>";
+      }
+      html += "</tr>";
+
+      html += "<tr>";
+      for (var i = 1; i <= 1; i++) {
+        html += "<th class='text-center'>Marks Obtained</th>";
+        html += "<th class='text-center'>SEE Percentage</th>";
+      }
+      html += "</tr>";
+
+      // CO rows
+      for (var i = 1; i <= rows.length - 1; i++) {
+        html += "<tr>";
+        for (var j = 1; j <= 2; j++) {
+          if (j === 1) {
+            html += "<td class='text-center' contenteditable='true'></td>"; // Editable cells
+          } else {
+            html += "<td class='text-center'></td>";
+          }
+        }
+        html += "</tr>";
+      }
+
+      // Close the table tag
+      html += "</table>";
+
+      // Insert the generated HTML into the gridView element
+      gridView3.innerHTML = html;
+
+      var rowTotalSum = 0;
+      var rowCount = rows.length - 1;
+
+      // Attach event listeners to editable cells for value change
+      gridView3.addEventListener("input", function (event) {
+        var target = event.target;
+        if (
+          target.tagName === "TD" &&
+          target.getAttribute("contenteditable") === "true"
+        ) {
+          calculatePercentage(target);
+          calculateRowAverage();
+        }
+      });
+
+      // Function to calculate and display percentage
+      function calculatePercentage(targetCell) {
+        var row = targetCell.parentNode; // Get the parent row
+        var cells = row.getElementsByTagName("td"); // Get all cells in the row
+        var enteredValue = parseFloat(cells[0].textContent); // Get the value from the first cell
+
+        if (!isNaN(enteredValue) && Marks !== 0) {
+          if (enteredValue > Marks) {
+            alert("Enter a valid value that is not greater than Marks.");
+            cells[0].textContent = ""; // Clear the value in the first cell
+            cells[1].textContent = ""; // Clear the second cell
+          } else {
+            var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
+            cells[1].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
+
+            rowTotalSum += percentage;
+          }
+        } else {
+          cells[1].textContent = ""; // Clear the second cell if the calculation is not possible
+        }
+      }
+
+      function calculateRowAverage() {
+        if (rowCount > 0) {
+          var rowAverage = rowTotalSum / rowCount;
+          console.log("Average : " + rowAverage);
+          localStorage.setItem("rowAverage", rowAverage);
+          updateData();
+        } else {
+          console.log("Invalid"); // Clear the average cell if there are no valid values
+        }
+      }
+
+      //****************************************************************************************************************************************************************************//
+      //CREATING FORTH TABLE
+      //****************************************************************************************************************************************************************************//
+
+      var gridView4 = document.getElementById("gridView4");
+      gridView4.innerHTML = ""; // Clear any previous content
+
+      var html = "<table>";
+
+      html += "<tr>";
+      html +=
+        "<th colspan=" + numCOs + " class='text-center'>Feedback Score</th>";
+      html += "</tr>";
+
+      html += "<tr>";
+      for (var i = 1; i <= numCOs; i++) {
+        html += "<th class='text-center'>CO " + i + "</th>"; // CO headers
+      }
+      html += "</tr>";
+
+      for (var i = 1; i <= rows.length - 1; i++) {
+        html += "<tr>";
+        for (var j = 1; j <= numCOs; j++) {
+          html +=
+            "<td class='text-center' contenteditable='true' data-row='" +
+            i +
+            "' data-col='" +
+            j +
+            "'></td>"; // Editable cells with data attributes
+        }
+        html += "</tr>";
+      }
+
+      // Close the table tag
+      html += "</table>";
+
+      // Insert the generated HTML into the gridView element
+      gridView4.innerHTML = html;
+
+      // Add event listener to the editable cells
+      var table2 = gridView4.querySelector("table");
+
+      var editableCells = table2.querySelectorAll('[contenteditable="true"]');
+      editableCells.forEach(function (cell) {
+        cell.addEventListener("input", function () {
+          var row = this.getAttribute("data-row");
+          var col = this.getAttribute("data-col");
+          var value = parseInt(this.textContent.replace(/\D/g, ""));
+          console.log("Row: " + row + ", Column: " + col + ", Value: " + value);
+
+          if (!isNaN(value) && (value === 1 || value === 2 || value === 3)) {
+            calculateAndSaveColumnAverage(col);
+          } else {
+            // Invalid input, reset the cell
+            this.textContent = "";
+          }
+        });
+      });
+
+      function calculateAndSaveColumnAverage(col) {
+        var cellsInColumn = document.querySelectorAll(
+          '[data-col="' + col + '"]'
+        );
+        var total = 0;
+        var count = 0;
+
+        cellsInColumn.forEach(function (cell) {
+          var value = parseInt(cell.textContent.replace(/\D/g, ""), 10);
+          if (!isNaN(value)) {
+            total += value;
+            count++;
+          }
+        });
+
+        if (count > 0) {
+          var average = total / (rows.length - 1);
+          localStorage.setItem("col_" + col + "_average", average);
+          console.log("column : " + col + " Average : " + average);
+          updateData();
+        } else {
+          localStorage.removeItem("col_" + col + "_average"); // Remove from local storage if no valid values
+        }
+      }
+
+      //****************************************************************************************************************************************************************************//
+      //CREATING FIFTH TABLE
+      //****************************************************************************************************************************************************************************//
+      function updateData() {
+        var gridView5 = document.getElementById("gridView5");
+
+        gridView5.innerHTML = ""; // Clear any previous content
+
+        var table = document.createElement("table");
+
+        // Header row with CO-Mapping and CO headers
+        var headerRow = document.createElement("tr");
+        headerRow.innerHTML = `
+          <th rowspan='2' class='text-center'></th>
+          <th colspan='2' class='text-center'>CIE</th>
+          <th class='text-center'>SEE</th>
+          <th class='text-center'>Feedback</th>
+          <th rowspan='2' class='text-center'>Total CO Attainment</th>
+        `;
+
+        var subHeaderRow = document.createElement("tr");
+        subHeaderRow.innerHTML = `
+          <th class='text-center'>%</th>
+          <th class='text-center'>Score</th>
+          <th class='text-center'>Score</th>
+          <th class='text-center'>Score</th>
+        `;
+
+        table.appendChild(headerRow);
+        table.appendChild(subHeaderRow);
+
+        // CO rows
+        for (var i = 1; i <= numCOs; i++) {
+          var score = 0;
+          var calculatedValue = 0;
+
+          var coRow = document.createElement("tr");
+          coRow.innerHTML = `<td>CO ${i}</td>`;
+
+          for (
+            var column = i;
+            column < columnsAboveThresholdCounts.length;
+            column++
+          ) {
+            var storedColumn = localStorage.getItem(`column_${column}`);
+            var storedPercent = localStorage.getItem(`percent_${column}`);
+
+            if (storedColumn != 0) {
+              coRow.innerHTML += `<td class='text-center'>${storedPercent}</td>`;
+
+              var percent = parseFloat(storedPercent);
+
+              if (percent >= 0 && percent <= 35) {
+                score = 0;
+              } else if (percent > 35 && percent <= 50) {
+                score = 1;
+              } else if (percent > 50 && percent <= 70) {
+                score = 2;
+              } else if (percent > 70 && percent <= 100) {
+                score = 3;
+              }
+
+              coRow.innerHTML += `<td class='text-center'>${score}</td>`;
+              break;
+            }
+          }
+
+          for (var j = 1; j <= 3; j++) {
+            var td = document.createElement("td");
+            td.className = "text-center";
+
+            var averageKey = "col_" + i + "_average";
+            var average = localStorage.getItem(averageKey);
+            average = parseFloat(average).toFixed(2);
+
+            var rowAverage = localStorage.getItem("rowAverage");
+
+            if (j === 1) {
+              if (rowAverage >= 0 && rowAverage <= 35) {
+                score = 0;
+              } else if (rowAverage > 35 && rowAverage <= 50) {
+                score = 1;
+              } else if (rowAverage > 50 && rowAverage <= 70) {
+                score = 2;
+              } else if (rowAverage > 70 && rowAverage <= 100) {
+                score = 3;
+              }
+
+              td.textContent = score;
+            } else if (j === 2) {
+              td.textContent = average !== null ? average : "";
+            } else if (j === 3) {
+              // Ensure that the cells exist before trying to access their textContent
+              var coRowCellValue3 = coRow.cells[2]
+                ? parseFloat(coRow.cells[2].textContent.trim())
+                : 0;
+              var coRowCellValue4 = coRow.cells[3]
+                ? parseFloat(coRow.cells[3].textContent.trim())
+                : 0;
+              var coRowCellValue5 = coRow.cells[4]
+                ? parseFloat(coRow.cells[4].textContent.trim())
+                : 0;
+
+              console.log(
+                "coRowCellValue3 : " +
+                  coRowCellValue3 +
+                  " coRowCellValue4 " +
+                  coRowCellValue4 +
+                  "  coRowCellValue5 " +
+                  coRowCellValue5
+              );
+
+              calculatedValue =
+                0.6 * coRowCellValue3 +
+                coRowCellValue4 * 0.3 +
+                coRowCellValue5 * 0.1;
+              calculatedValue = parseFloat(calculatedValue).toFixed(2);
+
+              td.textContent = calculatedValue;
+            }
+
+            coRow.appendChild(td);
+          }
+
+          table.appendChild(coRow);
+        }
+
+        gridView5.appendChild(table);
+      }
+
+      //****************************************************************************************************************************************************************************//
+                                                                                //CREATING sixth TABLE
+      //****************************************************************************************************************************************************************************//
+
+      var gridView6 = document.getElementById("gridView6");
+      // Clear any previous content
+      gridView6.innerHTML = "";
+
+      var html = "<table>";
+
+      html += "<tr>";
+      html += "<th colspan=5 class='text-center'>LEVEL OF ATTAINMENT</th>"; // First column header
+      html += "</tr>";
+      // Header row with Level, 0, 1, 2, and 3 headers
+      html += "<tr>";
+      html += "<th class='text-center'>Level</th>"; // First column header
+      for (var i = 0; i <= 3; i++) {
+        html += "<th class='text-center'>" + i + "</th>"; // Column headers
+      }
+      html += "</tr>";
+
+      // Row 2 with %CO attainment data
+      html += "<tr>";
+      html += "<td class='text-center'>%CO attainment</td>"; // First column cell
+      html += "<td class='text-center'>0 to 35%</td>"; // Data for columns 0 to 35%
+      html += "<td class='text-center'>35 to 50%</td>"; // Data for columns 35 to 50%
+      html += "<td class='text-center'>50 to 70%</td>"; // Data for columns 50 to 70%
+      html += "<td class='text-center'>70 to 100%</td>"; // Data for columns 70 to 100%
+      html += "</tr>";
+
+      // Close the table tag
+      html += "</table>";
+
+      // Insert the generated HTML into the gridView6 element
+      gridView6.innerHTML = html;
     };
 
     reader.readAsArrayBuffer(file);
