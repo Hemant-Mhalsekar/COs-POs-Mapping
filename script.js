@@ -600,6 +600,7 @@ document.addEventListener("DOMContentLoaded", function () {
         gridView5.appendChild(table);
       }
 
+
       //****************************************************************************************************************************************************************************//
       //CREATING sixth TABLE
       //****************************************************************************************************************************************************************************//
@@ -638,5 +639,87 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     reader.readAsArrayBuffer(file);
+
+    //****************************************************************************************************************************************************************************//
+      //CREATING seventh TABLE
+      //****************************************************************************************************************************************************************************//
+      var gridView7 = document.getElementById("gridView7");
+      gridView7.innerHTML = ""; // Clear any previous content
+      
+      var numPOs = parseInt(document.getElementById("totalPO").value); // Get the number of POs
+      var numCOs = parseInt(document.getElementById("totalCO").value); // Get the number of COs
+      
+      var html = "<table>";
+      
+      // Header row with PO headers
+      html += "<tr>";
+      html += "<th class='text-center'></th>"; // Empty cell in the first column
+      for (var i = 1; i <= numPOs; i++) {
+        html += "<th class='text-center'>PO " + i + "</th>"; // PO headers
+      }
+      html += "</tr>";
+      
+      // Rows for Number of COs
+      for (var i = 1; i <= numCOs; i++) {
+        html += "<tr>";
+        html += "<td class='text-center'>CO " + i + "</td>"; // CO label
+        for (var j = 1; j <= numPOs; j++) {
+          html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
+        }
+        html += "</tr>";
+      }
+      
+      // Row for PO Avg
+      html += "<tr>";
+      html += "<td class='text-center'>PO Avg</td>"; // PO Avg label
+      for (var j = 1; j <= numPOs; j++) {
+        html += "<td class='text-center'></td>"; // Placeholder for PO Avg values
+      }
+      html += "</tr>";
+      
+      // Close the table tag
+      html += "</table>";
+      
+      // Insert the generated HTML into the gridView7 element
+      gridView7.innerHTML = html;
+      
+      // Calculate and display the CO Avg values when user input changes
+      var table7 = gridView7.querySelector("table");
+      var inputCells7 = table7.querySelectorAll("td[contenteditable='true']");
+      
+      inputCells7.forEach(function (cell) {
+        cell.addEventListener("input", function () {
+          calculateCOAverages(table7, numCOs, numPOs);
+        });
+      });
+      
+      // Function to calculate and display the CO Avg values
+      function calculateCOAverages(table, numCOs, numPOs) {
+        for (var j = 1; j <= numPOs; j++) {
+          var total = 0;
+          var count = 0;
+      
+          for (var i = 1; i <= numCOs; i++) {
+            var cellValue = table.rows[i].cells[j].textContent.trim();
+            var intValue = parseInt(cellValue);
+      
+            if (!isNaN(intValue)) {
+              total += intValue;
+              count++;
+            }
+          }
+      
+          if (count > 0) {
+            var average = total / count;
+            table.rows[numCOs + 1].cells[j].textContent = average.toFixed(2); // Update CO Avg cell
+          } else {
+            table.rows[numCOs + 1].cells[j].textContent = ""; // Clear the cell if there are no values
+          }
+        }
+      }
+      
+      // Initial calculation when the page loads
+      calculateCOAverages(table7, numCOs, numPOs);
+      
   });
 });
