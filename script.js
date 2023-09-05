@@ -2,6 +2,116 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("courseForm");
   const displayInfo = document.getElementById("displayInfo");
 
+
+  //Validation code 
+  const courseForm = document.getElementById('courseForm');
+  const formFields = courseForm.querySelectorAll('input[type="text"]');
+  
+  // Add event listeners to each input field for real-time validation
+  formFields.forEach(function (field) {
+    field.addEventListener('input', function () {
+      validateField(field);
+    });
+  });
+  
+  courseForm.addEventListener('submit', function (e) {
+    const valid = [...formFields].every(field => validateField(field));
+    if (!valid) {
+      e.preventDefault();
+    }
+    
+    // Check all fields for validation before submitting
+    formFields.forEach(function (field) {
+      if (!validateField(field)) {
+        valid = false;
+      }
+    });
+    
+    if (!valid) {
+      e.preventDefault(); // Prevent form submission if there are validation errors
+    }
+  });
+  
+  function validateField(field) {
+    const fieldName = field.name;
+    const fieldValue = field.value.trim();
+  
+    switch (fieldName) {
+      case 'programmeName':
+      case 'department':
+      case 'courseTeacher':
+      case 'courseCode':
+      case 'semester':
+      case 'courseTitle':
+      case 'academicYear':
+      case 'batch':
+        if (fieldValue === '') {
+          showValidationError(field, 'This field is required.');
+          return false;
+        } else {
+          hideValidationError(field);
+          return true;
+        }
+        
+      case 'coThreshold':
+      case 'targetPercentage':
+        if (!isNumeric(fieldValue) || fieldValue < 0 || fieldValue > 100) {
+          showValidationError(field, 'Enter a valid numeric value between 0 and 100.');
+          return false;
+        } else {
+          hideValidationError(field); // Hide the error message when the field is valid
+          return true;
+        }
+        
+      case 'totalCO':
+      case 'totalPO':
+      case 'totalPSO':
+        if (!isNumeric(fieldValue) || fieldValue < 1 || fieldValue > 20) {
+          showValidationError(field, 'Enter a valid numeric value between 1 and 20.');
+          return false;
+        } else {
+          hideValidationError(field); // Hide the error message when the field is valid
+          return true;
+        }
+        
+      case 'TotalMarks':
+        if (!isNumeric(fieldValue) || fieldValue < 0 || fieldValue > 100) {
+          showValidationError(field, 'Enter a valid numeric value between 0 and 100.');
+          return false;
+        } else {
+          hideValidationError(field); // Hide the error message when the field is valid
+          return true;
+        }
+    }
+  }
+  
+  function showValidationError(field, message) {
+    const errorContainer = field.nextElementSibling;
+    if (errorContainer && errorContainer.classList.contains('error-message')) {
+      errorContainer.textContent = message;
+      errorContainer.style.display = 'block';
+    } else {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message text-red-500';
+      errorDiv.textContent = message;
+      field.parentNode.appendChild(errorDiv);
+    }
+    field.classList.add('border-red-500'); // Apply error styling
+  }
+  
+  function hideValidationError(field) {
+    const errorContainer = field.nextElementSibling;
+    if (errorContainer && errorContainer.classList.contains('error-message')) {
+      errorContainer.remove(); // Remove the error message element
+    }
+    field.classList.remove('border-red-500'); // Remove error styling
+  }
+  
+  function isNumeric(value) {
+    return /^\d+(\.\d+)?$/.test(value);
+  }
+  //Validation code ends here
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
