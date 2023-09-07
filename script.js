@@ -2,116 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("courseForm");
   const displayInfo = document.getElementById("displayInfo");
 
-
-  //Validation code 
-  const courseForm = document.getElementById('courseForm');
-  const formFields = courseForm.querySelectorAll('input[type="text"]');
-  
-  // Add event listeners to each input field for real-time validation
-  formFields.forEach(function (field) {
-    field.addEventListener('input', function () {
-      validateField(field);
-    });
-  });
-  
-  courseForm.addEventListener('submit', function (e) {
-    const valid = [...formFields].every(field => validateField(field));
-    if (!valid) {
-      e.preventDefault();
-    }
-    
-    // Check all fields for validation before submitting
-    formFields.forEach(function (field) {
-      if (!validateField(field)) {
-        valid = false;
-      }
-    });
-    
-    if (!valid) {
-      e.preventDefault(); // Prevent form submission if there are validation errors
-    }
-  });
-  
-  function validateField(field) {
-    const fieldName = field.name;
-    const fieldValue = field.value.trim();
-  
-    switch (fieldName) {
-      case 'programmeName':
-      case 'department':
-      case 'courseTeacher':
-      case 'courseCode':
-      case 'semester':
-      case 'courseTitle':
-      case 'academicYear':
-      case 'batch':
-        if (fieldValue === '') {
-          showValidationError(field, 'This field is required.');
-          return false;
-        } else {
-          hideValidationError(field);
-          return true;
-        }
-        
-      case 'coThreshold':
-      case 'targetPercentage':
-        if (!isNumeric(fieldValue) || fieldValue < 0 || fieldValue > 100) {
-          showValidationError(field, 'Enter a valid numeric value between 0 and 100.');
-          return false;
-        } else {
-          hideValidationError(field); // Hide the error message when the field is valid
-          return true;
-        }
-        
-      case 'totalCO':
-      case 'totalPO':
-      case 'totalPSO':
-        if (!isNumeric(fieldValue) || fieldValue < 1 || fieldValue > 20) {
-          showValidationError(field, 'Enter a valid numeric value between 1 and 20.');
-          return false;
-        } else {
-          hideValidationError(field); // Hide the error message when the field is valid
-          return true;
-        }
-        
-      case 'TotalMarks':
-        if (!isNumeric(fieldValue) || fieldValue < 0 || fieldValue > 100) {
-          showValidationError(field, 'Enter a valid numeric value between 0 and 100.');
-          return false;
-        } else {
-          hideValidationError(field); // Hide the error message when the field is valid
-          return true;
-        }
-    }
-  }
-  
-  function showValidationError(field, message) {
-    const errorContainer = field.nextElementSibling;
-    if (errorContainer && errorContainer.classList.contains('error-message')) {
-      errorContainer.textContent = message;
-      errorContainer.style.display = 'block';
-    } else {
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error-message text-red-500';
-      errorDiv.textContent = message;
-      field.parentNode.appendChild(errorDiv);
-    }
-    field.classList.add('border-red-500'); // Apply error styling
-  }
-  
-  function hideValidationError(field) {
-    const errorContainer = field.nextElementSibling;
-    if (errorContainer && errorContainer.classList.contains('error-message')) {
-      errorContainer.remove(); // Remove the error message element
-    }
-    field.classList.remove('border-red-500'); // Remove error styling
-  }
-  
-  function isNumeric(value) {
-    return /^\d+(\.\d+)?$/.test(value);
-  }
-  //Validation code ends here
-
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -153,6 +43,110 @@ document.addEventListener("DOMContentLoaded", function () {
              
         `;
   });
+
+  // Define variables to store user inputs
+  let poValues = [];
+  let coValues = [];
+  let psoValues = [];
+
+  // Function to create input fields dynamically and store values
+  function createInputs(container, count, placeholder, valuesArray) {
+    container.innerHTML = ""; // Clear previous inputs
+    valuesArray.length = 0; // Clear previous values
+
+    for (let i = 1; i <= count; i++) {
+      const input = document.createElement("input");
+      input.setAttribute(
+        "class",
+        "w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+      );
+      input.setAttribute("type", "text");
+      input.setAttribute("name", placeholder + i);
+      input.setAttribute("placeholder", placeholder + i + ":");
+
+      // Listen for input changes and store them
+      input.addEventListener("input", function (event) {
+        valuesArray[i - 1] = event.target.value;
+      });
+
+      container.appendChild(input);
+    }
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the form from submitting (for demonstration)
+
+    // Get the values for Number of POs, Number of COs, and Number of PSOs
+    const numPOs = parseInt(document.getElementById("totalPO").value) || 0;
+    const numCOs = parseInt(document.getElementById("totalCO").value) || 0;
+    const numPSOs = parseInt(document.getElementById("totalPSO").value) || 0;
+
+    // Show the containers and create input fields
+    const poInputsContainer = document.getElementById("poInputs");
+    const coInputsContainer = document.getElementById("coInputs");
+    const psoInputsContainer = document.getElementById("psoInputs");
+
+    createInputs(poInputsContainer, numPOs, "PO", poValues);
+    createInputs(coInputsContainer, numCOs, "CO", coValues);
+    createInputs(psoInputsContainer, numPSOs, "PSO", psoValues);
+
+    document.getElementById("poHeader").style.display = "block";
+    document.getElementById("coHeader").style.display = "block";
+    document.getElementById("psoHeader").style.display = "block";
+    displayButton.style.display = "block"; // Show the display button
+
+  });
+
+
+  displayButton.addEventListener("click", function () {
+    // Display the entered information
+    document.getElementById("display").classList.remove("hidden");
+
+    let displayContent = `
+        <h2 class="text-2xl font-bold">Input Information</h2>
+        <div class="mt-4">
+    `;
+
+    if (poValues.length > 0) {
+        displayContent += `
+            <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
+            <ul class="list-disc ml-6">
+        `;
+        poValues.forEach((value) => {
+            displayContent += `<li>${value}</li>`;
+        });
+        displayContent += `</ul>`;
+    }
+
+    if (coValues.length > 0) {
+        displayContent += `
+            <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
+            <ul class="list-disc ml-6">
+        `;
+        coValues.forEach((value) => {
+            displayContent += `<li>${value}</li>`;
+        });
+        displayContent += `</ul>`;
+    }
+
+    if (psoValues.length > 0) {
+        displayContent += `
+            <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
+            <ul class="list-disc ml-6">
+        `;
+        psoValues.forEach((value) => {
+            displayContent += `<li>${value}</li>`;
+        });
+        displayContent += `</ul>`;
+    }
+
+    displayContent += `</div>`;
+
+    display.innerHTML = displayContent;
+});
+
+
+
 
   // ISA Mapping Form JavaScript
   document.getElementById("loadButton").addEventListener("click", function () {
@@ -710,7 +704,6 @@ document.addEventListener("DOMContentLoaded", function () {
         gridView5.appendChild(table);
       }
 
-
       //****************************************************************************************************************************************************************************//
       //CREATING sixth TABLE
       //****************************************************************************************************************************************************************************//
@@ -751,85 +744,84 @@ document.addEventListener("DOMContentLoaded", function () {
     reader.readAsArrayBuffer(file);
 
     //****************************************************************************************************************************************************************************//
-      //CREATING seventh TABLE
-      //****************************************************************************************************************************************************************************//
-      var gridView7 = document.getElementById("gridView7");
-      gridView7.innerHTML = ""; // Clear any previous content
-      
-      var numPOs = parseInt(document.getElementById("totalPO").value); // Get the number of POs
-      var numCOs = parseInt(document.getElementById("totalCO").value); // Get the number of COs
-      
-      var html = "<table>";
-      
-      // Header row with PO headers
+    //CREATING seventh TABLE
+    //****************************************************************************************************************************************************************************//
+    var gridView7 = document.getElementById("gridView7");
+    gridView7.innerHTML = ""; // Clear any previous content
+
+    var numPOs = parseInt(document.getElementById("totalPO").value); // Get the number of POs
+    var numCOs = parseInt(document.getElementById("totalCO").value); // Get the number of COs
+
+    var html = "<table>";
+
+    // Header row with PO headers
+    html += "<tr>";
+    html += "<th class='text-center'></th>"; // Empty cell in the first column
+    for (var i = 1; i <= numPOs; i++) {
+      html += "<th class='text-center'>PO " + i + "</th>"; // PO headers
+    }
+    html += "</tr>";
+
+    // Rows for Number of COs
+    for (var i = 1; i <= numCOs; i++) {
       html += "<tr>";
-      html += "<th class='text-center'></th>"; // Empty cell in the first column
-      for (var i = 1; i <= numPOs; i++) {
-        html += "<th class='text-center'>PO " + i + "</th>"; // PO headers
-      }
-      html += "</tr>";
-      
-      // Rows for Number of COs
-      for (var i = 1; i <= numCOs; i++) {
-        html += "<tr>";
-        html += "<td class='text-center'>CO " + i + "</td>"; // CO label
-        for (var j = 1; j <= numPOs; j++) {
-          html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
-        }
-        html += "</tr>";
-      }
-      
-      // Row for PO Avg
-      html += "<tr>";
-      html += "<td class='text-center'>PO Avg</td>"; // PO Avg label
+      html += "<td class='text-center'>CO " + i + "</td>"; // CO label
       for (var j = 1; j <= numPOs; j++) {
-        html += "<td class='text-center'></td>"; // Placeholder for PO Avg values
+        html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
       }
       html += "</tr>";
-      
-      // Close the table tag
-      html += "</table>";
-      
-      // Insert the generated HTML into the gridView7 element
-      gridView7.innerHTML = html;
-      
-      // Calculate and display the CO Avg values when user input changes
-      var table7 = gridView7.querySelector("table");
-      var inputCells7 = table7.querySelectorAll("td[contenteditable='true']");
-      
-      inputCells7.forEach(function (cell) {
-        cell.addEventListener("input", function () {
-          calculateCOAverages(table7, numCOs, numPOs);
-        });
+    }
+
+    // Row for PO Avg
+    html += "<tr>";
+    html += "<td class='text-center'>PO Avg</td>"; // PO Avg label
+    for (var j = 1; j <= numPOs; j++) {
+      html += "<td class='text-center'></td>"; // Placeholder for PO Avg values
+    }
+    html += "</tr>";
+
+    // Close the table tag
+    html += "</table>";
+
+    // Insert the generated HTML into the gridView7 element
+    gridView7.innerHTML = html;
+
+    // Calculate and display the CO Avg values when user input changes
+    var table7 = gridView7.querySelector("table");
+    var inputCells7 = table7.querySelectorAll("td[contenteditable='true']");
+
+    inputCells7.forEach(function (cell) {
+      cell.addEventListener("input", function () {
+        calculateCOAverages(table7, numCOs, numPOs);
       });
-      
-      // Function to calculate and display the CO Avg values
-      function calculateCOAverages(table, numCOs, numPOs) {
-        for (var j = 1; j <= numPOs; j++) {
-          var total = 0;
-          var count = 0;
-      
-          for (var i = 1; i <= numCOs; i++) {
-            var cellValue = table.rows[i].cells[j].textContent.trim();
-            var intValue = parseInt(cellValue);
-      
-            if (!isNaN(intValue)) {
-              total += intValue;
-              count++;
-            }
-          }
-      
-          if (count > 0) {
-            var average = total / count;
-            table.rows[numCOs + 1].cells[j].textContent = average.toFixed(2); // Update CO Avg cell
-          } else {
-            table.rows[numCOs + 1].cells[j].textContent = ""; // Clear the cell if there are no values
+    });
+
+    // Function to calculate and display the CO Avg values
+    function calculateCOAverages(table, numCOs, numPOs) {
+      for (var j = 1; j <= numPOs; j++) {
+        var total = 0;
+        var count = 0;
+
+        for (var i = 1; i <= numCOs; i++) {
+          var cellValue = table.rows[i].cells[j].textContent.trim();
+          var intValue = parseInt(cellValue);
+
+          if (!isNaN(intValue)) {
+            total += intValue;
+            count++;
           }
         }
+
+        if (count > 0) {
+          var average = total / count;
+          table.rows[numCOs + 1].cells[j].textContent = average.toFixed(2); // Update CO Avg cell
+        } else {
+          table.rows[numCOs + 1].cells[j].textContent = ""; // Clear the cell if there are no values
+        }
       }
-      
-      // Initial calculation when the page loads
-      calculateCOAverages(table7, numCOs, numPOs);
-      
+    }
+
+    // Initial calculation when the page loads
+    calculateCOAverages(table7, numCOs, numPOs);
   });
 });
