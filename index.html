@@ -149,6 +149,7 @@
           </form>
         </div>
       </div>
+
       <div
         id="displayInfo"
         class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden"
@@ -162,7 +163,6 @@
       <div
         class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white"
       >
-
         <div class="my-2 flex">
           <input
             type="file"
@@ -178,6 +178,37 @@
         </div>
       </div>
     </div>
+
+    <div id="poInputsContainer" class="mt-0 p-0 border rounded-lg">
+      <h3 class="font-semibold text-lg" id="poHeader" style="display: none">
+        PO Inputs
+      </h3>
+      <div id="poInputs">
+        <!-- Placeholder for PO inputs -->
+      </div>
+    </div>
+    <div id="coInputsContainer" class="mt-0 p-0 border rounded-lg">
+      <h3 class="font-semibold text-lg" id="coHeader" style="display: none">
+        CO Inputs
+      </h3>
+      <div id="coInputs">
+        <!-- Placeholder for CO inputs -->
+      </div>
+    </div>
+    <div id="psoInputsContainer" class="mt-0 p-0 border rounded-lg">
+      <h3 class="font-semibold text-lg" id="psoHeader" style="display: none">
+        PSO Inputs
+      </h3>
+      <div id="psoInputs">
+        <!-- Placeholder for PSO inputs -->
+      </div>
+    </div>
+
+    
+    <button id="displayButton" class="mt-4 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 " style="display: none;">Display Input</button>
+    <div id="display" class="mt-4 p-4 bg-gray-100 rounded-lg hidden"></div>
+    
+
 
     <!-- Table 7 -->
     <div
@@ -220,8 +251,6 @@
       class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden"
       id="gridView6"
     ></div>
-
-    <p class="mt-4 text-gray-600" id="marksSum">Total: 0</p>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="script.js"></script>
