@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("displayInfo").classList.remove("hidden");
 
-    // Display the entered information
+    // Display the entered information in the form
     displayInfo.innerHTML = `
              <h2>Course Information</h2>
              <p><strong>Name of the Programme:</strong> ${programmeName}</p>
@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
              
         `;
   });
+
+  //Taking input for COs, POs and PSOs
 
   // Define variables to store user inputs
   let poValues = [];
@@ -94,12 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("coHeader").style.display = "block";
     document.getElementById("psoHeader").style.display = "block";
     displayButton.style.display = "block"; // Show the display button
-
   });
 
-
+  // Display the entered information
   displayButton.addEventListener("click", function () {
-    // Display the entered information
     document.getElementById("display").classList.remove("hidden");
 
     let displayContent = `
@@ -108,45 +108,42 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     if (poValues.length > 0) {
-        displayContent += `
+      displayContent += `
             <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
             <ul class="list-disc ml-6">
         `;
-        poValues.forEach((value) => {
-            displayContent += `<li>${value}</li>`;
-        });
-        displayContent += `</ul>`;
+      poValues.forEach((value) => {
+        displayContent += `<li>${value}</li>`;
+      });
+      displayContent += `</ul>`;
     }
 
     if (coValues.length > 0) {
-        displayContent += `
+      displayContent += `
             <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
             <ul class="list-disc ml-6">
         `;
-        coValues.forEach((value) => {
-            displayContent += `<li>${value}</li>`;
-        });
-        displayContent += `</ul>`;
+      coValues.forEach((value) => {
+        displayContent += `<li>${value}</li>`;
+      });
+      displayContent += `</ul>`;
     }
 
     if (psoValues.length > 0) {
-        displayContent += `
+      displayContent += `
             <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
             <ul class="list-disc ml-6">
         `;
-        psoValues.forEach((value) => {
-            displayContent += `<li>${value}</li>`;
-        });
-        displayContent += `</ul>`;
+      psoValues.forEach((value) => {
+        displayContent += `<li>${value}</li>`;
+      });
+      displayContent += `</ul>`;
     }
 
     displayContent += `</div>`;
 
     display.innerHTML = displayContent;
-});
-
-
-
+  });
 
   // ISA Mapping Form JavaScript
   document.getElementById("loadButton").addEventListener("click", function () {
