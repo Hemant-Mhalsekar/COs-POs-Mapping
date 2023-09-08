@@ -822,3 +822,36 @@ document.addEventListener("DOMContentLoaded", function () {
     calculateCOAverages(table7, numCOs, numPOs);
   });
 });
+
+function validateNumberInput(input, id) {
+  // Remove any non-numeric characters
+  input.value = input.value.replace(/[^0-9]/g, '');
+
+  // Convert the input value to a number
+  const enteredNumber = parseInt(input.value, 10);
+
+  if(input.id == "totalCO" || input.id === "totalPO" || input.id==="totalPSO"){
+     // Check if the entered number is greater than the specified maximum
+    if (enteredNumber > 20) {
+      // If it's greater than the maximum, set the input value to the maximum
+      alert("Enter valid number");
+      input.value="";
+    }
+  }
+
+  if(input.id === "coThreshold" || input.id==="TotalMarks"){
+    if (enteredNumber > 100) {
+      // If it's greater than the maximum, set the input value to the maximum
+      alert("Enter valid value");
+      input.value="";
+    }
+  }
+ 
+}
+
+
+function validateTextInput(input) {
+  // Remove any numeric characters
+  input.value = input.value.replace(/[0-9]/g, '');
+  
+}
