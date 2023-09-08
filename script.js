@@ -823,6 +823,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
+// Form Validation
 function validateNumberInput(input, id) {
   // Remove any non-numeric characters
   input.value = input.value.replace(/[^0-9]/g, '');
