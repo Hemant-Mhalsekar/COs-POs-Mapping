@@ -15,85 +15,108 @@
     <div>
       <!-- Course Information Form -->
       <div class="flex justify-center items-center w-screen min-h-screen">
-        <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white">
-        <div class="flex justify-center items-center">
-          <h1  class="font-bold uppercase text-5xl ">Course Information Form</h1>
+        <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-20 mx-auto rounded-2xl shadow-2xl bg-white" >
+          <div class="flex justify-center items-center">
+            <h1 class="font-bold uppercase text-5xl">
+              Course Information Form
+            </h1>
+          </div>
+          <form id="courseForm">
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="programmeName" name="programmeName" required placeholder="1. Name of the Programme:" oninput="validateTextInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="department" name="department" required placeholder="2. Department:" oninput="validateTextInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTeacher" name="courseTeacher" required placeholder="3. Name of the Course Teacher/Teachers:" oninput="validateTextInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseCode" name="courseCode" required placeholder="4. Course Code:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="semester" name="semester" required placeholder="5. Semester:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTitle" name="courseTitle" required placeholder="6. Course Title:" oninput="validateTextInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="academicYear" name="academicYear" required placeholder="7. Academic Year:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="batch" name="batch" required placeholder="8. Batch:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="coThreshold" name="coThreshold" required placeholder="9. CO Threshold%:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="targetPercentage" name="targetPercentage" required placeholder="10. Institute Target Percentage:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalCO" name="totalCO" required placeholder="11. Number of COs:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPO" name="totalPO" required placeholder="12. Number of POs:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPSO" name="totalPSO" required placeholder="13. Number PSO:" oninput="validateNumberInput(this)" />
+              <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="TotalMarks" name="TotalMarks" required placeholder="14. SEE Marks:" oninput="validateNumberInput(this)" />
+            </div>
+            <div class="my-2 w-1/2 lg:w-1/4 mx-auto">
+              <button class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline" type="submit" >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
-      <form id="courseForm">
-        <div class="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="programmeName" name="programmeName" required placeholder="1. Name of the Programme:" oninput="validateTextInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="department" name="department" required  placeholder="2. Department:" oninput="validateTextInput(this)"  />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTeacher" name="courseTeacher" required placeholder="3. Name of the Course Teacher/Teachers:" oninput="validateTextInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseCode" name="courseCode" required placeholder="4. Course Code:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="semester" name="semester"  required placeholder="5. Semester:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseTitle" name="courseTitle"  required placeholder="6. Course Title:" oninput="validateTextInput(this)"/>
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="academicYear" name="academicYear"  required placeholder="7. Academic Year:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="batch" name="batch" required placeholder="8. Batch:" oninput="validateNumberInput(this)"/>
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="coThreshold" name="coThreshold" required placeholder="9. CO Threshold%:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="targetPercentage" name="targetPercentage" required placeholder="10. Institute Target Percentage:"  oninput="validateNumberInput(this)"  />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalCO" name="totalCO" required placeholder="11. Number of COs:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPO" name="totalPO" required placeholder="12. Number of POs:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="totalPSO" name="totalPSO" required placeholder="13. Number PSO:" oninput="validateNumberInput(this)" />
-          <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="TotalMarks" name="TotalMarks" required placeholder="14. SEE Marks:" oninput="validateNumberInput(this)" />
-        </div>
-        <div class="my-2 w-1/2 lg:w-1/4 mx-auto">
-          <button class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full 
-          focus:outline-none focus:shadow-outline" type="submit">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-      <div id="displayInfo" class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" >
+      </div>
+      <div
+        id="displayInfo"
+        class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden"
+      >
         <!-- Information will be displayed here -->
       </div>
     </div>
 
     <!-- ISA Mapping Form -->
     <div>
-      <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white" >
+      <div class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white">
         <div class="my-2 flex">
           <input type="file" id="fileInput" class="bg-gray-200 shadow-xl p-2 rounded-l-lg focus:outline-none flex-grow mr-4" />
-          <button id="loadButton" class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-r-lg focus:outline-none" >
+          <button id="loadButton" class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-r-lg focus:outline-none">
             Load Excel
           </button>
         </div>
       </div>
     </div>
 
-    <div id="poInputsContainer" class="mt-0 p-0 border rounded-lg">
-      <h3 class="font-semibold text-lg" id="poHeader" style="display: none">
-        PO Inputs0
-      </h3>
-      <div id="poInputs">
-        <!-- Placeholder for PO inputs -->
+    <div class="flex flex-col lg:flex-row">
+      <div id="PoInputs" class="w-full p-8 my-4 mx-8 rounded-2xl shadow-2xl bg-white hidden" >
+        <div id="poInputsContainer">
+          <div class="flex justify-center items-center">
+            <h3 class="font-bold uppercase text-3xl" id="poHeader" style="display: none" >
+              PO Inputs
+            </h3>
+          </div>
+          <div id="poInputs">
+            <!-- Placeholder for PO inputs -->
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="coInputsContainer" class="mt-0 p-0 border rounded-lg">
-      <h3 class="font-semibold text-lg" id="coHeader" style="display: none">
-        CO Inputs
-      </h3>
-      <div id="coInputs">
-        <!-- Placeholder for CO inputs -->
+
+      <div id="COInputs" class="w-full p-8 my-4 mx-8 rounded-2xl shadow-2xl bg-white hidden" >
+        <div id="coInputsContainer">
+          <div class="flex justify-center items-center">
+            <h3 class="font-bold uppercase text-3xl" id="coHeader" style="display: none" >
+              CO Inputs
+            </h3>
+          </div>
+          <div id="coInputs">
+            <!-- Placeholder for CO inputs -->
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="psoInputsContainer" class="mt-0 p-0 border rounded-lg">
-      <h3 class="font-semibold text-lg" id="psoHeader" style="display: none">
-        PSO Inputs
-      </h3>
-      <div id="psoInputs">
-        <!-- Placeholder for PSO inputs -->
+
+      <div id="PSOInputs" class="w-full p-8 my-4 mx-8 rounded-2xl shadow-2xl bg-white hidden" >
+        <div id="psoInputsContainer">
+          <div class="flex justify-center items-center">
+            <h3 class="font-bold uppercase text-3xl" id="psoHeader" style="display: none" >
+              PSO Inputs
+            </h3>
+          </div>
+          <div id="psoInputs">
+            <!-- Placeholder for PSO inputs -->
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="flex justify-center ">
-      <button id="displayButton" class="mt-4 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 " style="display: none;">Display Input</button>
+    <div class="flex justify-center">
+      <button id="displayButton" class="mt-4 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" style="display: none" >
+        Display Input
+      </button>
     </div>
+
     <div id="display" class="mt-4 p-4 bg-gray-100 rounded-lg hidden"></div>
-    
-
 
     <!-- Table 7 -->
-    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg" id="gridView7" ></div>
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView7" ></div>
 
     <!-- Table 1 -->
     <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView1" ></div>
@@ -115,6 +138,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="script.js"></script>
-    
   </body>
 </html>

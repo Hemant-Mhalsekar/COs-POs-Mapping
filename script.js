@@ -23,6 +23,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("displayInfo").classList.remove("hidden");
 
+    document.getElementById("PoInputs").classList.remove("hidden");
+    document.getElementById("COInputs").classList.remove("hidden");
+    document.getElementById("PSOInputs").classList.remove("hidden");
+    document.getElementById("ExcelButton").classList.remove("hidden");
+
     // Display the entered information in the form
     displayInfo.innerHTML = `
              <h2>Course Information</h2>
@@ -401,42 +406,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var html = "<table>";
 
+      html += "<tr>";
+      html += "<th colspan='4' class='text-center'>SEE MARKS ENTRY</th>"; // CIE header
+      html += "</tr>";
       // Header row with CO-Mapping and CO headers
       html += "<tr>";
-      html += "<th colspan='2' class='text-center'>SEE MARKS ENTRY</th>"; // CIE header
-      html += "</tr>";
 
-      html += "<tr>";
-      for (var i = 1; i <= 1; i++) {
-        html += "<th class='text-center'>Total Marks</th>";
-        html += "<th class='text-center'>" + Marks + "</th>";
-      }
-      html += "</tr>";
-
-      html += "<tr>";
-      for (var i = 1; i <= 1; i++) {
-        html += "<th class='text-center'>Marks Obtained</th>";
-        html += "<th class='text-center'>SEE Percentage</th>";
-      }
-      html += "</tr>";
-
-      // CO rows
-      for (var i = 1; i <= rows.length - 1; i++) {
-        html += "<tr>";
-        for (var j = 1; j <= 2; j++) {
-          if (j === 1) {
-            html += "<td class='text-center' contenteditable='true'></td>"; // Editable cells
-          } else {
-            html += "<td class='text-center'></td>";
+      // Iterate over jsonData and add rows with the first 2 columns from JSON data
+      for (var i = 0; i < jsonData.length; i++) {
+        // Loop through the first 2 columns of the current JSON data row
+        for (var j = 0; j < 2; j++) {
+          if (i === 0) {
+            if (j < 3) {
+              html += "<th class='text-center'>" + jsonData[i][j] + "</th>"; // Create header cell with data
+            }
           }
         }
+      }
+      html += "<th class='text-center'>Editable Column</th>"; // Editable column header
+      html += "<th class='text-center'>Non-Editable Column</th>"; // Non-editable column header
+
+      html += "</tr>";
+
+      for (var i = 1; i < jsonData.length; i++) {
+        html += "<tr>";
+        // Loop through the first 2 columns of the current JSON data row
+        for (var j = 0; j < 2; j++) {
+          if (i > 0) {
+            if (j < 3) {
+              html += "<td class='text-center'>" + jsonData[i][j] + "</td>"; // Create data cell with content
+            }
+          }
+        }
+        // Add an editable cell in the third column
+        html += "<td class='text-center' contenteditable='true'></td>"; // Editable cell
+
+        // Add a non-editable cell in the fourth column
+        html += "<td class='text-center'></td>"; // Non-editable cell
+        // Close the row
         html += "</tr>";
       }
 
       // Close the table tag
       html += "</table>";
 
-      // Insert the generated HTML into the gridView element
+      // Set the HTML content of the gridView3 element
       gridView3.innerHTML = html;
 
       var rowTotalSum = 0;
@@ -458,16 +472,16 @@ document.addEventListener("DOMContentLoaded", function () {
       function calculatePercentage(targetCell) {
         var row = targetCell.parentNode; // Get the parent row
         var cells = row.getElementsByTagName("td"); // Get all cells in the row
-        var enteredValue = parseFloat(cells[0].textContent); // Get the value from the first cell
+        var enteredValue = parseFloat(cells[2].textContent); // Get the value from the first cell
 
         if (!isNaN(enteredValue) && Marks !== 0) {
           if (enteredValue > Marks) {
             alert("Enter a valid value that is not greater than Marks.");
-            cells[0].textContent = ""; // Clear the value in the first cell
-            cells[1].textContent = ""; // Clear the second cell
+            cells[2].textContent = ""; // Clear the value in the first cell
+            cells[3].textContent = ""; // Clear the second cell
           } else {
             var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
-            cells[1].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
+            cells[3].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
 
             rowTotalSum += percentage;
           }
@@ -479,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
       function calculateRowAverage() {
         if (rowCount > 0) {
           var rowAverage = rowTotalSum / rowCount;
-          console.log("Average : " + rowAverage);
+          // console.log("Average : " + rowAverage);
           localStorage.setItem("rowAverage", rowAverage);
           updateData();
         } else {
@@ -488,7 +502,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       //****************************************************************************************************************************************************************************//
-      //CREATING FORTH TABLE
+      //CREATING FORTH TABLE FEEDBACK
       //****************************************************************************************************************************************************************************//
 
       var gridView4 = document.getElementById("gridView4");
@@ -498,17 +512,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
       html += "<tr>";
       html +=
-        "<th colspan=" + numCOs + " class='text-center'>Feedback Score</th>";
+        "<th colspan=" +
+        (numCOs + 2) +
+        " class='text-center'>Feedback Score</th>";
       html += "</tr>";
 
       html += "<tr>";
-      for (var i = 1; i <= numCOs; i++) {
-        html += "<th class='text-center'>CO " + i + "</th>"; // CO headers
+      // Iterate over jsonData and add rows with the first 2 columns from JSON data
+      for (var i = 0; i < jsonData.length; i++) {
+        // Loop through the first 2 columns of the current JSON data row
+        for (var j = 0; j < 2; j++) {
+          if (i === 0) {
+            if (j < 3) {
+              html += "<th class='text-center'>" + jsonData[i][j] + "</th>"; // Create header cell with data
+            }
+          }
+
+          // Check if it's the first row and the specific column for CO columns
+          if (i === 0 && j === 1) {
+            for (var k = 0; k < numCOs; k++) {
+              html += "<th class='text-center'>CO " + (k + 1) + "</th>"; // Create CO column header with colspan
+            }
+          }
+        }
       }
       html += "</tr>";
 
-      for (var i = 1; i <= rows.length - 1; i++) {
+      for (var i = 1; i < jsonData.length; i++) {
         html += "<tr>";
+        // Loop through the first 2 columns of the current JSON data row
+        for (var j = 0; j < 2; j++) {
+          if (i > 0) {
+            if (j < 3) {
+              html += "<td class='text-center'>" + jsonData[i][j] + "</td>"; // Create data cell with content
+            }
+          }
+        }
+
         for (var j = 1; j <= numCOs; j++) {
           html +=
             "<td class='text-center' contenteditable='true' data-row='" +
@@ -517,6 +557,14 @@ document.addEventListener("DOMContentLoaded", function () {
             j +
             "'></td>"; // Editable cells with data attributes
         }
+
+        // Close the row
+        html += "</tr>";
+      }
+
+      for (var i = 1; i <= rows.length - 1; i++) {
+        html += "<tr>";
+
         html += "</tr>";
       }
 
@@ -825,33 +873,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function validateNumberInput(input, id) {
   // Remove any non-numeric characters
-  input.value = input.value.replace(/[^0-9]/g, '');
+  input.value = input.value.replace(/[^0-9]/g, "");
 
   // Convert the input value to a number
   const enteredNumber = parseInt(input.value, 10);
 
-  if(input.id == "totalCO" || input.id === "totalPO" || input.id==="totalPSO"){
-     // Check if the entered number is greater than the specified maximum
+  if (
+    input.id == "totalCO" ||
+    input.id === "totalPO" ||
+    input.id === "totalPSO"
+  ) {
+    // Check if the entered number is greater than the specified maximum
     if (enteredNumber > 20) {
       // If it's greater than the maximum, set the input value to the maximum
       alert("Enter valid number");
-      input.value="";
+      input.value = "";
     }
   }
 
-  if(input.id === "coThreshold" || input.id==="TotalMarks"){
+  if (input.id === "coThreshold" || input.id === "TotalMarks") {
     if (enteredNumber > 100) {
       // If it's greater than the maximum, set the input value to the maximum
       alert("Enter valid value");
-      input.value="";
+      input.value = "";
     }
   }
- 
 }
-
 
 function validateTextInput(input) {
   // Remove any numeric characters
-  input.value = input.value.replace(/[0-9]/g, '');
-  
+  input.value = input.value.replace(/[0-9]/g, "");
 }
