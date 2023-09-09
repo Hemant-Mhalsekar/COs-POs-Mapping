@@ -26,7 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("PoInputs").classList.remove("hidden");
     document.getElementById("COInputs").classList.remove("hidden");
     document.getElementById("PSOInputs").classList.remove("hidden");
-    document.getElementById("ExcelButton").classList.remove("hidden");
+    document.getElementById("ExcelInput").classList.remove("hidden");
+
+    // if(programmeName != "" && department != "" && courseTeacher!= "" && )
 
     // Display the entered information in the form
     displayInfo.innerHTML = `
@@ -423,8 +425,8 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       }
-      html += "<th class='text-center'>Editable Column</th>"; // Editable column header
-      html += "<th class='text-center'>Non-Editable Column</th>"; // Non-editable column header
+      html += "<th class='text-center'>Marks Obtained</th>"; // Editable column header
+      html += "<th class='text-center'>SEE percentage</th>"; // Non-editable column header
 
       html += "</tr>";
 
@@ -871,7 +873,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // Form Validation
 function validateNumberInput(input, id) {
   // Remove any non-numeric characters
@@ -901,6 +902,44 @@ function validateNumberInput(input, id) {
     }
   }
 }
+function validateYearRangeInput(input) {
+  // Remove any non-digit characters except hyphen (-) from the input value
+  var yearRange = input.value.replace(/[^\d-]/g, '');
+  
+  if(input.value != ""){
+    // Check if the input matches the yyyy-yyyy pattern
+    if (/^\d{4}-\d{4}$/.test(yearRange)) {
+      var years = yearRange.split('-');
+      var startYear = parseInt(years[0]);
+      var endYear = parseInt(years[1]);
+      
+      // You can define a range of acceptable years here
+      var minYear = 1900;
+      var maxYear = new Date().getFullYear();
+      
+      if (startYear >= minYear && endYear <= maxYear && startYear <= endYear) {
+        // If the input is within the acceptable range, leave it as is
+        input.value = yearRange;
+      } else {
+        // If the input is not within the acceptable range, clear the input
+        input.value = '';
+
+      }
+    } else {
+      // If the input does not match the yyyy-yyyy pattern, clear the input
+      input.value = '';
+      alert("Enter valid year");
+    }
+  }
+}
+
+function checkEnter(event) {
+  if (event.key === 'Enter') {
+    // When Enter is pressed, trigger the validation
+    validateYearRangeInput(document.getElementById('academicYear'));
+  }
+}
+
 
 function validateTextInput(input) {
   // Remove any numeric characters
