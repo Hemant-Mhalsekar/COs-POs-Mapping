@@ -945,3 +945,15 @@ function validateTextInput(input) {
   // Remove any numeric characters
   input.value = input.value.replace(/[0-9]/g, "");
 }
+
+function validateRomanNumeralInput(input) {
+  // Regular expression to match Roman numerals (from I to X)
+  const romanNumeralPattern = /^(I|II|III|IV|V|VI|VII|VIII|IX|X)$/;
+
+  const value = input.value.toUpperCase();
+
+  if (!romanNumeralPattern.test(value)) {
+      // If the input doesn't match the Roman numeral pattern, clear the input field
+      input.value = '';
+  }
+}
