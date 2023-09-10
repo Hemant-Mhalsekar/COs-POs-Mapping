@@ -33,11 +33,11 @@
                   </div>
                   <div>
                       <label for="courseCode">4. Course Code:</label>
-                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseCode" name="courseCode" required placeholder="Ex. UCAD-103" oninput="validateNumberInput(this)" />
+                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="courseCode" name="courseCode" required placeholder="Ex. UCAD-103" />
                   </div>
                   <div>
                       <label for="semester">5. Semester:</label>
-                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="semester" name="semester" required placeholder="Ex. V" oninput="validateNumberInput(this)" />
+                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="semester" name="semester" required placeholder="Ex. V" oninput="validateRomanNumeralInput(this)" />
                   </div>
                   <div>
                       <label for="courseTitle">6. Course Title:</label>
@@ -45,11 +45,11 @@
                   </div>
                   <div>
                       <label for="academicYear">7. Academic Year:</label>
-                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="academicYear" name="academicYear" required placeholder="Ex. 2022-23" oninput="validateNumberInput(this)" />
+                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="academicYear" name="academicYear" required placeholder="Ex. 2022-2023" onblur="validateYearRangeInput(this)" onkeydown="checkEnter(event)" />
                   </div>
                   <div>
                       <label for="batch">8. Batch:</label>
-                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="batch" name="batch" required placeholder="Ex. 2022-23" oninput="validateNumberInput(this)" />
+                      <input class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" type="text" id="batch" name="batch" required placeholder="Ex. 2022-23" onblur="validateYearRangeInput(this)" onkeydown="checkEnter(event)" />
                   </div>
                   <div>
                       <label for="coThreshold">9. CO Threshold%:</label>
@@ -81,15 +81,11 @@
               </div>
           </form>
       </div>
-      <div
-        id="displayInfo"
-        class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden"
-      >
-        <!-- Information will be displayed here -->
-      </div>
     </div>
 
-   
+    <div id="displayInfo" class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" >
+        <!-- Information will be displayed here -->
+    </div>
 
     <div class="flex flex-col lg:flex-row mt-10">
       <div id="PoInputs" class="w-full p-8 my-4 mx-8 rounded-2xl shadow-2xl bg-white hidden" >
