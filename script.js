@@ -955,6 +955,6 @@ function validateRomanNumeralInput(input) {
   if (!romanNumeralPattern.test(value)) {
       // If the input doesn't match the Roman numeral pattern, clear the input field
       input.value = '';
-      alert("Enter Poman numbers")
+      alert("Enter Roman numbers")
   }
 }
