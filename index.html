@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Combined Form</title>
+    <title>CO PO Mapping</title>
     <link rel="stylesheet" href="style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
@@ -88,7 +88,7 @@
     </div>
 
     <div class="flex flex-col lg:flex-row mt-10">
-      <div id="PoInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden  >
+      <div id="PoInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden">
         <div id="poInputsContainer">
           <div class="flex justify-center items-center">
             <h3 class="font-bold uppercase text-3xl" id="poHeader" style="display: none" >
@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <div id="COInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden  >
+      <div id="COInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden">
         <div id="coInputsContainer">
           <div class="flex justify-center items-center">
             <h3 class="font-bold uppercase text-3xl" id="coHeader" style="display: none" >
@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <div id="PSOInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden  >
+      <div id="PSOInputs" class="w-full p-8 my-4 lg:my-4 lg:mx-8 rounded-2xl shadow-2xl bg-white hidden">
         <div id="psoInputsContainer">
           <div class="flex justify-center items-center">
             <h3 class="font-bold uppercase text-3xl" id="psoHeader" style="display: none" >
@@ -136,9 +136,6 @@
 
     <div id="display" class="mt-4 p-4 bg-gray-100 rounded-lg hidden"></div>
 
-    <!-- Table 7 -->
-    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView7" ></div>
-
      <!-- Excel Load Button -->
      <div>
       <div id="ExcelInput" class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white hidden">
@@ -151,6 +148,7 @@
       </div>
     </div>
 
+  
     <!-- Table 1 CIE Marks Entry-->
     <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView1" ></div>
 
@@ -168,6 +166,9 @@
 
     <!-- Table 6  Level of Attainment-->
     <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView6" ></div>
+
+    <!-- Table 7 -->
+    <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView7" ></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="script.js"></script>
