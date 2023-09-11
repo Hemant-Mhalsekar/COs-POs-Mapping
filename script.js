@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("gridView4").classList.remove("hidden");
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
+      document.getElementById("gridView7").classList.remove("hidden");
 
       var numCOs = parseInt(coInput.value);
       var thresHold = parseInt(coThreshold.value);
