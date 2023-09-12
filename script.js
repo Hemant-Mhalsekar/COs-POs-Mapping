@@ -64,20 +64,29 @@ document.addEventListener("DOMContentLoaded", function () {
     valuesArray.length = 0; // Clear previous values
 
     for (let i = 1; i <= count; i++) {
+      // Create a label element
+      const label = document.createElement("label");
+      label.textContent = `${placeholder} ${i}:`;
+      label.setAttribute("for", `${placeholder}${i}`);
+
+      // Create an input element
       const input = document.createElement("input");
       input.setAttribute(
         "class",
         "w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
       );
       input.setAttribute("type", "text");
-      input.setAttribute("name", placeholder + i);
-      input.setAttribute("placeholder", placeholder + i + ":");
+      input.setAttribute("id", `${placeholder}${i}`);
+      input.setAttribute("name", `${placeholder}${i}`);
+      input.setAttribute("placeholder", `Enter ${placeholder} ${i}`);
 
       // Listen for input changes and store them
       input.addEventListener("input", function (event) {
         valuesArray[i - 1] = event.target.value;
       });
 
+      // Append the label and input to the container
+      container.appendChild(label);
       container.appendChild(input);
     }
   }
@@ -178,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("gridView4").classList.remove("hidden");
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
-      document.getElementById("gridView7").classList.remove("hidden");
 
       var numCOs = parseInt(coInput.value);
       var thresHold = parseInt(coThreshold.value);
@@ -790,87 +798,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     reader.readAsArrayBuffer(file);
-
-    //****************************************************************************************************************************************************************************//
-    //CREATING seventh TABLE
-    //****************************************************************************************************************************************************************************//
-    var gridView7 = document.getElementById("gridView7");
-    gridView7.innerHTML = ""; // Clear any previous content
-
-    var numPOs = parseInt(document.getElementById("totalPO").value); // Get the number of POs
-    var numCOs = parseInt(document.getElementById("totalCO").value); // Get the number of COs
-
-    var html = "<table>";
-
-    // Header row with PO headers
-    html += "<tr>";
-    html += "<th class='text-center'></th>"; // Empty cell in the first column
-    for (var i = 1; i <= numPOs; i++) {
-      html += "<th class='text-center'>PO " + i + "</th>"; // PO headers
-    }
-    html += "</tr>";
-
-    // Rows for Number of COs
-    for (var i = 1; i <= numCOs; i++) {
-      html += "<tr>";
-      html += "<td class='text-center'>CO " + i + "</td>"; // CO label
-      for (var j = 1; j <= numPOs; j++) {
-        html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
-      }
-      html += "</tr>";
-    }
-
-    // Row for PO Avg
-    html += "<tr>";
-    html += "<td class='text-center'>PO Avg</td>"; // PO Avg label
-    for (var j = 1; j <= numPOs; j++) {
-      html += "<td class='text-center'></td>"; // Placeholder for PO Avg values
-    }
-    html += "</tr>";
-
-    // Close the table tag
-    html += "</table>";
-
-    // Insert the generated HTML into the gridView7 element
-    gridView7.innerHTML = html;
-
-    // Calculate and display the CO Avg values when user input changes
-    var table7 = gridView7.querySelector("table");
-    var inputCells7 = table7.querySelectorAll("td[contenteditable='true']");
-
-    inputCells7.forEach(function (cell) {
-      cell.addEventListener("input", function () {
-        calculateCOAverages(table7, numCOs, numPOs);
-      });
-    });
-
-    // Function to calculate and display the CO Avg values
-    function calculateCOAverages(table, numCOs, numPOs) {
-      for (var j = 1; j <= numPOs; j++) {
-        var total = 0;
-        var count = 0;
-
-        for (var i = 1; i <= numCOs; i++) {
-          var cellValue = table.rows[i].cells[j].textContent.trim();
-          var intValue = parseInt(cellValue);
-
-          if (!isNaN(intValue)) {
-            total += intValue;
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          var average = total / count;
-          table.rows[numCOs + 1].cells[j].textContent = average.toFixed(2); // Update CO Avg cell
-        } else {
-          table.rows[numCOs + 1].cells[j].textContent = ""; // Clear the cell if there are no values
-        }
-      }
-    }
-
-    // Initial calculation when the page loads
-    calculateCOAverages(table7, numCOs, numPOs);
   });
 });
 
@@ -905,57 +832,42 @@ function validateNumberInput(input, id) {
 }
 function validateYearRangeInput(input) {
   // Remove any non-digit characters except hyphen (-) from the input value
-  var yearRange = input.value.replace(/[^\d-]/g, '');
-  
-  if(input.value != ""){
+  var yearRange = input.value.replace(/[^\d-]/g, "");
+
+  if (input.value != "") {
     // Check if the input matches the yyyy-yyyy pattern
     if (/^\d{4}-\d{4}$/.test(yearRange)) {
-      var years = yearRange.split('-');
+      var years = yearRange.split("-");
       var startYear = parseInt(years[0]);
       var endYear = parseInt(years[1]);
-      
+
       // You can define a range of acceptable years here
       var minYear = 1900;
       var maxYear = new Date().getFullYear();
-      
+
       if (startYear >= minYear && endYear <= maxYear && startYear <= endYear) {
         // If the input is within the acceptable range, leave it as is
         input.value = yearRange;
       } else {
         // If the input is not within the acceptable range, clear the input
-        input.value = '';
-
+        input.value = "";
       }
     } else {
       // If the input does not match the yyyy-yyyy pattern, clear the input
-      input.value = '';
+      input.value = "";
       alert("Enter valid year");
     }
   }
 }
 
 function checkEnter(event) {
-  if (event.key === 'Enter') {
+  if (event.key === "Enter") {
     // When Enter is pressed, trigger the validation
-    validateYearRangeInput(document.getElementById('academicYear'));
+    validateYearRangeInput(document.getElementById("academicYear"));
   }
 }
-
 
 function validateTextInput(input) {
   // Remove any numeric characters
   input.value = input.value.replace(/[0-9]/g, "");
-}
-
-function validateRomanNumeralInput(input) {
-  // Regular expression to match Roman numerals (from I to X)
-  const romanNumeralPattern = /^(I|II|III|IV|V|VI|VII|VIII|IX|X)$/;
-
-  const value = input.value.toUpperCase();
-
-  if (!romanNumeralPattern.test(value)) {
-      // If the input doesn't match the Roman numeral pattern, clear the input field
-      input.value = '';
-      alert("Enter Roman numbers")
-  }
 }
