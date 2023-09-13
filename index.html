@@ -79,15 +79,18 @@
             </div>
             <div>
               <label for="semester">5. Semester:</label>
-              <input
-                class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="text"
-                id="semester"
-                name="semester"
-                required
-                placeholder="Ex. V"
-              />
-            </div>
+              <select class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" id="semester" name="semester" required oninput="validateRomanNumeralInput(this)">
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="I">I</option>
+                  <option value="II">II</option>
+                  <option value="III">III</option>
+                  <option value="IV">IV</option>
+                  <option value="V">V</option>
+                  <option value="VI">VI</option>
+                  <option value="VII">VII</option>
+                  <option value="VIII">VIII</option>
+              </select>
+          </div>
             <div>
               <label for="courseTitle">6. Course Title:</label>
               <input
