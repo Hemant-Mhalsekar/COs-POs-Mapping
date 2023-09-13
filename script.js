@@ -874,3 +874,9 @@ function validateTextInput(input) {
   // Remove any numeric characters
   input.value = input.value.replace(/[0-9]/g, "");
 }
+
+// Disable page reload
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  e.returnValue = 'Are you sure you want to leave this page?';
+});
