@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
              <p><strong>Total PO:</strong> ${totalPO}</p>
              <p><strong>Total PSO:</strong> ${totalPSO}</p>
              <p><strong>Total Marks:</strong> ${TotalMarks}</p>
-             
         `;
   });
 
@@ -200,9 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
       //****************************************************************************************************************************************************************************//
 
       // numCols = parseInt(coInput.value-1);
-
       gridView1.innerHTML = ""; // Clear any previous content
-
       var html = "<table>";
 
       // Header row with CO-Mapping and CO headers
@@ -753,13 +750,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
               td.textContent = calculatedValue;
             }
-
             coRow.appendChild(td);
           }
-
           table.appendChild(coRow);
         }
-
         gridView5.appendChild(table);
       }
 
@@ -876,7 +870,7 @@ function validateTextInput(input) {
 }
 
 // Disable page reload
-window.addEventListener('beforeunload', function (e) {
+window.addEventListener("beforeunload", function (e) {
   e.preventDefault();
-  e.returnValue = 'Are you sure you want to leave this page?';
+  e.returnValue = "Are you sure you want to leave this page?";
 });
