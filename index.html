@@ -128,6 +128,34 @@
                 onkeydown="checkEnter(event)"
               />
             </div>
+<!--courseTitle-->
+            <div>
+              <label for="classroom">9. Class:</label>
+              <input
+                class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="text"
+                id="classroom"
+                name="classroom"
+                required
+                placeholder="Ex. FY-BCA"
+                oninput="validateTextInput(this)"
+              />
+            </div>
+
+            <div>
+              <label for="courseTitle">6. Course Title:</label>
+              <input
+                class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="text"
+                id="courseTitle"
+                name="courseTitle"
+                required
+                placeholder="Ex. Mobile Application Development"
+                oninput="validateTextInput(this)"
+              />
+            </div>
+
+
             <div>
               <label for="coThreshold">9. CO Threshold%:</label>
               <input
