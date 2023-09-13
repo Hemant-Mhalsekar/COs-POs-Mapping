@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const semester = document.getElementById("semester").value;
     const courseTitle = document.getElementById("courseTitle").value;
     const academicYear = document.getElementById("academicYear").value;
-    const batch = document.getElementById("batch").value;
+    const totalStudents = document.getElementById("totalStudents").value;
     const coThreshold = document.getElementById("coThreshold").value;
     const targetPercentage = document.getElementById("targetPercentage").value;
     const totalCO = document.getElementById("totalCO").value;
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
              <p><strong>Semester:</strong> ${semester}</p>
              <p><strong>Course Title:</strong> ${courseTitle}</p>
              <p><strong>Academic Year:</strong> ${academicYear}</p>
-             <p><strong>Batch:</strong> ${batch}</p>
+             <p><strong>Number of Students:</strong> ${totalStudents}</p>
              <p><strong>CO Threshold%:</strong> ${coThreshold}</p>
              <p><strong>Institute Target Percentage:</strong> ${targetPercentage}</p>
              <p><strong>Total CO:</strong> ${totalCO}</p>
