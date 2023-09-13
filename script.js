@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const courseTeacher = document.getElementById("courseTeacher").value;
     const courseCode = document.getElementById("courseCode").value;
     const semester = document.getElementById("semester").value;
-    const courseTitle = document.getElementById("courseTitle").value;
+    const classroom = document.getElementById("classroom").value;
+    const division = document.getElementById("division").value;
     const academicYear = document.getElementById("academicYear").value;
     const totalStudents = document.getElementById("totalStudents").value;
     const coThreshold = document.getElementById("coThreshold").value;
@@ -38,7 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
              <p><strong>Name of the Course Teacher/Teachers:</strong> ${courseTeacher}</p>
              <p><strong>Course Code:</strong> ${courseCode}</p>
              <p><strong>Semester:</strong> ${semester}</p>
-             <p><strong>Course Title:</strong> ${courseTitle}</p>
+             <p><strong>Class:</strong> ${classroom}</p>
+             <p><strong>Division:</strong> ${division}</p>
              <p><strong>Academic Year:</strong> ${academicYear}</p>
              <p><strong>Number of Students:</strong> ${totalStudents}</p>
              <p><strong>CO Threshold%:</strong> ${coThreshold}</p>

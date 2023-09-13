@@ -128,8 +128,36 @@
                 onkeydown="checkEnter(event)"
               />
             </div>
+
             <div>
-              <label for="coThreshold">9. CO Threshold%:</label>
+              <label for="classroom">9. Class:</label>
+              <input
+                class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="text"
+                id="classroom"
+                name="classroom"
+                required
+                placeholder="Ex. FY-BCA"
+                oninput="validateTextInput(this)"
+              />
+            </div>
+
+            <div>
+              <label for="division">10. Division:</label>
+              <select class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline" id="division" name="division">
+                  <option value="" disabled selected>Division</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                  <option value="F">F</option>
+                  <option value="notApplicable">Not Applicable</option>
+              </select>
+          </div>
+
+            <div>
+              <label for="coThreshold">11. CO Threshold%:</label>
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 type="text"
@@ -142,7 +170,7 @@
             </div>
             <div>
               <label for="targetPercentage"
-                >10. Institute Target Percentage:</label
+                >12. Institute Target Percentage:</label
               >
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
@@ -155,7 +183,7 @@
               />
             </div>
             <div>
-              <label for="totalCO">11. Number of COs:</label>
+              <label for="totalCO">13. Number of COs:</label>
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 type="text"
@@ -167,7 +195,7 @@
               />
             </div>
             <div>
-              <label for="totalPO">12. Number of POs:</label>
+              <label for="totalPO">14. Number of POs:</label>
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 type="text"
@@ -179,7 +207,7 @@
               />
             </div>
             <div>
-              <label for="totalPSO">13. Number PSO:</label>
+              <label for="totalPSO">15. Number PSO:</label>
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 type="text"
@@ -191,7 +219,7 @@
               />
             </div>
             <div>
-              <label for="TotalMarks">14. SEE Marks:</label>
+              <label for="TotalMarks">16. SEE Marks:</label>
               <input
                 class="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 type="text"
