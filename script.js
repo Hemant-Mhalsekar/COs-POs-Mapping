@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Display the entered information in the form
     displayInfo.innerHTML = `
-             <h2>Course Information</h2>
+             <h2 style="font-weight: bold; color: #007bff; font-size: 26px; ;text-decoration: underline; ">Course Information</h2>
              <p><strong>Name of the Programme:</strong> ${programmeName}</p>
              <p><strong>Department:</strong> ${department}</p>
              <p><strong>Name of the Course Teacher/Teachers:</strong> ${courseTeacher}</p>
