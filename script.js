@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <ul class="list-disc ml-6">
       `;
       poValues.forEach((value, index) => {
-        displayContent += `<li>PO ${index + 1}: "${value}"</li>`;
+        displayContent += `<li>PO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <ul class="list-disc ml-6">
       `;
       coValues.forEach((value, index) => {
-        displayContent += `<li>CO ${index + 1}: "${value}"</li>`;
+        displayContent += `<li>CO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <ul class="list-disc ml-6">
       `;
       psoValues.forEach((value, index) => {
-        displayContent += `<li>PSO ${index + 1}: "${value}"</li>`;
+        displayContent += `<li>PSO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
