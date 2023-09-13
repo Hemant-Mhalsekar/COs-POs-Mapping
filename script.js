@@ -51,8 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
   });
 
-  //Taking input for COs, POs and PSOs
 
+  //Input table for COs, POs and PSOs
+
+  //Taking input for COs, POs and PSOs
   // Define variables to store user inputs
   let poValues = [];
   let coValues = [];
@@ -119,39 +121,39 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("display").classList.remove("hidden");
 
     let displayContent = `
-        <h2 class="text-2xl font-bold">Input Information</h2>
-        <div class="mt-4">
-    `;
+      <h2 class="text-2xl font-bold">Input Information</h2>
+      <div class="mt-4">
+  `;
 
     if (poValues.length > 0) {
       displayContent += `
-            <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      poValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      poValues.forEach((value, index) => {
+        displayContent += `<li>PO${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
 
     if (coValues.length > 0) {
       displayContent += `
-            <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      coValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      coValues.forEach((value, index) => {
+        displayContent += `<li>CO${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
 
     if (psoValues.length > 0) {
       displayContent += `
-            <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      psoValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      psoValues.forEach((value, index) => {
+        displayContent += `<li>PSO${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
