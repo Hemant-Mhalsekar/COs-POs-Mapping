@@ -190,9 +190,14 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
 
+      document.getElementById("gridView7").classList.remove("hidden");
+      document.getElementById("gridView8").classList.remove("hidden");
+
       var numCOs = parseInt(coInput.value);
       var thresHold = parseInt(coThreshold.value);
       var Marks = parseInt(TotalMark.value);
+      var numPO = parseInt(totalPO.value);
+      var numPSO = parseInt(totalPSO.value);
 
       //****************************************************************************************************************************************************************************//
       //CREATING FIRST TABLE CIE Marks Entry
@@ -207,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
       html +=
         "<th colspan=" +
         (1 + numCOs) +
-        " class='text-center'>CIE Marks Entry</th>";
+        " class='text-center bg-blue-500 text-white' style='font-size: 30px;'>CIE Marks Entry</th>";
       html += "</tr>";
 
       html += "<tr>";
@@ -418,7 +423,8 @@ document.addEventListener("DOMContentLoaded", function () {
       var html = "<table>";
 
       html += "<tr>";
-      html += "<th colspan='4' class='text-center'>SEE MARKS ENTRY</th>"; // CIE header
+      html +=
+        "<th colspan='4' class='text-center bg-blue-500 text-white' style='font-size: 30px;'>SEE MARKS ENTRY</th>"; // CIE header
       html += "</tr>";
       // Header row with CO-Mapping and CO headers
       html += "<tr>";
@@ -525,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
       html +=
         "<th colspan=" +
         (numCOs + 2) +
-        " class='text-center'>Feedback Score</th>";
+        " class='text-center bg-blue-500 text-white' style='font-size: 30px;'>Feedback Score</th>";
       html += "</tr>";
 
       html += "<tr>";
@@ -561,12 +567,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         for (var j = 1; j <= numCOs; j++) {
-          html +=
-            "<td class='text-center' contenteditable='true' data-row='" +
-            i +
-            "' data-col='" +
-            j +
-            "'></td>"; // Editable cells with data attributes
+          html +="<td class='text-center' contenteditable='true' data-row='" +i +"' data-col='" +j +"'></td>"; // Editable cells with data attributes
         }
 
         // Close the row
@@ -733,20 +734,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? parseFloat(coRow.cells[4].textContent.trim())
                 : 0;
 
-              console.log(
-                "coRowCellValue3 : " +
-                  coRowCellValue3 +
-                  " coRowCellValue4 " +
-                  coRowCellValue4 +
-                  "  coRowCellValue5 " +
-                  coRowCellValue5
-              );
-
               calculatedValue =
                 0.6 * coRowCellValue3 +
                 coRowCellValue4 * 0.3 +
                 coRowCellValue5 * 0.1;
               calculatedValue = parseFloat(calculatedValue).toFixed(2);
+
+              var cellKey = "row_" + i + "_calculatedValue";
+
+              localStorage.setItem(cellKey, calculatedValue);
 
               td.textContent = calculatedValue;
             }
@@ -768,7 +764,8 @@ document.addEventListener("DOMContentLoaded", function () {
       var html = "<table>";
 
       html += "<tr>";
-      html += "<th colspan=5 class='text-center'>LEVEL OF ATTAINMENT</th>"; // First column header
+      html +=
+        "<th colspan=5 class='text-center bg-blue-500 text-white' style='font-size: 30px;'>LEVEL OF ATTAINMENT</th>"; // First column header
       html += "</tr>";
       // Header row with Level, 0, 1, 2, and 3 headers
       html += "<tr>";
@@ -792,6 +789,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Insert the generated HTML into the gridView6 element
       gridView6.innerHTML = html;
+
+      //****************************************************************************************************************************************************************************//
+      //CREATING EIGHTH TABLE
+      //****************************************************************************************************************************************************************************//
+
+      var gridView8 = document.getElementById("gridView8");
+
+      gridView8.innerHTML = ""; // Clear any previous content
+
+      // var table = document.createElement("table");
+
+      var html = "<table>";
+
+      html += "<tr>";
+      html +=
+        "<th colspan=" +
+        (numPO + numPSO + 2) +
+        " class='text-center bg-blue-500 text-white' style='font-size: 30px;' >PO/PSO Attainment of the Course</th>";
+      html += "</tr>";
+
+      html += "<tr>";
+      html += "<th class='text-center'>PO</th>"; // First column header
+      for (var i = 1; i <= numPO; i++) {
+        html += "<th class='text-center'>PO " + i + "</th>";
+        if (i == numPO) {
+          for (var i = 1; i <= numPSO; i++) {
+            html += "<th class='text-center'>PSO " + i + "</th>";
+          }
+        }
+      }
+      html += "</tr>";
+
+      for (var i = 1; i <= numCOs + 1; i++) {
+        html += "<tr>";
+        if (i <= numCOs) {
+          html += "<td class='text-center'>CO" + i + "</td>";
+        } else {
+          html += "<td class='text-center'>PO Attainment</td>";
+        }
+
+        if (i <= numCOs) {
+          for (var j = 1; j <= numPO + numPSO; j++) {
+            html +=
+              "<td class='text-center' contenteditable='true' oninput='trackValue(this, " +i +", " +j +")'></td>";
+          }
+        }else{
+          for (var j = 1; j <= numPO + numPSO; j++) {
+            var tdId = 'td_' + j; // Create a unique ID for each <td>
+            html += "<td id='" + tdId + "' class='text-center'></td>";
+          }
+          
+        }
+        html += "</tr>";
+      }
+
+      // Close the table tag
+      html += "</table>";
+
+      // Insert the generated HTML into the gridView element
+      gridView8.innerHTML = html;
     };
 
     reader.readAsArrayBuffer(file);
@@ -869,6 +926,97 @@ function validateTextInput(input) {
   input.value = input.value.replace(/[0-9]/g, "");
 }
 
+
+function validateRomanNumeralInput(input) {
+  // Regular expression to match Roman numerals (from I to X)
+  const romanNumeralPattern = /^(I|II|III|IV|V|VI|VII|VIII|IX|X)$/;
+
+  const value = input.value.toUpperCase();
+
+  if (!romanNumeralPattern.test(value)) {
+    // If the input doesn't match the Roman numeral pattern, clear the input field
+    input.value = "";
+    alert("Enter Roman numbers");
+  }
+}
+
+var columnValues = [];
+var columnSums = [];
+var columnDivisions = [];
+
+function trackValue(cell, row, col) {
+  var enteredValue = parseFloat(cell.innerText).toFixed(2);
+  console.log(
+    "Value entered in Row " + row + ", Column " + col + ": " + enteredValue
+  );
+
+  // Update the column sum for the current column
+  if (!columnValues[col]) {
+    columnValues[col] = 0;
+  }
+
+  if (!columnSums[col]) {
+    columnSums[col] = 0;
+  }
+
+  var targetRow = row;
+  var total = 0;
+
+  for (var j = 1; j <= row; j++) {
+    // Generate the unique key for the cell in the specified row and column
+    var cellKey = "row_" + targetRow + "_calculatedValue";
+
+    if (localStorage.getItem(cellKey) !== null) {
+      var calculatedValue = parseFloat(localStorage.getItem(cellKey)) || 0;
+
+      total = enteredValue * calculatedValue;
+
+      // console.log("Value Entered in col : "+col+" Value : "+total.toFixed(2));
+    } else {
+      console.log("Value not found in localStorage for key: " + cellKey);
+    }
+  }
+  columnValues[col] += parseFloat(total);
+  columnSums[col] += parseFloat(enteredValue);
+
+  for (var i = 0; i < columnValues.length; i++) {
+    if (columnSums[i] !== 0) {
+      // Avoid division by zero
+      columnDivisions[i] = columnValues[i] / columnSums[i];
+    } else {
+      columnDivisions[i] = 0; // You can handle division by zero differently if needed
+    }
+  }
+
+  // Display column sums in the console
+  console.log("Column values:", columnValues);
+  console.log("Column Sums:", columnSums);
+
+  console.log("Column Divisions:", columnDivisions);
+
+  // Update the last row with the calculated values
+  updateLastRow( columnDivisions);
+}
+
+function updateLastRow( columnDivisions) {
+  // Loop through the cells and assign columnDivisions values
+  for (var i = 0; i < columnDivisions.length; i++) {
+    // Assuming your table cells have IDs like 'cell_0', 'cell_1', ...
+    var cellId = 'td_' + i;
+    
+    // Get the cell element by its ID
+    var cell = document.getElementById(cellId);
+
+    // Check if the cell exists and assign the corresponding value
+    if (cell) {
+      cell.innerText = columnDivisions[i].toFixed(2); // Displaying the value with 2 decimal places
+
+      cell.classList.add('highlight'); // Add a CSS class 'highlight' to the cell
+    } else {
+      console.warn("Cell with ID " + cellId + " not found.");
+    }
+  }
+}
 // Disable page reload
 window.addEventListener("beforeunload", function (e) {
   e.preventDefault();
