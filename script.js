@@ -424,6 +424,12 @@ document.addEventListener("DOMContentLoaded", function () {
       html +=
         "<th colspan='4' class='text-center bg-blue-500 text-white' style='font-size: 30px;'>SEE MARKS ENTRY</th>"; // CIE header
       html += "</tr>";
+
+      html += "<tr>";
+        html += "<th colspan='2' class='text-center'>Total Marks</th>"; // Editable column header
+        html += "<th colspan='2' class='text-center'>"+Marks+"</th>"; // Non-editable column header
+      html += "</tr>";
+
       // Header row with CO-Mapping and CO headers
       html += "<tr>";
 
@@ -935,10 +941,31 @@ function validateTextInput(input) {
 var columnValues = [];
 var columnSums = [];
 var columnDivisions = [];
+var cellData = [];
 
 function trackValue(cell, row, col) {
   var enteredValue = parseFloat(cell.innerText).toFixed(2);
 
+  // Check if data for the same row and column is already present in cellData
+  var existingDataIndex = cellData.findIndex(function (cellInfo) {
+    return cellInfo.row === row && cellInfo.col === col;
+  });
+
+  if (existingDataIndex !== -1) {
+    // Data for the same row and column is already present, update it
+    cellData[existingDataIndex].value = enteredValue;
+  } else {
+    // Data for the row and column is not present, create a new object and push it to cellData
+    var cellInfo = {
+      row: row,
+      col: col,
+      value: enteredValue,
+    };
+    cellData.push(cellInfo);
+  }
+  console.log("Cell data : ", cellData);
+  // Calculate column sums based on cellData
+  calculateColumnSums();
   // Update the column sum for the current column
   if (!columnValues[col]) {
     columnValues[col] = 0;
@@ -948,25 +975,38 @@ function trackValue(cell, row, col) {
     columnSums[col] = 0;
   }
 
-  var targetRow = row;
-  var total = 0;
+  // Determine the number of rows and columns based on the data
+  var numRows = Math.max(...cellData.map(cell => cell.row));
+  var numColumns = Math.max(...cellData.map(cell => cell.col));
 
-  for (var j = 1; j <= row; j++) {
-    // Generate the unique key for the cell in the specified row and column
-    var cellKey = "row_" + targetRow + "_calculatedValue";
+  // Initialize column totals to zero
+  for (var col = 1; col <= numColumns; col++) {
+    columnValues[col] = 0;
+  }
 
-    if (localStorage.getItem(cellKey) !== null) {
-      var calculatedValue = parseFloat(localStorage.getItem(cellKey)) || 0;
+  // Loop through cellData to calculate column totals
+  for (var row = 1; row <= numRows; row++) { // Loop through rows
+    for (var col = 1; col <= numColumns; col++) { // Loop through columns
+      var cellKey = "row_" + row + "_calculatedValue";
 
-      total = enteredValue * calculatedValue;
+      // Retrieve the calculatedValue from localStorage
+      var calculatedValue = localStorage.getItem(cellKey);
+      calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
+      console.log("Row value : "+calculatedValue);
 
-      // console.log("Value Entered in col : "+col+" Value : "+total.toFixed(2));
-    } else {
-      console.log("Value not found in localStorage for key: " + cellKey);
+      // Find the cell in cellData that matches the current row and column
+      var cell = cellData.find(function (cellInfo) {
+        return cellInfo.row === row && cellInfo.col === col;
+      });
+
+      if (cell) {
+        console.log("cell value : "+cell.value);
+        var total = cell.value * calculatedValue;
+        columnValues[col] += total; // Accumulate the total for the current column
+        console.log("column values : ",columnValues);
+      }
     }
   }
-  columnValues[col] += parseFloat(total);
-  columnSums[col] += parseFloat(enteredValue);
 
   for (var i = 0; i < columnValues.length; i++) {
     if (columnSums[i] !== 0) {
@@ -978,18 +1018,35 @@ function trackValue(cell, row, col) {
   }
 
   // Display column sums in the console
-  console.log("Column values:", columnValues);
-  console.log("Column Sums:", columnSums);
-
-  console.log("Column Divisions:", columnDivisions);
+  // console.log("Column values:", columnValues);
+  // console.log("Column Divisions:", columnDivisions);
 
   // Update the last row with the calculated values
   updateLastRow(columnDivisions);
 }
 
+// Function to calculate column sums from cellData
+function calculateColumnSums() {
+  // Initialize and columnSums arrays
+  columnSums = [];
+
+  // Iterate through cellData and calculate column sums
+  for (var i = 0; i < cellData.length; i++) {
+    var cellInfo = cellData[i];
+    var col = cellInfo.col;
+    var value = parseFloat(cellInfo.value);
+
+    if (!columnSums[col]) {
+      columnSums[col] = 0;
+    }
+    columnSums[col] += value;
+  }
+  // console.log("Sum : ", columnSums);
+}
+
 function updateLastRow(columnDivisions) {
   // Loop through the cells and assign columnDivisions values
-  for (var i = 0; i < columnDivisions.length; i++) {
+  for (var i = 1; i < columnDivisions.length; i++) {
     // Assuming your table cells have IDs like 'cell_0', 'cell_1', ...
     var cellId = "td_" + i;
 
