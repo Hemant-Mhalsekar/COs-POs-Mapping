@@ -189,8 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("gridView4").classList.remove("hidden");
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
-
-      document.getElementById("gridView7").classList.remove("hidden");
       document.getElementById("gridView8").classList.remove("hidden");
 
       var numCOs = parseInt(coInput.value);
@@ -567,7 +565,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         for (var j = 1; j <= numCOs; j++) {
-          html +="<td class='text-center' contenteditable='true' data-row='" +i +"' data-col='" +j +"'></td>"; // Editable cells with data attributes
+          html +=
+            "<td class='text-center' contenteditable='true' data-row='" +
+            i +
+            "' data-col='" +
+            j +
+            "'></td>"; // Editable cells with data attributes
         }
 
         // Close the row
@@ -832,14 +835,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (i <= numCOs) {
           for (var j = 1; j <= numPO + numPSO; j++) {
             html +=
-              "<td class='text-center' contenteditable='true' oninput='trackValue(this, " +i +", " +j +")'></td>";
+              "<td class='text-center' contenteditable='true' oninput='trackValue(this, " +
+              i +
+              ", " +
+              j +
+              ")'></td>";
           }
-        }else{
+        } else {
           for (var j = 1; j <= numPO + numPSO; j++) {
-            var tdId = 'td_' + j; // Create a unique ID for each <td>
+            var tdId = "td_" + j; // Create a unique ID for each <td>
             html += "<td id='" + tdId + "' class='text-center'></td>";
           }
-          
         }
         html += "</tr>";
       }
@@ -926,29 +932,12 @@ function validateTextInput(input) {
   input.value = input.value.replace(/[0-9]/g, "");
 }
 
-
-function validateRomanNumeralInput(input) {
-  // Regular expression to match Roman numerals (from I to X)
-  const romanNumeralPattern = /^(I|II|III|IV|V|VI|VII|VIII|IX|X)$/;
-
-  const value = input.value.toUpperCase();
-
-  if (!romanNumeralPattern.test(value)) {
-    // If the input doesn't match the Roman numeral pattern, clear the input field
-    input.value = "";
-    alert("Enter Roman numbers");
-  }
-}
-
 var columnValues = [];
 var columnSums = [];
 var columnDivisions = [];
 
 function trackValue(cell, row, col) {
   var enteredValue = parseFloat(cell.innerText).toFixed(2);
-  console.log(
-    "Value entered in Row " + row + ", Column " + col + ": " + enteredValue
-  );
 
   // Update the column sum for the current column
   if (!columnValues[col]) {
@@ -995,15 +984,15 @@ function trackValue(cell, row, col) {
   console.log("Column Divisions:", columnDivisions);
 
   // Update the last row with the calculated values
-  updateLastRow( columnDivisions);
+  updateLastRow(columnDivisions);
 }
 
-function updateLastRow( columnDivisions) {
+function updateLastRow(columnDivisions) {
   // Loop through the cells and assign columnDivisions values
   for (var i = 0; i < columnDivisions.length; i++) {
     // Assuming your table cells have IDs like 'cell_0', 'cell_1', ...
-    var cellId = 'td_' + i;
-    
+    var cellId = "td_" + i;
+
     // Get the cell element by its ID
     var cell = document.getElementById(cellId);
 
@@ -1011,7 +1000,7 @@ function updateLastRow( columnDivisions) {
     if (cell) {
       cell.innerText = columnDivisions[i].toFixed(2); // Displaying the value with 2 decimal places
 
-      cell.classList.add('highlight'); // Add a CSS class 'highlight' to the cell
+      cell.classList.add("highlight"); // Add a CSS class 'highlight' to the cell
     } else {
       console.warn("Cell with ID " + cellId + " not found.");
     }
