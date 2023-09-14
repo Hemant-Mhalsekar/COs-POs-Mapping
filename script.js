@@ -11,9 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const courseTeacher = document.getElementById("courseTeacher").value;
     const courseCode = document.getElementById("courseCode").value;
     const semester = document.getElementById("semester").value;
-    const courseTitle = document.getElementById("courseTitle").value;
+    const classroom = document.getElementById("classroom").value;
+    const division = document.getElementById("division").value;
     const academicYear = document.getElementById("academicYear").value;
-    const batch = document.getElementById("batch").value;
+    const totalStudents = document.getElementById("totalStudents").value;
     const coThreshold = document.getElementById("coThreshold").value;
     const targetPercentage = document.getElementById("targetPercentage").value;
     const totalCO = document.getElementById("totalCO").value;
@@ -32,27 +33,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Display the entered information in the form
     displayInfo.innerHTML = `
-             <h2>Course Information</h2>
+             <h2 style="font-weight: bold; color: #007bff; font-size: 26px; ;text-decoration: underline; ">Course Information</h2>
              <p><strong>Name of the Programme:</strong> ${programmeName}</p>
              <p><strong>Department:</strong> ${department}</p>
              <p><strong>Name of the Course Teacher/Teachers:</strong> ${courseTeacher}</p>
              <p><strong>Course Code:</strong> ${courseCode}</p>
              <p><strong>Semester:</strong> ${semester}</p>
-             <p><strong>Course Title:</strong> ${courseTitle}</p>
+             <p><strong>Class:</strong> ${classroom}</p>
+             <p><strong>Division:</strong> ${division}</p>
              <p><strong>Academic Year:</strong> ${academicYear}</p>
-             <p><strong>Batch:</strong> ${batch}</p>
+             <p><strong>Number of Students:</strong> ${totalStudents}</p>
              <p><strong>CO Threshold%:</strong> ${coThreshold}</p>
              <p><strong>Institute Target Percentage:</strong> ${targetPercentage}</p>
              <p><strong>Total CO:</strong> ${totalCO}</p>
              <p><strong>Total PO:</strong> ${totalPO}</p>
              <p><strong>Total PSO:</strong> ${totalPSO}</p>
              <p><strong>Total Marks:</strong> ${TotalMarks}</p>
-             
         `;
   });
 
-  //Taking input for COs, POs and PSOs
+  //Input table for COs, POs and PSOs
 
+  //Taking input for COs, POs and PSOs
   // Define variables to store user inputs
   let poValues = [];
   let coValues = [];
@@ -64,20 +66,29 @@ document.addEventListener("DOMContentLoaded", function () {
     valuesArray.length = 0; // Clear previous values
 
     for (let i = 1; i <= count; i++) {
+      // Create a label element
+      const label = document.createElement("label");
+      label.textContent = `${placeholder} ${i}:`;
+      label.setAttribute("for", `${placeholder}${i}`);
+
+      // Create an input element
       const input = document.createElement("input");
       input.setAttribute(
         "class",
         "w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
       );
       input.setAttribute("type", "text");
-      input.setAttribute("name", placeholder + i);
-      input.setAttribute("placeholder", placeholder + i + ":");
+      input.setAttribute("id", `${placeholder}${i}`);
+      input.setAttribute("name", `${placeholder}${i}`);
+      input.setAttribute("placeholder", `Enter ${placeholder} ${i}`);
 
       // Listen for input changes and store them
       input.addEventListener("input", function (event) {
         valuesArray[i - 1] = event.target.value;
       });
 
+      // Append the label and input to the container
+      container.appendChild(label);
       container.appendChild(input);
     }
   }
@@ -110,39 +121,39 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("display").classList.remove("hidden");
 
     let displayContent = `
-        <h2 class="text-2xl font-bold">Input Information</h2>
-        <div class="mt-4">
-    `;
+      <h2 class="text-2xl font-bold">Input Information</h2>
+      <div class="mt-4">
+  `;
 
     if (poValues.length > 0) {
       displayContent += `
-            <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      poValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      poValues.forEach((value, index) => {
+        displayContent += `<li>PO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
 
     if (coValues.length > 0) {
       displayContent += `
-            <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      coValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      coValues.forEach((value, index) => {
+        displayContent += `<li>CO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
 
     if (psoValues.length > 0) {
       displayContent += `
-            <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
-            <ul class="list-disc ml-6">
-        `;
-      psoValues.forEach((value) => {
-        displayContent += `<li>${value}</li>`;
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      psoValues.forEach((value, index) => {
+        displayContent += `<li>PSO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
@@ -178,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("gridView4").classList.remove("hidden");
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
+
       document.getElementById("gridView7").classList.remove("hidden");
       document.getElementById("gridView8").classList.remove("hidden");
 
@@ -192,9 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
       //****************************************************************************************************************************************************************************//
 
       // numCols = parseInt(coInput.value-1);
-
       gridView1.innerHTML = ""; // Clear any previous content
-
       var html = "<table>";
 
       // Header row with CO-Mapping and CO headers
@@ -736,13 +746,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
               td.textContent = calculatedValue;
             }
-
             coRow.appendChild(td);
           }
-
           table.appendChild(coRow);
         }
-
         gridView5.appendChild(table);
       }
 
@@ -845,87 +852,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     reader.readAsArrayBuffer(file);
-
-    //****************************************************************************************************************************************************************************//
-    //CREATING seventh TABLE
-    //****************************************************************************************************************************************************************************//
-    var gridView7 = document.getElementById("gridView7");
-    gridView7.innerHTML = ""; // Clear any previous content
-
-    var numPOs = parseInt(document.getElementById("totalPO").value); // Get the number of POs
-    var numCOs = parseInt(document.getElementById("totalCO").value); // Get the number of COs
-
-    var html = "<table>";
-
-    // Header row with PO headers
-    html += "<tr>";
-    html += "<th class='text-center'></th>"; // Empty cell in the first column
-    for (var i = 1; i <= numPOs; i++) {
-      html += "<th class='text-center'>PO " + i + "</th>"; // PO headers
-    }
-    html += "</tr>";
-
-    // Rows for Number of COs
-    for (var i = 1; i <= numCOs; i++) {
-      html += "<tr>";
-      html += "<td class='text-center'>CO " + i + "</td>"; // CO label
-      for (var j = 1; j <= numPOs; j++) {
-        html += "<td class='text-center' contenteditable='true'></td>"; // User input cells
-      }
-      html += "</tr>";
-    }
-
-    // Row for PO Avg
-    html += "<tr>";
-    html += "<td class='text-center'>PO Avg</td>"; // PO Avg label
-    for (var j = 1; j <= numPOs; j++) {
-      html += "<td class='text-center'></td>"; // Placeholder for PO Avg values
-    }
-    html += "</tr>";
-
-    // Close the table tag
-    html += "</table>";
-
-    // Insert the generated HTML into the gridView7 element
-    gridView7.innerHTML = html;
-
-    // Calculate and display the CO Avg values when user input changes
-    var table7 = gridView7.querySelector("table");
-    var inputCells7 = table7.querySelectorAll("td[contenteditable='true']");
-
-    inputCells7.forEach(function (cell) {
-      cell.addEventListener("input", function () {
-        calculateCOAverages(table7, numCOs, numPOs);
-      });
-    });
-
-    // Function to calculate and display the CO Avg values
-    function calculateCOAverages(table, numCOs, numPOs) {
-      for (var j = 1; j <= numPOs; j++) {
-        var total = 0;
-        var count = 0;
-
-        for (var i = 1; i <= numCOs; i++) {
-          var cellValue = table.rows[i].cells[j].textContent.trim();
-          var intValue = parseInt(cellValue);
-
-          if (!isNaN(intValue)) {
-            total += intValue;
-            count++;
-          }
-        }
-
-        if (count > 0) {
-          var average = total / count;
-          table.rows[numCOs + 1].cells[j].textContent = average.toFixed(2); // Update CO Avg cell
-        } else {
-          table.rows[numCOs + 1].cells[j].textContent = ""; // Clear the cell if there are no values
-        }
-      }
-    }
-
-    // Initial calculation when the page loads
-    calculateCOAverages(table7, numCOs, numPOs);
   });
 });
 
@@ -999,6 +925,7 @@ function validateTextInput(input) {
   // Remove any numeric characters
   input.value = input.value.replace(/[0-9]/g, "");
 }
+
 
 function validateRomanNumeralInput(input) {
   // Regular expression to match Roman numerals (from I to X)
@@ -1090,3 +1017,8 @@ function updateLastRow( columnDivisions) {
     }
   }
 }
+// Disable page reload
+window.addEventListener("beforeunload", function (e) {
+  e.preventDefault();
+  e.returnValue = "Are you sure you want to leave this page?";
+});
