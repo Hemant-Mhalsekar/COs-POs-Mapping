@@ -629,7 +629,6 @@ function calculatePercentage(targetCell) {
           var row = this.getAttribute("data-row");
           var col = this.getAttribute("data-col");
           var value = parseInt(this.textContent.replace(/\D/g, ""));
-          console.log("Row: " + row + ", Column: " + col + ", Value: " + value);
 
           if (!isNaN(value) && (value === 1 || value === 2 || value === 3)) {
             calculateAndSaveColumnAverage(col);
@@ -658,7 +657,6 @@ function calculatePercentage(targetCell) {
         if (count > 0) {
           var average = total / (rows.length - 1);
           localStorage.setItem("col_" + col + "_average", average);
-          console.log("column : " + col + " Average : " + average);
           updateData();
         } else {
           localStorage.removeItem("col_" + col + "_average"); // Remove from local storage if no valid values
@@ -1017,7 +1015,6 @@ function trackValue(cell, row, col) {
       // Retrieve the calculatedValue from localStorage
       var calculatedValue = localStorage.getItem(cellKey);
       calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
-      console.log("Row value : "+calculatedValue);
 
       // Find the cell in cellData that matches the current row and column
       var cell = cellData.find(function (cellInfo) {
@@ -1028,7 +1025,6 @@ function trackValue(cell, row, col) {
         console.log("cell value : "+cell.value);
         var total = cell.value * calculatedValue;
         columnValues[col] += total; // Accumulate the total for the current column
-        console.log("column values : ",columnValues);
       }
     }
   }
