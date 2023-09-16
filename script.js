@@ -334,79 +334,101 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (j < 3 + numCOs * 2) {
               newCell.addEventListener("input", function () {
-                var enteredValue = parseInt(this.textContent.replace(/\D/g, ""));
+                var enteredValue = parseInt(
+                  this.textContent.replace(/\D/g, "")
+                );
 
                 // Store the previous value in a data attribute
                 var previousValue = this.getAttribute("data-previous-value");
 
                 // console.log("Row:", rowIndex, "Column:", colIndex, "Value:", enteredValue);
-              if (!isNaN(enteredValue) || (previousValue && enteredValue === "")) {
+                if (
+                  !isNaN(enteredValue) ||
+                  (previousValue && enteredValue === "")
+                ) {
                   // Update the data attribute with the new value
-               
-                var storedColumnValues = JSON.parse(localStorage.getItem("column_values"));
-                if(storedColumnValues != null){
-                  var columnNumber = (colIndex - 3) / 2 + 1;
-                  if (storedColumnValues && storedColumnValues[columnNumber]) {
-                    this.setAttribute("data-previous-value", enteredValue);
-                    var columnValues = storedColumnValues[columnNumber];
-                    var storedValue = columnValues;
-                    var per =  (previousValue / storedValue) * 100;
-                    if (enteredValue > storedValue) {
-                      alert("Enter valid value");
-                      this.textContent = "";
-                      this.removeAttribute("data-previous-value");
-                      if(previousValue != null && per >=thresHold){
-                        columnsAboveThresholdCounts[columnNumber]--;
-                      }
-                      updateData();
-                    } else {
-                     
-                      var percentage = (enteredValue / storedValue) * 100;
-                     
-                      if(previousValue != null && per >=thresHold){
+
+                  var storedColumnValues = JSON.parse(
+                    localStorage.getItem("column_values")
+                  );
+                  if (storedColumnValues != null) {
+                    var columnNumber = (colIndex - 3) / 2 + 1;
+                    if (
+                      storedColumnValues &&
+                      storedColumnValues[columnNumber]
+                    ) {
+                      this.setAttribute("data-previous-value", enteredValue);
+                      var columnValues = storedColumnValues[columnNumber];
+                      var storedValue = columnValues;
+                      var per = (previousValue / storedValue) * 100;
+                      if (enteredValue > storedValue) {
+                        alert("Enter valid value");
+                        this.textContent = "";
+                        this.removeAttribute("data-previous-value");
+                        if (previousValue != null && per >= thresHold) {
                           columnsAboveThresholdCounts[columnNumber]--;
-                      }
-                      if (percentage >= thresHold) {
-                        if (!columnsAboveThresholdCounts[columnNumber]) {
-                          columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
-                        } else {
-                          columnsAboveThresholdCounts[columnNumber]++; // Increment the count
+                        }
+                        updateData();
+                      } else {
+                        var percentage = (enteredValue / storedValue) * 100;
+
+                        if (previousValue != null && per >= thresHold) {
+                          columnsAboveThresholdCounts[columnNumber]--;
+                        }
+                        if (percentage >= thresHold) {
+                          if (!columnsAboveThresholdCounts[columnNumber]) {
+                            columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
+                          } else {
+                            columnsAboveThresholdCounts[columnNumber]++; // Increment the count
+                          }
+                        }
+                        for (
+                          var column = 0;
+                          column < columnsAboveThresholdCounts.length;
+                          column++
+                        ) {
+                          var count = columnsAboveThresholdCounts[column] || 0;
+                          var percent = (count / (rows.length - 1)) * 100;
+                          // console.log("Column", column , ": Count:", count, "Percentage:", percent.toFixed(2) + "%");
+                          localStorage.setItem(`column_${column}`, column);
+                          localStorage.setItem(
+                            `percent_${column}`,
+                            percent.toFixed(2)
+                          );
+                        }
+                        updateData();
+                        // Set the percentage value in the next cell of the same row
+                        var percentageCellIndex = colIndex + 1;
+                        var percentageCell =
+                          rows[rowIndex].cells[percentageCellIndex];
+                        if (percentageCell) {
+                          percentageCell.setAttribute(
+                            "contenteditable",
+                            "false"
+                          );
+                        }
+                        // console.log("Percentage : "+percentage);
+                        if (percentageCell) {
+                          percentageCell.textContent =
+                            percentage.toFixed(2) + "%";
                         }
                       }
-                      for (var column = 0;column < columnsAboveThresholdCounts.length;column++) {
-                        var count = columnsAboveThresholdCounts[column] || 0;
-                        var percent = (count / (rows.length - 1)) * 100;
-                        // console.log("Column", column , ": Count:", count, "Percentage:", percent.toFixed(2) + "%");
-                        localStorage.setItem(`column_${column}`, column);
-                        localStorage.setItem(`percent_${column}`,percent.toFixed(2));
-                      }
-                      updateData();
-                      // Set the percentage value in the next cell of the same row
-                      var percentageCellIndex = colIndex + 1;
-                      var percentageCell = rows[rowIndex].cells[percentageCellIndex];
-                      if (percentageCell) {
-                        percentageCell.setAttribute("contenteditable", "false");
-                      }
-                      // console.log("Percentage : "+percentage);
-                      if (percentageCell) {
-                        percentageCell.textContent = percentage.toFixed(2) + "%";
-                      }
                     }
+                  } else {
+                    alert("Please Enter data in 1st table");
+                    this.textContent = "";
                   }
-                }else{
-                  alert("Please Enter data in 1st table");
+                } else {
+                  // Clear both the value cell and the corresponding percentage cell
                   this.textContent = "";
+                  var percentageCellIndex = colIndex + 1;
+                  var percentageCell =
+                    rows[rowIndex].cells[percentageCellIndex];
+                  if (percentageCell) {
+                    percentageCell.textContent = "";
+                  }
                 }
-              }else{
-                // Clear both the value cell and the corresponding percentage cell
-                this.textContent = "";
-                var percentageCellIndex = colIndex + 1;
-                var percentageCell = rows[rowIndex].cells[percentageCellIndex];
-                if (percentageCell) {
-                  percentageCell.textContent = "";
-                }
-              }
-            });
+              });
 
               newCell.classList.add("text-center");
               newCell.setAttribute("contenteditable", "true");
@@ -434,8 +456,8 @@ document.addEventListener("DOMContentLoaded", function () {
       html += "</tr>";
 
       html += "<tr>";
-        html += "<th colspan='2' class='text-center'>Total Marks</th>"; // Editable column header
-        html += "<th colspan='2' class='text-center'>"+Marks+"</th>"; // Non-editable column header
+      html += "<th colspan='2' class='text-center'>Total Marks</th>"; // Editable column header
+      html += "<th colspan='2' class='text-center'>" + Marks + "</th>"; // Non-editable column header
       html += "</tr>";
 
       // Header row with CO-Mapping and CO headers
@@ -497,44 +519,42 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-
       // Initialize an empty array to store percentage values
-var percentageArray = [];
-var rowTotalSum = 0; // Initialize rowTotalSum to 0
+      var percentageArray = [];
+      var rowTotalSum = 0; // Initialize rowTotalSum to 0
 
-// Function to calculate and display percentage
-function calculatePercentage(targetCell) {
-  var row = targetCell.parentNode; // Get the parent row
-  var cells = row.getElementsByTagName("td"); // Get all cells in the row
-  var enteredValue = parseFloat(cells[2].textContent); // Get the value from the first cell
+      // Function to calculate and display percentage
+      function calculatePercentage(targetCell) {
+        var row = targetCell.parentNode; // Get the parent row
+        var cells = row.getElementsByTagName("td"); // Get all cells in the row
+        var enteredValue = parseFloat(cells[2].textContent); // Get the value from the first cell
 
-  if (!isNaN(enteredValue) && Marks !== 0) {
-    if (enteredValue > Marks) {
-      alert("Enter a valid value that is not greater than Marks.");
-      cells[2].textContent = "";
-      cells[3].textContent = "";
-    } else {
-      var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
-      cells[3].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
+        if (!isNaN(enteredValue) && Marks !== 0) {
+          if (enteredValue > Marks) {
+            alert("Enter a valid value that is not greater than Marks.");
+            cells[2].textContent = "";
+            cells[3].textContent = "";
+          } else {
+            var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
+            cells[3].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
 
-      // Save or update the percentage value in the array
-      var rowIndex = row.rowIndex; // Get the row index
-      percentageArray[rowIndex - 1] = percentage; // Subtract 1 because row indexes are 1-based
+            // Save or update the percentage value in the array
+            var rowIndex = row.rowIndex; // Get the row index
+            percentageArray[rowIndex - 1] = percentage; // Subtract 1 because row indexes are 1-based
 
-      // Recalculate rowTotalSum
-      rowTotalSum = percentageArray.reduce(function (acc, value) {
-        return acc + value;
-      }, 0);
-    }
-  } else {
-    if (targetCell === cells[2] || targetCell === cells[3]) {
-      // Only clear cells[2] and cells[3] when the value is not a valid number
-      cells[2].textContent = "";
-      cells[3].textContent = "";
-    }
-  }
-}
-     
+            // Recalculate rowTotalSum
+            rowTotalSum = percentageArray.reduce(function (acc, value) {
+              return acc + value;
+            }, 0);
+          }
+        } else {
+          if (targetCell === cells[2] || targetCell === cells[3]) {
+            // Only clear cells[2] and cells[3] when the value is not a valid number
+            cells[2].textContent = "";
+            cells[3].textContent = "";
+          }
+        }
+      }
 
       function calculateRowAverage() {
         if (rowCount > 0) {
@@ -967,79 +987,88 @@ var columnDivisions = [];
 var cellData = [];
 
 function trackValue(cell, row, col) {
+  
   var enteredValue = parseFloat(cell.innerText).toFixed(2);
 
-  // Check if data for the same row and column is already present in cellData
-  var existingDataIndex = cellData.findIndex(function (cellInfo) {
-    return cellInfo.row === row && cellInfo.col === col;
-  });
+  if (!isNaN(enteredValue) && (enteredValue === "0.00" || enteredValue === "1.00" || enteredValue === "2.00" || enteredValue === "3.00")) {
+    // Check if data for the same row and column is already present in cellData
+    var existingDataIndex = cellData.findIndex(function (cellInfo) {
+      return cellInfo.row === row && cellInfo.col === col;
+    });
 
-  if (existingDataIndex !== -1) {
-    // Data for the same row and column is already present, update it
-    cellData[existingDataIndex].value = enteredValue;
-  } else {
-    // Data for the row and column is not present, create a new object and push it to cellData
-    var cellInfo = {
-      row: row,
-      col: col,
-      value: enteredValue,
-    };
-    cellData.push(cellInfo);
-  }
-  console.log("Cell data : ", cellData);
-  // Calculate column sums based on cellData
-  calculateColumnSums();
-  // Update the column sum for the current column
-  if (!columnValues[col]) {
-    columnValues[col] = 0;
-  }
+    if (existingDataIndex !== -1) {
+      // Data for the same row and column is already present, update it
+      cellData[existingDataIndex].value = enteredValue;
+    } else {
+      // Data for the row and column is not present, create a new object and push it to cellData
+      var cellInfo = {
+        row: row,
+        col: col,
+        value: enteredValue,
+      };
+      cellData.push(cellInfo);
+    }
+    console.log("Cell data : ", cellData);
+    // Calculate column sums based on cellData
+    calculateColumnSums();
+    // Update the column sum for the current column
+    if (!columnValues[col]) {
+      columnValues[col] = 0;
+    }
 
-  if (!columnSums[col]) {
-    columnSums[col] = 0;
-  }
+    if (!columnSums[col]) {
+      columnSums[col] = 0;
+    }
 
-  // Determine the number of rows and columns based on the data
-  var numRows = Math.max(...cellData.map(cell => cell.row));
-  var numColumns = Math.max(...cellData.map(cell => cell.col));
+    // Determine the number of rows and columns based on the data
+    var numRows = Math.max(...cellData.map((cell) => cell.row));
+    var numColumns = Math.max(...cellData.map((cell) => cell.col));
 
-  // Initialize column totals to zero
-  for (var col = 1; col <= numColumns; col++) {
-    columnValues[col] = 0;
-  }
+    // Initialize column totals to zero
+    for (var col = 1; col <= numColumns; col++) {
+      columnValues[col] = 0;
+    }
 
-  // Loop through cellData to calculate column totals
-  for (var row = 1; row <= numRows; row++) { // Loop through rows
-    for (var col = 1; col <= numColumns; col++) { // Loop through columns
-      var cellKey = "row_" + row + "_calculatedValue";
+    // Loop through cellData to calculate column totals
+    for (var row = 1; row <= numRows; row++) {
+      // Loop through rows
+      for (var col = 1; col <= numColumns; col++) {
+        // Loop through columns
+        var cellKey = "row_" + row + "_calculatedValue";
 
-      // Retrieve the calculatedValue from localStorage
-      var calculatedValue = localStorage.getItem(cellKey);
-      calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
+        // Retrieve the calculatedValue from localStorage
+        var calculatedValue = localStorage.getItem(cellKey);
+        calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
 
-      // Find the cell in cellData that matches the current row and column
-      var cell = cellData.find(function (cellInfo) {
-        return cellInfo.row === row && cellInfo.col === col;
-      });
+        // Find the cell in cellData that matches the current row and column
+        var cell = cellData.find(function (cellInfo) {
+          return cellInfo.row === row && cellInfo.col === col;
+        });
 
-      if (cell) {
-        console.log("cell value : "+cell.value);
-        var total = cell.value * calculatedValue;
-        columnValues[col] += total; // Accumulate the total for the current column
+        if (cell) {
+          console.log("cell value : " + cell.value);
+          var total = cell.value * calculatedValue;
+          columnValues[col] += total; // Accumulate the total for the current column
+        }
       }
     }
-  }
 
-  for (var i = 0; i < columnValues.length; i++) {
-    if (columnSums[i] !== 0) {
-      // Avoid division by zero
-      columnDivisions[i] = columnValues[i] / columnSums[i];
-    } else {
-      columnDivisions[i] = 0; // You can handle division by zero differently if needed
+    for (var i = 0; i < columnValues.length; i++) {
+      if (columnSums[i] !== 0) {
+        // Avoid division by zero
+        columnDivisions[i] = columnValues[i] / columnSums[i];
+      } else {
+        columnDivisions[i] = 0; // You can handle division by zero differently if needed
+      }
     }
-  }
 
-  // Update the last row with the calculated values
-  updateLastRow(columnDivisions);
+    // Update the last row with the calculated values
+    updateLastRow(columnDivisions);
+  }
+  else{
+    alert("Enter valid value");
+    cell.innerText ="";
+  }
 }
 
 // Function to calculate column sums from cellData
@@ -1080,7 +1109,6 @@ function updateLastRow(columnDivisions) {
     }
   }
 }
-
 
 // Disable page reload
 window.addEventListener("beforeunload", function (e) {
