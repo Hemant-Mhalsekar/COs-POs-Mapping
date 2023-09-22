@@ -364,7 +364,8 @@ document.addEventListener("DOMContentLoaded", function () {
                       var storedValue = columnValues;
                       var per = (previousValue / storedValue) * 100;
                       if (enteredValue > storedValue) {
-                        alert("Enter valid value");
+                        // alert("Enter valid value");
+                        showToast('Enter valid value', 5000);
                         this.textContent = "";
                         var percentageCellIndex = colIndex + 1;
                         var percentageCell =
@@ -423,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       }
                     }
                   } else {
-                    alert("Please Enter data in 1st table");
+                    showToast("Please Enter data in 1st table", 5000);
                     this.textContent = "";
                   }
                 } else {
@@ -511,7 +512,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     var per = (previousValue / storedValue) * 100;
 
                     if (enteredValue > storedValue) {
-                      alert("Value "+enteredValue+" cannot paste as it is greater than Total marks");
+                      showToast("Value "+enteredValue+" cannot paste as it is greater than Total marks", 5000);
                       currentRow.cells[currentCol].textContent = "";
                       if (previousValue != null && per >= thresHold) {
                         columnsAboveThresholdCounts[columnNumber]--;
@@ -540,8 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       }
                       updateData();
                       var percentageCellIndex = currentCol + 1;
-                      var percentageCell =
-                        currentRow.cells[percentageCellIndex];
+                      var percentageCell = currentRow.cells[percentageCellIndex];
                       if (percentageCell) {
                         percentageCell.setAttribute(  "contenteditable",  "false");
                       }
@@ -553,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                   }
                 } else {
-                  alert("Please Enter data in 1st table");
+                  showToast('Please Enter data in 1st table', 5000);
                   currentRow.cells[currentCol].textContent = "";
                   // Remove the event listener
                   document.getElementById("gridView2").removeEventListener("paste");
@@ -561,7 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
               } else {
                 // Clear both the value cell and the corresponding percentage cell
                 currentRow.cells[currentCol].textContent = "";
-                alert("cannot paste Non integer value");
+                showToast("cannot paste Non Integer value", 5000);
               }
               currentCol++;
             }
@@ -655,7 +655,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!isNaN(enteredValue) && Marks !== 0) {
           if (enteredValue > Marks) {
-            alert("Enter a valid value that is not greater than Marks.");
+            showToast('Enter valid value that is not greater than '+Marks, 5000);
             cells[2].textContent = "";
             cells[3].textContent = "";
           } else {
@@ -736,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if all pasted data is numeric
             if (!isValidNumericData(pastedData)) {
-              alert("Cannot paste text. Please copy integer values only.");
+              showToast("Cannot paste text. Please copy integer values only",5000); 
               return; // Stop processing if data is not valid
             }
 
@@ -776,7 +776,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var enteredValue = parseFloat(cols[j]);
 
                 if (enteredValue > Marks) {
-                  alert("Value "+enteredValue+" cannot paste as it is greater than marks");
+                  showToast("Value "+enteredValue+" cannot paste as it is greater than marks",5000);
                   currentRow.cells[currentCol].textContent = "";
                 }else{
                   // Call calculatePercentage function with the enteredValue
@@ -874,6 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!isNaN(value) && (value === 1 || value === 2 || value === 3)) {
             calculateAndSaveColumnAverage(col);
           } else {
+            showToast("Invalid value"+value,5000);
             // Invalid input, reset the cell
             this.textContent = "";
           }
@@ -926,7 +927,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if all pasted data is numeric
             if (!isValidNumericData(pastedData)) {
-              alert("Cannot paste text. Please copy integer values only.");
+              showToast("Cannot paste text. Please Copy integer values only", 5000);
               return; // Stop processing if data is not valid
             }
 
@@ -970,7 +971,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   calculateAndSaveColumnAverage(col);
                  
                 } else {
-                  alert("Invalid Value "+value);
+                  showToast("Invalid value : "+value,5000);
                   // Invalid input, reset the cell
                   currentRow.cells[currentCol].textContent = "";
                 }
@@ -1092,7 +1093,7 @@ document.addEventListener("DOMContentLoaded", function () {
               var cellKey = "row_" + i + "_calculatedValue";
 
               localStorage.setItem(cellKey, calculatedValue);
-
+              
               td.textContent = calculatedValue;
             }
             coRow.appendChild(td);
@@ -1222,7 +1223,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var pastedData = clipboardData.getData("text/plain");
 
             if (!isValidNumericData(pastedData)) {
-              alert("Cannot paste text. Please copy integer values only.");
+              showToast("Cannot paste text. Please copy integer values only.",5000);
               return; // Stop processing if data is not valid
             }
             
@@ -1264,13 +1265,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!isNaN(enteredValue) &&(enteredValue === 1 || enteredValue === 2 || enteredValue === 3)) {
                   trackValue( currentRow.cells[currentCol], currentRow.rowIndex - 1, currentCol, enteredValue );
                 } else {
-                  alert("Invalid Value "+enteredValue);
+                  showToast("Invalid Value "+enteredValue);
                   // Invalid input, reset the cell
                   currentRow.cells[currentCol].textContent = "";
                 }
-               
-               
-
                 currentCol++; // Increment the column index here
               }
             }
@@ -1415,6 +1413,11 @@ function trackValue(cell, row, col, enteredValue) {
 
         // Retrieve the calculatedValue from localStorage
         var calculatedValue = localStorage.getItem(cellKey);
+        if(calculatedValue == null){
+          showToast("Please fill all above table",5000);
+          this.textContent="";
+          return;
+        }
         calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
 
         // Find the cell in cellData that matches the current row and column
@@ -1442,7 +1445,7 @@ function trackValue(cell, row, col, enteredValue) {
     // Update the last row with the calculated values
     updateLastRow(columnDivisions);
   } else {
-    alert("Enter valid value");
+    showToast("Enter valid value",5000);
     cell.innerText = "";
   }
 }
@@ -1483,6 +1486,18 @@ function updateLastRow(columnDivisions) {
     } else {
       console.warn("Cell with ID " + cellId + " not found.");
     }
+  }
+}
+
+// Function to show the toast message
+function showToast(message, duration = 3000) {
+  const toast = document.getElementById('toast');
+  if (toast) {
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, duration);
   }
 }
 
