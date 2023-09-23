@@ -20,7 +20,7 @@
     <div class="flex justify-center items-center my-8">
       <h1 class="font-bold uppercase text-4xl text-black mb-4">Attainment Of Course & Program Outcome</h1>
     </div>
-    <div class="flex justify-center items-center min-h-screen">
+    <div class="flex justify-center items-center min-h-screen" id="entireform">
       <div
         class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white"
       >
@@ -333,26 +333,29 @@
         id="ExcelInput"
         class="w-full p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mx-auto rounded-2xl shadow-2xl bg-white hidden"
       >
-      <div>
-        <h1  class="font-bold uppercase text-3xl">Upload Student Details</h1></div>
-        <div class="my-2 flex">
-          <input
-            type="file"
-            id="fileInput"
-            class="bg-gray-200 shadow-xl p-2 rounded-l-lg focus:outline-none flex-grow mr-4"
-          />
-          <button
-            id="loadButton"
-            class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-r-lg focus:outline-none"
-          >
-            Load Excel
-          </button>
-        </div>
+      <div id="excelheader">
+            <h1  class="font-bold uppercase text-3xl">Upload Student Details</h1>
+          
+      </div>
+            <div class="my-2 flex">
+              <input
+                type="file"
+                id="fileInput"
+                class="bg-gray-200 shadow-xl p-2 rounded-l-lg focus:outline-none flex-grow mr-4"
+              />
+              <button
+              id="loadButton"
+              class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-r-lg focus:outline-none"
+              onclick="showPrintButton()"
+              >
+                Load Excel
+              </button>
+            </div>
         <div>
-          <label style="display: inline;">
-              <img src="img/icons8-info-24.png" alt="Information" style="display: inline; vertical-align: middle;">
-              The Excel sheet should contain only three columns with the headings: "Sr. No," "Roll No," and "Name of the student."
-          </label>
+              <label style="display: inline;">
+                  <img src="img/icons8-info-24.png" alt="Information" style="display: inline; vertical-align: middle;">
+                  The Excel sheet should contain only three columns with the headings: "Sr. No," "Roll No," and "Name of the student."
+              </label>
       </div>
     </div>
 
@@ -395,6 +398,86 @@
     <!-- Table 8 -->
     <div class="bg-white p-4 mt-4 mx-4 rounded-lg shadow-lg hidden" id="gridView8" ></div>
 
+    <div id="printButtonContainer" class="flex justify-center items-center my-4">
+      <button id="printButton" class="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-max focus:outline-none focus:shadow-outline"  hidden>
+        Print Report  <!-- changed from Print page -->
+      </button>
+    </div>
+    
+    <script>
+      // Function to handle the printing
+      function printPage() {
+        // Hide elements that you want to exclude from printing
+        document.getElementById('courseForm').style.display = 'none';
+        document.getElementById('entireform').style.display = 'none';
+        document.getElementById('ExcelInput').style.display = 'none';
+        document.getElementById('PoInputs').style.display = 'none';
+        document.getElementById('PSOInputs').style.display = 'none';
+        document.getElementById('COInputs').style.display = 'none';
+        document.getElementById('displayButton').style.display = 'none';
+        document.getElementById('printButton').style.display = 'none';
+
+        // Create a container for the signatures
+        const signaturesContainer = document.createElement('div');
+        signaturesContainer.style.textAlign = 'center';
+        signaturesContainer.style.marginTop = '50px';
+        signaturesContainer.className = 'print-only'; // Add a CSS class for printing
+
+        // Create the Teacher Incharge signature
+        const teacherSignature = document.createElement('div');
+        teacherSignature.style.display = 'inline-block';
+        teacherSignature.style.marginRight = '309px'; // Increase the margin-right for more distance
+        teacherSignature.innerHTML = `
+          <div style="border-top: 2px solid #000;">Teacher Incharge</div>
+        `;
+
+        // Create the Principal signature
+        const principalSignature = document.createElement('div');
+        principalSignature.style.display = 'inline-block';
+        principalSignature.innerHTML = `
+          <div style="border-top: 2px solid #000;">Principal</div>
+        `;
+
+        // Append signatures to the container
+        signaturesContainer.appendChild(teacherSignature);
+        signaturesContainer.appendChild(principalSignature);
+
+        // Append the signatures container to the body
+        document.body.appendChild(signaturesContainer);
+
+        // Trigger the print dialog
+        window.print();
+
+        // Listen for the afterprint event to show the button again
+        window.onafterprint = function () {
+          // Show the "Print Page" button
+          document.getElementById('printButton').style.display = 'block';
+        };
+
+        // Remove the signatures container after printing
+        document.body.removeChild(signaturesContainer);
+
+        // Restore the hidden elements after printing
+        document.getElementById('courseForm').style.display = 'block';
+        document.getElementById('entireform').style.display = 'block';
+        document.getElementById('ExcelInput').style.display = 'block';
+        document.getElementById('PoInputs').style.display = 'block';
+        document.getElementById('PSOInputs').style.display = 'block';
+        document.getElementById('COInputs').style.display = 'block';
+        document.getElementById('displayButton').style.display = 'block';
+      }
+
+      // Attach the printPage function to the print button
+      document.getElementById('printButton').addEventListener('click', printPage);
+
+      // Add an event listener to the "Print Page" button to re-invoke the printing process
+      document.getElementById('printButton').addEventListener('click', function() {
+        // Hide the "Print Page" button before printing
+        this.style.display = 'none';
+        printPage();
+      });
+    </script>
+    
   </body>
   
 </html>
