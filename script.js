@@ -1296,7 +1296,7 @@ function validateNumberInput(input, id) {
     // Check if the entered number is greater than the specified maximum
     if (enteredNumber > 20) {
       // If it's greater than the maximum, set the input value to the maximum
-      alert("Enter valid number");
+      showToast("Enter valid number");
       input.value = "";
     }
   }
@@ -1304,7 +1304,7 @@ function validateNumberInput(input, id) {
   if (input.id === "coThreshold" || input.id === "TotalMarks") {
     if (enteredNumber > 100) {
       // If it's greater than the maximum, set the input value to the maximum
-      alert("Enter valid value");
+      showToast("Enter valid value");
       input.value = "";
     }
   }
@@ -1322,7 +1322,8 @@ function validateYearRangeInput(input) {
 
       // You can define a range of acceptable years here
       var minYear = 1900;
-      var maxYear = new Date().getFullYear();
+      var cYear = new Date().getFullYear();
+      var maxYear = cYear + 1;
 
       if (startYear >= minYear && endYear <= maxYear && startYear <= endYear) {
         // If the input is within the acceptable range, leave it as is
@@ -1330,11 +1331,12 @@ function validateYearRangeInput(input) {
       } else {
         // If the input is not within the acceptable range, clear the input
         input.value = "";
+        showToast("Invalid year");
       }
     } else {
       // If the input does not match the yyyy-yyyy pattern, clear the input
       input.value = "";
-      alert("Enter valid year");
+      showToast("Enter valid year");
     }
   }
 }
