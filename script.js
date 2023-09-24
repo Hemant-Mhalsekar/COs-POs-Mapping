@@ -365,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       var per = (previousValue / storedValue) * 100;
                       if (enteredValue > storedValue) {
                         // alert("Enter valid value");
-                        showToast('Enter valid value', 5000);
+                        showToast("Enter valid value", 5000);
                         this.textContent = "";
                         var percentageCellIndex = colIndex + 1;
                         var percentageCell =
@@ -453,121 +453,163 @@ document.addEventListener("DOMContentLoaded", function () {
       var selectedCell = null; // To store the selected cell
 
       // Add a click event listener to the table to track the selected cell
-      document.getElementById("gridView2").addEventListener("click", function (e) {
-        var cell = e.target;
-        if (
-          cell.tagName === "TD" &&
-          cell.getAttribute("contenteditable") === "true"
-        ) {
-          selectedCell = cell;
-        }
-      });
+      document
+        .getElementById("gridView2")
+        .addEventListener("click", function (e) {
+          var cell = e.target;
+          if (
+            cell.tagName === "TD" &&
+            cell.getAttribute("contenteditable") === "true"
+          ) {
+            selectedCell = cell;
+          }
+        });
 
       // Add a paste event listener to the entire table
-      document.getElementById("gridView2").addEventListener("paste", function (e) {
-        e.preventDefault();
-        if (selectedCell) {
-          var clipboardData = e.clipboardData || window.clipboardData;
-          var pastedData = clipboardData.getData("text/plain");
-          // Split the pasted data into rows
-          var rows = pastedData.split(/\r?\n/);
-          // Determine the number of rows and columns in the clipboard data
-          var numRows = rows.length;
-          var numCols = 0;
-          for (var i = 0; i < rows.length; i++) {
-            var cols = rows[i].split("\t");
-            numCols = Math.max(numCols, cols.length);
-          }
-          // Start pasting data from the selected cell
-          var currentRow = selectedCell.parentElement;
-          var currentCol = selectedCell.cellIndex;
-          for (var i = 0; i < numRows; i++) {
-
-            if (i > 0) {
-              currentRow = currentRow.nextElementSibling;
-              if (!currentRow) {
-                currentRow = currentRow.parentElement.insertRow();
-                currentRow.innerHTML ="<td class='text-center' contenteditable='true'></td>".repeat(numCols);
-              }
-              currentCol = selectedCell.cellIndex;
+      document
+        .getElementById("gridView2")
+        .addEventListener("paste", function (e) {
+          e.preventDefault();
+          if (selectedCell) {
+            var clipboardData = e.clipboardData || window.clipboardData;
+            var pastedData = clipboardData.getData("text/plain");
+            // Split the pasted data into rows
+            var rows = pastedData.split(/\r?\n/);
+            // Determine the number of rows and columns in the clipboard data
+            var numRows = rows.length;
+            var numCols = 0;
+            for (var i = 0; i < rows.length; i++) {
+              var cols = rows[i].split("\t");
+              numCols = Math.max(numCols, cols.length);
             }
+            // Start pasting data from the selected cell
+            var currentRow = selectedCell.parentElement;
+            var currentCol = selectedCell.cellIndex;
+            for (var i = 0; i < numRows; i++) {
+              if (i > 0) {
+                currentRow = currentRow.nextElementSibling;
+                if (!currentRow) {
+                  currentRow = currentRow.parentElement.insertRow();
+                  currentRow.innerHTML =
+                    "<td class='text-center' contenteditable='true'></td>".repeat(
+                      numCols
+                    );
+                }
+                currentCol = selectedCell.cellIndex;
+              }
 
-            var cols = rows[i].split("\t");
+              var cols = rows[i].split("\t");
 
-            for (var j = 0; j < cols.length; j++) {
-              currentRow.cells[currentCol].textContent = cols[j];
-              // Calculate percentage and display it in the next column cell
-              var enteredValue = parseFloat(cols[j]);
-              // Store the previous value in a data attribute
-              var previousValue = parseFloat(currentRow.cells[currentCol].getAttribute("data-previous-value"));
-              if (!isNaN(enteredValue) ||(previousValue && enteredValue === "")) {
-                var storedColumnValues = JSON.parse(localStorage.getItem("column_values"));
-                if (storedColumnValues != null) {
-                  var columnNumber = (currentCol - 3) / 2 + 1; // Use currentCol instead of colIndex
-                  if (storedColumnValues &&storedColumnValues[columnNumber]) {
-                    this.setAttribute("data-previous-value", enteredValue);
+              for (var j = 0; j < cols.length; j++) {
+                currentRow.cells[currentCol].textContent = cols[j];
+                // Calculate percentage and display it in the next column cell
+                var enteredValue = parseFloat(cols[j]);
+                // Store the previous value in a data attribute
+                var previousValue = parseFloat(
+                  currentRow.cells[currentCol].getAttribute(
+                    "data-previous-value"
+                  )
+                );
+                if (
+                  !isNaN(enteredValue) ||
+                  (previousValue && enteredValue === "")
+                ) {
+                  var storedColumnValues = JSON.parse(
+                    localStorage.getItem("column_values")
+                  );
+                  if (storedColumnValues != null) {
+                    var columnNumber = (currentCol - 3) / 2 + 1; // Use currentCol instead of colIndex
+                    if (
+                      storedColumnValues &&
+                      storedColumnValues[columnNumber]
+                    ) {
+                      this.setAttribute("data-previous-value", enteredValue);
 
-                    var columnValues = storedColumnValues[columnNumber];
-                    var storedValue = columnValues;
-                    var per = (previousValue / storedValue) * 100;
+                      var columnValues = storedColumnValues[columnNumber];
+                      var storedValue = columnValues;
+                      var per = (previousValue / storedValue) * 100;
 
-                    if (enteredValue > storedValue) {
-                      showToast("Value "+enteredValue+" cannot paste as it is greater than Total marks", 5000);
-                      currentRow.cells[currentCol].textContent = "";
-                      if (previousValue != null && per >= thresHold) {
-                        columnsAboveThresholdCounts[columnNumber]--;
-                      }
-                      currentRow.cells[currentCol].removeAttribute("data-previous-value");
-                      currentCol++;
-                      updateData();
-                    } else {
-                      var percentage = (enteredValue / storedValue) * 100;
-                      currentRow.cells[currentCol].setAttribute("data-previous-value",enteredValue);
-                      if (previousValue != null && per >= thresHold) {
-                        columnsAboveThresholdCounts[columnNumber]--;
-                      }
-                      if (percentage >= thresHold) {
-                        if (!columnsAboveThresholdCounts[columnNumber]) {
-                          columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
-                        } else {
-                          columnsAboveThresholdCounts[columnNumber]++; // Increment the count
+                      if (enteredValue > storedValue) {
+                        showToast(
+                          "Value " +
+                            enteredValue +
+                            " cannot paste as it is greater than Total marks",
+                          5000
+                        );
+                        currentRow.cells[currentCol].textContent = "";
+                        if (previousValue != null && per >= thresHold) {
+                          columnsAboveThresholdCounts[columnNumber]--;
                         }
+                        currentRow.cells[currentCol].removeAttribute(
+                          "data-previous-value"
+                        );
+                        currentCol++;
+                        updateData();
+                      } else {
+                        var percentage = (enteredValue / storedValue) * 100;
+                        currentRow.cells[currentCol].setAttribute(
+                          "data-previous-value",
+                          enteredValue
+                        );
+                        if (previousValue != null && per >= thresHold) {
+                          columnsAboveThresholdCounts[columnNumber]--;
+                        }
+                        if (percentage >= thresHold) {
+                          if (!columnsAboveThresholdCounts[columnNumber]) {
+                            columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
+                          } else {
+                            columnsAboveThresholdCounts[columnNumber]++; // Increment the count
+                          }
+                        }
+                        for (
+                          var column = 0;
+                          column < columnsAboveThresholdCounts.length;
+                          column++
+                        ) {
+                          var count = columnsAboveThresholdCounts[column] || 0;
+                          var percent = (count / rowSize) * 100;
+                          localStorage.setItem(`column_${column}`, column);
+                          localStorage.setItem(
+                            `percent_${column}`,
+                            percent.toFixed(2)
+                          );
+                        }
+                        updateData();
+                        var percentageCellIndex = currentCol + 1;
+                        var percentageCell =
+                          currentRow.cells[percentageCellIndex];
+                        if (percentageCell) {
+                          percentageCell.setAttribute(
+                            "contenteditable",
+                            "false"
+                          );
+                        }
+                        if (percentageCell) {
+                          percentageCell.textContent =
+                            percentage.toFixed(2) + "%";
+                        }
+                        // Move to the next cell (leave one column for percentage)
+                        currentCol++;
                       }
-                      for ( var column = 0; column < columnsAboveThresholdCounts.length; column++ ) {
-                        var count = columnsAboveThresholdCounts[column] || 0;
-                        var percent = (count / rowSize) * 100;
-                        localStorage.setItem(`column_${column}`, column);
-                        localStorage.setItem(`percent_${column}`,percent.toFixed(2));
-                      }
-                      updateData();
-                      var percentageCellIndex = currentCol + 1;
-                      var percentageCell = currentRow.cells[percentageCellIndex];
-                      if (percentageCell) {
-                        percentageCell.setAttribute(  "contenteditable",  "false");
-                      }
-                      if (percentageCell) {
-                        percentageCell.textContent = percentage.toFixed(2) + "%";
-                      }
-                      // Move to the next cell (leave one column for percentage)
-                      currentCol++;
                     }
+                  } else {
+                    showToast("Please Enter data in 1st table", 5000);
+                    currentRow.cells[currentCol].textContent = "";
+                    // Remove the event listener
+                    document
+                      .getElementById("gridView2")
+                      .removeEventListener("paste");
                   }
                 } else {
-                  showToast('Please Enter data in 1st table', 5000);
+                  // Clear both the value cell and the corresponding percentage cell
                   currentRow.cells[currentCol].textContent = "";
-                  // Remove the event listener
-                  document.getElementById("gridView2").removeEventListener("paste");
+                  showToast("cannot paste Non Integer value", 5000);
                 }
-              } else {
-                // Clear both the value cell and the corresponding percentage cell
-                currentRow.cells[currentCol].textContent = "";
-                showToast("cannot paste Non Integer value", 5000);
+                currentCol++;
               }
-              currentCol++;
             }
           }
-        }
-      });
+        });
       //****************************************************************************************************************************************************************************//
       //CREATING THIRD TABLE SEE MARKS ENTRY
       //****************************************************************************************************************************************************************************//
@@ -637,7 +679,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Attach event listeners to editable cells for value change
       gridView3.addEventListener("input", function (event) {
         var target = event.target;
-        if (target.tagName === "TD" &&target.getAttribute("contenteditable") === "true") {
+        if (
+          target.tagName === "TD" &&
+          target.getAttribute("contenteditable") === "true"
+        ) {
           calculatePercentage(target);
           calculateRowAverage();
         }
@@ -655,7 +700,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!isNaN(enteredValue) && Marks !== 0) {
           if (enteredValue > Marks) {
-            showToast('Enter valid value that is not greater than '+Marks, 5000);
+            showToast(
+              "Enter valid value that is not greater than " + Marks,
+              5000
+            );
             cells[2].textContent = "";
             cells[3].textContent = "";
           } else {
@@ -717,7 +765,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var selectedCell = null; // To store the selected cell
 
       // Add a click event listener to the table to track the selected cell
-      document.getElementById("gridView3").addEventListener("click", function (e) {
+      document
+        .getElementById("gridView3")
+        .addEventListener("click", function (e) {
           var cell = e.target;
           if (
             cell.tagName === "TD" &&
@@ -728,7 +778,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
       // Add a paste event listener to the entire table
-      document.getElementById("gridView3").addEventListener("paste", function (e) {
+      document
+        .getElementById("gridView3")
+        .addEventListener("paste", function (e) {
           e.preventDefault();
           if (selectedCell) {
             var clipboardData = e.clipboardData || window.clipboardData;
@@ -736,7 +788,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if all pasted data is numeric
             if (!isValidNumericData(pastedData)) {
-              showToast("Cannot paste text. Please copy integer values only",5000); 
+              showToast(
+                "Cannot paste text. Please copy integer values only",
+                5000
+              );
               return; // Stop processing if data is not valid
             }
 
@@ -776,11 +831,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 var enteredValue = parseFloat(cols[j]);
 
                 if (enteredValue > Marks) {
-                  showToast("Value "+enteredValue+" cannot paste as it is greater than marks",5000);
+                  showToast(
+                    "Value " +
+                      enteredValue +
+                      " cannot paste as it is greater than marks",
+                    5000
+                  );
                   currentRow.cells[currentCol].textContent = "";
-                }else{
+                } else {
                   // Call calculatePercentage function with the enteredValue
-                  calculatePercentage(currentRow.cells[currentCol], enteredValue);
+                  calculatePercentage(
+                    currentRow.cells[currentCol],
+                    enteredValue
+                  );
                   calculateRowAverage();
                 }
               }
@@ -874,7 +937,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (!isNaN(value) && (value === 1 || value === 2 || value === 3)) {
             calculateAndSaveColumnAverage(col);
           } else {
-            showToast("Invalid value"+value,5000);
+            showToast("Invalid value" + value, 5000);
             // Invalid input, reset the cell
             this.textContent = "";
           }
@@ -908,7 +971,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var selectedCell = null; // To store the selected cell
 
       // Add a click event listener to the table to track the selected cell
-      document.getElementById("gridView4").addEventListener("click", function (e) {
+      document
+        .getElementById("gridView4")
+        .addEventListener("click", function (e) {
           var cell = e.target;
           if (
             cell.tagName === "TD" &&
@@ -919,7 +984,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
       // Add a paste event listener to the entire table
-      document.getElementById("gridView4").addEventListener("paste", function (e) {
+      document
+        .getElementById("gridView4")
+        .addEventListener("paste", function (e) {
           e.preventDefault();
           if (selectedCell) {
             var clipboardData = e.clipboardData || window.clipboardData;
@@ -927,7 +994,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Check if all pasted data is numeric
             if (!isValidNumericData(pastedData)) {
-              showToast("Cannot paste text. Please Copy integer values only", 5000);
+              showToast(
+                "Cannot paste text. Please Copy integer values only",
+                5000
+              );
               return; // Stop processing if data is not valid
             }
 
@@ -967,11 +1037,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 var value = parseInt(cols[j]);
                 var col = currentRow.cells[currentCol].getAttribute("data-col"); // Corrected line
 
-                if (!isNaN(value) &&(value === 1 || value === 2 || value === 3)) {
+                if (
+                  !isNaN(value) &&
+                  (value === 1 || value === 2 || value === 3)
+                ) {
                   calculateAndSaveColumnAverage(col);
-                 
                 } else {
-                  showToast("Invalid value : "+value,5000);
+                  showToast("Invalid value : " + value, 5000);
                   // Invalid input, reset the cell
                   currentRow.cells[currentCol].textContent = "";
                 }
@@ -1093,7 +1165,7 @@ document.addEventListener("DOMContentLoaded", function () {
               var cellKey = "row_" + i + "_calculatedValue";
 
               localStorage.setItem(cellKey, calculatedValue);
-              
+
               td.textContent = calculatedValue;
             }
             coRow.appendChild(td);
@@ -1206,7 +1278,9 @@ document.addEventListener("DOMContentLoaded", function () {
       var selectedCell = null; // To store the selected cell
 
       // Add a click event listener to the table to track the selected cell
-      document.getElementById("gridView8").addEventListener("click", function (e) {
+      document
+        .getElementById("gridView8")
+        .addEventListener("click", function (e) {
           var cell = e.target;
           if (
             cell.tagName === "TD" &&
@@ -1216,17 +1290,22 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
-      document.getElementById("gridView8").addEventListener("paste", function (e) {
+      document
+        .getElementById("gridView8")
+        .addEventListener("paste", function (e) {
           e.preventDefault();
           if (selectedCell) {
             var clipboardData = e.clipboardData || window.clipboardData;
             var pastedData = clipboardData.getData("text/plain");
 
             if (!isValidNumericData(pastedData)) {
-              showToast("Cannot paste text. Please copy integer values only.",5000);
+              showToast(
+                "Cannot paste text. Please copy integer values only.",
+                5000
+              );
               return; // Stop processing if data is not valid
             }
-            
+
             // Split the pasted data into rows
             var rows = pastedData.split(/\r?\n/);
 
@@ -1262,10 +1341,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Calculate and save column average
                 var enteredValue = parseFloat(cols[j]);
 
-                if (!isNaN(enteredValue) &&(enteredValue === 1 || enteredValue === 2 || enteredValue === 3)) {
-                  trackValue( currentRow.cells[currentCol], currentRow.rowIndex - 1, currentCol, enteredValue );
+                if (
+                  !isNaN(enteredValue) &&
+                  (enteredValue === 1 ||
+                    enteredValue === 2 ||
+                    enteredValue === 3)
+                ) {
+                  trackValue(
+                    currentRow.cells[currentCol],
+                    currentRow.rowIndex - 1,
+                    currentCol,
+                    enteredValue
+                  );
                 } else {
-                  showToast("Invalid Value "+enteredValue);
+                  showToast("Invalid Value " + enteredValue);
                   // Invalid input, reset the cell
                   currentRow.cells[currentCol].textContent = "";
                 }
@@ -1415,9 +1504,9 @@ function trackValue(cell, row, col, enteredValue) {
 
         // Retrieve the calculatedValue from localStorage
         var calculatedValue = localStorage.getItem(cellKey);
-        if(calculatedValue == null){
-          showToast("Please fill all above table",5000);
-          this.textContent="";
+        if (calculatedValue == null) {
+          showToast("Please fill all above table", 5000);
+          this.textContent = "";
           return;
         }
         calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
@@ -1447,7 +1536,7 @@ function trackValue(cell, row, col, enteredValue) {
     // Update the last row with the calculated values
     updateLastRow(columnDivisions);
   } else {
-    showToast("Enter valid value",5000);
+    showToast("Enter valid value", 5000);
     cell.innerText = "";
   }
 }
@@ -1493,12 +1582,12 @@ function updateLastRow(columnDivisions) {
 
 // Function to show the toast message
 function showToast(message, duration = 3000) {
-  const toast = document.getElementById('toast');
+  const toast = document.getElementById("toast");
   if (toast) {
     toast.textContent = message;
-    toast.classList.remove('hidden');
+    toast.classList.remove("hidden");
     setTimeout(() => {
-      toast.classList.add('hidden');
+      toast.classList.add("hidden");
     }, duration);
   }
 }
@@ -1509,14 +1598,12 @@ window.addEventListener("beforeunload", function (e) {
   e.returnValue = "Are you sure you want to leave this page?";
 });
 
-
 //new
 // Function to show the "Print Page" button
 function showPrintButton() {
-  const printButton = document.getElementById('printButton');
-  printButton.removeAttribute('hidden');
+  const printButton = document.getElementById("printButton");
+  printButton.removeAttribute("hidden");
 }
 
-
 // Attach the printPage function to the print button
-document.getElementById('printButton').addEventListener('click', printPage);
+document.getElementById("printButton").addEventListener("click", printPage);
