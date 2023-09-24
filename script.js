@@ -162,12 +162,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     display.innerHTML = displayContent;
   });
+  var refreshCount = 0;
+
+  var columnsAboveThresholdCounts = [];
 
   // ISA Mapping Form JavaScript
   document.getElementById("loadButton").addEventListener("click", function () {
     var fileInput = document.getElementById("fileInput");
     var gridView1 = document.getElementById("gridView1");
     var gridView2 = document.getElementById("gridView2");
+    
+    refreshCount++;
+
+    localStorage.clear();
 
     var coInput = document.getElementById("totalCO");
     var coThreshold = document.getElementById("coThreshold");
@@ -234,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Insert the generated HTML into the gridView element
       gridView1.innerHTML = html;
 
-      localStorage.clear();
+    
 
       var table = gridView1.querySelector("table");
       var rows = table.getElementsByTagName("tr");
@@ -321,9 +328,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var table = gridView2.querySelector("table");
       var rows = table.getElementsByTagName("tr");
-
-      var columnsAboveThresholdCounts = [];
-
+      
       var rowSize = rows.length - 1;
 
       for (var i = 1; i < rows.length; i++) {
@@ -463,6 +468,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
+      if(refreshCount > 1){
+        columnsAboveThresholdCounts = [];
+      }
+
       // Add a paste event listener to the entire table
       document.getElementById("gridView2").addEventListener("paste", function (e) {
         e.preventDefault();
@@ -527,7 +536,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         columnsAboveThresholdCounts[columnNumber]--;
                       }
                       if (percentage >= thresHold) {
-                        if (!columnsAboveThresholdCounts[columnNumber]) {
+                        if (!columnsAboveThresholdCounts[columnNumber] ) {
+    
                           columnsAboveThresholdCounts[columnNumber] = 1; // Initialize count for the column
                         } else {
                           columnsAboveThresholdCounts[columnNumber]++; // Increment the count
@@ -536,9 +546,11 @@ document.addEventListener("DOMContentLoaded", function () {
                       for ( var column = 0; column < columnsAboveThresholdCounts.length; column++ ) {
                         var count = columnsAboveThresholdCounts[column] || 0;
                         var percent = (count / rowSize) * 100;
+                        console.log
                         localStorage.setItem(`column_${column}`, column);
                         localStorage.setItem(`percent_${column}`,percent.toFixed(2));
                       }
+                      // console.log("Count : ",columnsAboveThresholdCounts);
                       updateData();
                       var percentageCellIndex = currentCol + 1;
                       var percentageCell = currentRow.cells[percentageCellIndex];
