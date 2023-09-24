@@ -1296,7 +1296,7 @@ function validateNumberInput(input, id) {
     // Check if the entered number is greater than the specified maximum
     if (enteredNumber > 20) {
       // If it's greater than the maximum, set the input value to the maximum
-      alert("Enter valid number");
+      showToast("Enter valid number");
       input.value = "";
     }
   }
@@ -1304,7 +1304,7 @@ function validateNumberInput(input, id) {
   if (input.id === "coThreshold" || input.id === "TotalMarks") {
     if (enteredNumber > 100) {
       // If it's greater than the maximum, set the input value to the maximum
-      alert("Enter valid value");
+      showToast("Enter valid value");
       input.value = "";
     }
   }
