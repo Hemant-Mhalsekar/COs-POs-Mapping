@@ -162,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     display.innerHTML = displayContent;
   });
+
   var refreshCount = 0;
 
   var columnsAboveThresholdCounts = [];
@@ -349,21 +350,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 var previousValue = this.getAttribute("data-previous-value");
 
                 // console.log("Row:", rowIndex, "Column:", colIndex, "Value:", enteredValue);
-                if (
-                  !isNaN(enteredValue) ||
-                  (previousValue && enteredValue === "")
-                ) {
+                if (!isNaN(enteredValue) ||(previousValue && enteredValue === "")) {
                   // Update the data attribute with the new value
-                  var storedColumnValues = JSON.parse(
-                    localStorage.getItem("column_values")
-                  );
-
-                  if (storedColumnValues != null) {
+                  var storedColumnValues = JSON.parse(localStorage.getItem("column_values"));
+                  var columnArray = Object.values(storedColumnValues);
+                  
+                  if (columnArray.length === numCOs) {
                     var columnNumber = (colIndex - 3) / 2 + 1;
-                    if (
-                      storedColumnValues &&
-                      storedColumnValues[columnNumber]
-                    ) {
+                    if ( storedColumnValues && storedColumnValues[columnNumber] ) {
                       this.setAttribute("data-previous-value", enteredValue);
                       var columnValues = storedColumnValues[columnNumber];
                       var storedValue = columnValues;
@@ -456,6 +450,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       var selectedCell = null; // To store the selected cell
+
+      
+      if(refreshCount > 1){
+        columnsAboveThresholdCounts = [];
+      }
 
       // Add a click event listener to the table to track the selected cell
       document
@@ -1172,6 +1171,7 @@ document.addEventListener("DOMContentLoaded", function () {
               localStorage.setItem(cellKey, calculatedValue);
 
               td.textContent = calculatedValue;
+              td.classList.add('font-bold');
             }
             coRow.appendChild(td);
           }
@@ -1197,18 +1197,17 @@ document.addEventListener("DOMContentLoaded", function () {
       // Header row with Level, 0, 1, 2, and 3 headers
       html += "<tr>";
       html += "<th class='text-center'>Level</th>"; // First column header
-      for (var i = 0; i <= 3; i++) {
+      for (var i = 1; i <= 3; i++) {
         html += "<th class='text-center'>" + i + "</th>"; // Column headers
       }
       html += "</tr>";
 
       // Row 2 with %CO attainment data
       html += "<tr>";
-      html += "<td class='text-center'>%CO attainment</td>"; // First column cell
-      html += "<td class='text-center'>0 to 35%</td>"; // Data for columns 0 to 35%
-      html += "<td class='text-center'>35 to 50%</td>"; // Data for columns 35 to 50%
-      html += "<td class='text-center'>50 to 70%</td>"; // Data for columns 50 to 70%
-      html += "<td class='text-center'>70 to 100%</td>"; // Data for columns 70 to 100%
+      html += "<td class='text-center'>Correlation</td>"; // First column cell
+      html += "<td class='text-center'>Low</td>"; // Data for columns 35 to 50%
+      html += "<td class='text-center'>Moderate</td>"; // Data for columns 50 to 70%
+      html += "<td class='text-center'>Strong</td>"; // Data for columns 70 to 100%
       html += "</tr>";
 
       // Close the table tag
@@ -1235,6 +1234,7 @@ document.addEventListener("DOMContentLoaded", function () {
         (numPO + numPSO + 2) +
         " class='text-center bg-blue-500 text-white' style='font-size: 30px;' >PO/PSO Attainment of the Course</th>";
       html += "</tr>";
+      
 
       html += "<tr>";
       html += "<th class='text-center'>PO</th>"; // First column header
@@ -1253,7 +1253,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (i <= numCOs) {
           html += "<td class='text-center'>CO" + i + "</td>";
         } else {
-          html += "<td class='text-center'>PO Attainment</td>";
+          html += "<td class='text-center font-bold'>PO Attainment</td>";
         }
 
         if (i <= numCOs) {
@@ -1268,7 +1268,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           for (var j = 1; j <= numPO + numPSO; j++) {
             var tdId = "td_" + j; // Create a unique ID for each <td>
-            html += "<td id='" + tdId + "' class='text-center'></td>";
+            html += "<td id='" + tdId + "' class='text-center font-bold'></td>";
           }
         }
         html += "</tr>";
