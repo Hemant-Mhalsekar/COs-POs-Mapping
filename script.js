@@ -1171,6 +1171,7 @@ document.addEventListener("DOMContentLoaded", function () {
               var cellKey = "row_" + i + "_calculatedValue";
 
               localStorage.setItem(cellKey, calculatedValue);
+              processData(cellData);
 
               td.textContent = calculatedValue;
               td.classList.add('font-bold');
@@ -1482,7 +1483,7 @@ function trackValue(cell, row, col, enteredValue) {
       };
       cellData.push(cellInfo);
     }
-    // console.log("Cell data : ", cellData);
+
     // Calculate column sums based on cellData
     calculateColumnSums();
     // Update the column sum for the current column
@@ -1547,6 +1548,78 @@ function trackValue(cell, row, col, enteredValue) {
     showToast("Enter valid value", 5000);
     cell.innerText = "";
   }
+}
+
+function processData(cellData) {
+  // Inside this function, you can access row, column, and value information
+  cellData.forEach(function (cellInfo) {
+    var row = cellInfo.row;
+    var col = cellInfo.col;
+    var value = cellInfo.value;
+
+    calculateColumnSums();
+
+    if (!columnValues[col]) {
+      columnValues[col] = 0;
+    }
+
+    if (!columnSums[col]) {
+      columnSums[col] = 0;
+    }
+
+    // Determine the number of rows and columns based on the data
+    var numRows = Math.max(...cellData.map((cell) => cell.row));
+    var numColumns = Math.max(...cellData.map((cell) => cell.col));
+
+    // Initialize column totals to zero
+    for (var col = 1; col <= numColumns; col++) {
+      columnValues[col] = 0;
+    }
+
+    // Loop through cellData to calculate column totals
+    for (var row = 1; row <= numRows; row++) {
+      // Loop through rows
+      for (var col = 1; col <= numColumns; col++) {
+        // Loop through columns
+        var cellKey = "row_" + row + "_calculatedValue";
+
+        // Retrieve the calculatedValue from localStorage
+        var calculatedValue = localStorage.getItem(cellKey);
+        if (calculatedValue == null) {
+          showToast("Please fill all above table", 5000);
+          this.textContent = "";
+          return;
+        }
+        calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
+
+        // Find the cell in cellData that matches the current row and column
+        var cell = cellData.find(function (cellInfo) {
+          return cellInfo.row === row && cellInfo.col === col;
+        });
+
+        if (cell) {
+          // console.log("cell value : " + cell.value);
+          var total = cell.value * calculatedValue;
+          columnValues[col] += total; // Accumulate the total for the current column
+        }
+      }
+    }
+
+    for (var i = 0; i < columnValues.length; i++) {
+      if (columnSums[i] !== 0) {
+        // Avoid division by zero
+        columnDivisions[i] = columnValues[i] / columnSums[i];
+      } else {
+        columnDivisions[i] = 0; // You can handle division by zero differently if needed
+      }
+    }
+
+    // Update the last row with the calculated values
+    updateLastRow(columnDivisions);
+    // Do something with row, column, and value here
+  });
+
+  // You can perform additional operations with cellData if needed
 }
 
 // Function to calculate column sums from cellData
