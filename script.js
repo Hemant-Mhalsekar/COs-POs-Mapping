@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const courseCode = document.getElementById("courseCode").value;
     const semester = document.getElementById("semester").value;
     const classroom = document.getElementById("classroom").value;
+    const courseTitle = document.getElementById("courseTitle").value;
     const division = document.getElementById("division").value;
     const academicYear = document.getElementById("academicYear").value;
     const totalStudents = document.getElementById("totalStudents").value;
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
              <p><strong>Name of the Course Teacher/Teachers:</strong> ${courseTeacher}</p>
              <p><strong>Course Code:</strong> ${courseCode}</p>
              <p><strong>Semester:</strong> ${semester}</p>
+             <p><strong>Course Title:</strong> ${courseTitle}</p>
              <p><strong>Class:</strong> ${classroom}</p>
              <p><strong>Division:</strong> ${division}</p>
              <p><strong>Academic Year:</strong> ${academicYear}</p>
@@ -121,13 +123,13 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("display").classList.remove("hidden");
 
     let displayContent = `
-      <h2 class="text-2xl font-bold">Input Information</h2>
+      <h2 class="text-2xl font-bold">Course and Program outcome </h2>
       <div class="mt-4">
   `;
 
     if (poValues.length > 0) {
       displayContent += `
-          <p class="mb-2"><strong class="text-indigo-700">PO Inputs:</strong></p>
+          <p class="mb-2"><strong class="text-indigo-700">Program Outcome (PO):</strong></p>
           <ul class="list-disc ml-6">
       `;
       poValues.forEach((value, index) => {
@@ -136,24 +138,24 @@ document.addEventListener("DOMContentLoaded", function () {
       displayContent += `</ul>`;
     }
 
-    if (coValues.length > 0) {
-      displayContent += `
-          <p class="mt-4 mb-2"><strong class="text-indigo-700">CO Inputs:</strong></p>
-          <ul class="list-disc ml-6">
-      `;
-      coValues.forEach((value, index) => {
-        displayContent += `<li>CO ${index + 1}: ${value}</li>`;
-      });
-      displayContent += `</ul>`;
-    }
-
     if (psoValues.length > 0) {
       displayContent += `
-          <p class="mt-4 mb-2"><strong class="text-indigo-700">PSO Inputs:</strong></p>
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">Program Specific Outcome (PSO):</strong></p>
           <ul class="list-disc ml-6">
       `;
       psoValues.forEach((value, index) => {
         displayContent += `<li>PSO ${index + 1}: ${value}</li>`;
+      });
+      displayContent += `</ul>`;
+    }
+
+    if (coValues.length > 0) {
+      displayContent += `
+          <p class="mt-4 mb-2"><strong class="text-indigo-700">Course Outcome (CO):</strong></p>
+          <ul class="list-disc ml-6">
+      `;
+      coValues.forEach((value, index) => {
+        displayContent += `<li>CO ${index + 1}: ${value}</li>`;
       });
       displayContent += `</ul>`;
     }
@@ -172,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var fileInput = document.getElementById("fileInput");
     var gridView1 = document.getElementById("gridView1");
     var gridView2 = document.getElementById("gridView2");
-    
+
     refreshCount++;
 
     localStorage.clear();
@@ -241,8 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Insert the generated HTML into the gridView element
       gridView1.innerHTML = html;
-
-    
 
       var table = gridView1.querySelector("table");
       var rows = table.getElementsByTagName("tr");
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var table = gridView2.querySelector("table");
       var rows = table.getElementsByTagName("tr");
-      
+
       var rowSize = rows.length - 1;
 
       for (var i = 1; i < rows.length; i++) {
@@ -1612,3 +1612,4 @@ function showPrintButton() {
 
 // Attach the printPage function to the print button
 document.getElementById("printButton").addEventListener("click", printPage);
+
