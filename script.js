@@ -1066,23 +1066,24 @@ document.addEventListener("DOMContentLoaded", function () {
         gridView5.innerHTML = ""; // Clear any previous content
 
         var table = document.createElement("table");
+        table.classList.add("border", "border-gray-800");
 
         // Header row with CO-Mapping and CO headers
         var headerRow = document.createElement("tr");
         headerRow.innerHTML = `
-          <th rowspan='2' class='text-center'></th>
-          <th colspan='2' class='text-center'>CIE</th>
-          <th class='text-center'>SEE</th>
-          <th class='text-center'>Feedback</th>
-          <th rowspan='2' class='text-center'>Total CO Attainment</th>
+          <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'></th>
+          <th colspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>CIE</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>SEE</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>Feedback</th>
+          <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>Total CO Attainment</th>
         `;
 
         var subHeaderRow = document.createElement("tr");
         subHeaderRow.innerHTML = `
-          <th class='text-center'>%</th>
-          <th class='text-center'>Score</th>
-          <th class='text-center'>Score</th>
-          <th class='text-center'>Score</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>%</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
+          <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
         `;
 
         table.appendChild(headerRow);
@@ -1094,7 +1095,7 @@ document.addEventListener("DOMContentLoaded", function () {
           var calculatedValue = 0;
 
           var coRow = document.createElement("tr");
-          coRow.innerHTML = `<td>CO ${i}</td>`;
+          coRow.innerHTML = `<td class='border border-gray-800 font-bold'>CO ${i}</td>`; 
 
           for (
             var column = i;
@@ -1105,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var storedPercent = localStorage.getItem(`percent_${column}`);
 
             if (storedColumn != 0) {
-              coRow.innerHTML += `<td class='text-center'>${storedPercent}</td>`;
+              coRow.innerHTML += `<td class='text-center border border-gray-800'>${storedPercent}</td>`;
 
               var percent = parseFloat(storedPercent);
 
@@ -1119,14 +1120,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 score = 3;
               }
 
-              coRow.innerHTML += `<td class='text-center'>${score}</td>`;
+              coRow.innerHTML += `<td class='text-center border border-gray-800'>${score}</td>`;
+              
               break;
             }
           }
 
           for (var j = 1; j <= 3; j++) {
             var td = document.createElement("td");
-            td.className = "text-center";
+            td.className = "text-center border border-gray-800";
 
             var averageKey = "col_" + i + "_average";
             var average = localStorage.getItem(averageKey);
@@ -1234,6 +1236,7 @@ document.addEventListener("DOMContentLoaded", function () {
         (numPO + numPSO + 2) +
         " class='text-center bg-blue-500 text-white' style='font-size: 30px;' >PO/PSO Attainment of the Course</th>";
       html += "</tr>";
+      
       
 
       html += "<tr>";
