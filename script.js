@@ -214,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // numCols = parseInt(coInput.value-1);
       gridView1.innerHTML = ""; // Clear any previous content
       var html = "<table>";
+      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter total marks assessed for each co as a part continuous internal evaluation.</label></div><table>";
 
       // Header row with CO-Mapping and CO headers
       html += "<tr>";
@@ -289,6 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Initialize the HTML string for the table
       var html = "<table>";
 
+      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by students under each CO as a part of CIE.</label></div><table>";
       // Loop through the rows of JSON data
       for (var i = 0; i < jsonData.length; i++) {
         html += "<tr>";
@@ -622,6 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
       gridView3.innerHTML = ""; // Clear any previous content
 
       var html = "<table>";
+      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by each student in SEE exam.</label></div><table>";
 
       html += "<tr>";
       html +=
@@ -863,6 +866,7 @@ document.addEventListener("DOMContentLoaded", function () {
       gridView4.innerHTML = ""; // Clear any previous content
 
       var html = "<table>";
+      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter feedback values for each CO given by the student.</label></div><table>";
 
       html += "<tr>";
       html +=
@@ -1230,6 +1234,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // var table = document.createElement("table");
 
       var html = "<table>";
+      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter CO PO and PSO correlation values.</label></div><table>";
 
       html += "<tr>";
       html +=
