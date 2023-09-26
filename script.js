@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var reader = new FileReader();
 
     reader.onload = function (e) {
+
       var data = new Uint8Array(e.target.result);
       var workbook = XLSX.read(data, { type: "array" });
       var sheetName = workbook.SheetNames[0];
@@ -1518,11 +1519,6 @@ function trackValue(cell, row, col, enteredValue) {
 
         // Retrieve the calculatedValue from localStorage
         var calculatedValue = localStorage.getItem(cellKey);
-        if (calculatedValue == null) {
-          showToast("Please fill all above table", 5000);
-          this.textContent = "";
-          return;
-        }
         calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
 
         // Find the cell in cellData that matches the current row and column
@@ -1590,11 +1586,6 @@ function processData(cellData) {
 
         // Retrieve the calculatedValue from localStorage
         var calculatedValue = localStorage.getItem(cellKey);
-        if (calculatedValue == null) {
-          showToast("Please fill all above table", 5000);
-          this.textContent = "";
-          return;
-        }
         calculatedValue = parseFloat(calculatedValue) || 0; // Convert to a float
 
         // Find the cell in cellData that matches the current row and column
