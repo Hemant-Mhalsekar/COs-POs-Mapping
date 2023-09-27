@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
   <!-- Add any necessary CSS or other meta tags here -->
 </head>
 
@@ -327,22 +327,24 @@
         // Create a container for the signatures
         const signaturesContainer = document.createElement('div');
         signaturesContainer.style.textAlign = 'center';
-        signaturesContainer.style.marginTop = '50px';
+        signaturesContainer.style.marginTop = '150px';
         signaturesContainer.className = 'print-only'; // Add a CSS class for printing
 
         // Create the Teacher Incharge signature
         const teacherSignature = document.createElement('div');
         teacherSignature.style.display = 'inline-block';
-        teacherSignature.style.marginRight = '309px'; // Increase the margin-right for more distance
+        teacherSignature.style.marginRight = '400px'; // Increase the margin-right for more distance
         teacherSignature.innerHTML = `
-          <div style="border-top: 2px solid #000;">Faculty</div>
+          <div style="border-top: 4px solid #000; width: 100px;"></div>
+          <div style="margin-top: 10px;">Faculty</div>
         `;
 
         // Create the Principal signature
         const principalSignature = document.createElement('div');
         principalSignature.style.display = 'inline-block';
         principalSignature.innerHTML = `
-          <div style="border-top: 2px solid #000;">Principal</div>
+          <div style="border-top: 4px solid #000; width: 100px;"></div>
+          <div style="margin-top: 10px;">Principal</div>
         `;
 
         // Append signatures to the container
