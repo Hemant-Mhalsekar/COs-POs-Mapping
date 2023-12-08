@@ -187,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-
       var data = new Uint8Array(e.target.result);
       var workbook = XLSX.read(data, { type: "array" });
       var sheetName = workbook.SheetNames[0];
@@ -215,7 +214,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // numCols = parseInt(coInput.value-1);
       gridView1.innerHTML = ""; // Clear any previous content
       var html = "<table>";
-      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter total marks assessed for each co as a part continuous internal evaluation.</label></div><table>";
+      var html =
+        "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter total marks assessed for each co as a part continuous internal evaluation.</label></div><table>";
 
       // Header row with CO-Mapping and CO headers
       html += "<tr>";
@@ -291,7 +291,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Initialize the HTML string for the table
       var html = "<table>";
 
-      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by students under each CO as a part of CIE.</label></div><table>";
+      var html =
+        "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by students under each CO as a part of CIE.</label></div><table>";
       // Loop through the rows of JSON data
       for (var i = 0; i < jsonData.length; i++) {
         html += "<tr>";
@@ -353,14 +354,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 var previousValue = this.getAttribute("data-previous-value");
 
                 // console.log("Row:", rowIndex, "Column:", colIndex, "Value:", enteredValue);
-                if (!isNaN(enteredValue) ||(previousValue && enteredValue === "")) {
+                if (
+                  !isNaN(enteredValue) ||
+                  (previousValue && enteredValue === "")
+                ) {
                   // Update the data attribute with the new value
-                  var storedColumnValues = JSON.parse(localStorage.getItem("column_values"));
+                  var storedColumnValues = JSON.parse(
+                    localStorage.getItem("column_values")
+                  );
                   var columnArray = Object.values(storedColumnValues);
-                  
+
                   if (columnArray.length === numCOs) {
                     var columnNumber = (colIndex - 3) / 2 + 1;
-                    if ( storedColumnValues && storedColumnValues[columnNumber] ) {
+                    if (
+                      storedColumnValues &&
+                      storedColumnValues[columnNumber]
+                    ) {
                       this.setAttribute("data-previous-value", enteredValue);
                       var columnValues = storedColumnValues[columnNumber];
                       var storedValue = columnValues;
@@ -454,8 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var selectedCell = null; // To store the selected cell
 
-      
-      if(refreshCount > 1){
+      if (refreshCount > 1) {
         columnsAboveThresholdCounts = [];
       }
 
@@ -621,243 +629,244 @@ document.addEventListener("DOMContentLoaded", function () {
       //CREATING THIRD TABLE SEE MARKS ENTRY
       //****************************************************************************************************************************************************************************//
 
-      var gridView3 = document.getElementById("gridView3");
-      gridView3.innerHTML = ""; // Clear any previous content
+      // var gridView3 = document.getElementById("gridView3");
+      // gridView3.innerHTML = ""; // Clear any previous content
 
-      var html = "<table>";
-      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by each student in SEE exam.</label></div><table>";
+      // var html = "<table>";
+      // var html =
+      //   "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by each student in SEE exam.</label></div><table>";
 
-      html += "<tr>";
-      html +=
-        "<th colspan='4' class='text-center bg-blue-500 text-white' style='font-size: 30px;'>SEE MARKS ENTRY</th>"; // CIE header
-      html += "</tr>";
+      // html += "<tr>";
+      // html +=
+      //   "<th colspan='4' class='text-center bg-blue-500 text-white' style='font-size: 30px;'>SEE MARKS ENTRY</th>"; // CIE header
+      // html += "</tr>";
 
-      html += "<tr>";
-      html += "<th colspan='2' class='text-center'>Total Marks</th>"; // Editable column header
-      html += "<th colspan='2' class='text-center'>" + Marks + "</th>"; // Non-editable column header
-      html += "</tr>";
+      // html += "<tr>";
+      // html += "<th colspan='2' class='text-center'>Total Marks</th>"; // Editable column header
+      // html += "<th colspan='2' class='text-center'>" + Marks + "</th>"; // Non-editable column header
+      // html += "</tr>";
 
-      // Header row with CO-Mapping and CO headers
-      html += "<tr>";
+      // // Header row with CO-Mapping and CO headers
+      // html += "<tr>";
 
-      // Iterate over jsonData and add rows with the first 2 columns from JSON data
-      for (var i = 0; i < jsonData.length; i++) {
-        // Loop through the first 2 columns of the current JSON data row
-        for (var j = 0; j < 2; j++) {
-          if (i === 0) {
-            if (j < 3) {
-              html += "<th class='text-center'>" + jsonData[i][j] + "</th>"; // Create header cell with data
-            }
-          }
-        }
-      }
-      html += "<th class='text-center'>Marks Obtained</th>"; // Editable column header
-      html += "<th class='text-center'>SEE percentage</th>"; // Non-editable column header
+      // // Iterate over jsonData and add rows with the first 2 columns from JSON data
+      // for (var i = 0; i < jsonData.length; i++) {
+      //   // Loop through the first 2 columns of the current JSON data row
+      //   for (var j = 0; j < 2; j++) {
+      //     if (i === 0) {
+      //       if (j < 3) {
+      //         html += "<th class='text-center'>" + jsonData[i][j] + "</th>"; // Create header cell with data
+      //       }
+      //     }
+      //   }
+      // }
+      // html += "<th class='text-center'>Marks Obtained</th>"; // Editable column header
+      // html += "<th class='text-center'>SEE percentage</th>"; // Non-editable column header
 
-      html += "</tr>";
+      // html += "</tr>";
 
-      for (var i = 1; i < jsonData.length; i++) {
-        html += "<tr>";
-        // Loop through the first 2 columns of the current JSON data row
-        for (var j = 0; j < 2; j++) {
-          if (i > 0) {
-            if (j < 3) {
-              html += "<td class='text-center'>" + jsonData[i][j] + "</td>"; // Create data cell with content
-            }
-          }
-        }
-        // Add an editable cell in the third column
-        html += "<td class='text-center' contenteditable='true'></td>"; // Editable cell
+      // for (var i = 1; i < jsonData.length; i++) {
+      //   html += "<tr>";
+      //   // Loop through the first 2 columns of the current JSON data row
+      //   for (var j = 0; j < 2; j++) {
+      //     if (i > 0) {
+      //       if (j < 3) {
+      //         html += "<td class='text-center'>" + jsonData[i][j] + "</td>"; // Create data cell with content
+      //       }
+      //     }
+      //   }
+      //   // Add an editable cell in the third column
+      //   html += "<td class='text-center' contenteditable='true'></td>"; // Editable cell
 
-        // Add a non-editable cell in the fourth column
-        html += "<td class='text-center'></td>"; // Non-editable cell
-        // Close the row
-        html += "</tr>";
-      }
+      //   // Add a non-editable cell in the fourth column
+      //   html += "<td class='text-center'></td>"; // Non-editable cell
+      //   // Close the row
+      //   html += "</tr>";
+      // }
 
-      // Close the table tag
-      html += "</table>";
+      // // Close the table tag
+      // html += "</table>";
 
-      // Set the HTML content of the gridView3 element
-      gridView3.innerHTML = html;
+      // // Set the HTML content of the gridView3 element
+      // gridView3.innerHTML = html;
 
-      var rowTotalSum = 0;
-      var rowCount = rows.length - 1;
+      // var rowTotalSum = 0;
+      // var rowCount = rows.length - 1;
 
-      // Attach event listeners to editable cells for value change
-      gridView3.addEventListener("input", function (event) {
-        var target = event.target;
-        if (
-          target.tagName === "TD" &&
-          target.getAttribute("contenteditable") === "true"
-        ) {
-          calculatePercentage(target);
-          calculateRowAverage();
-        }
-      });
+      // // Attach event listeners to editable cells for value change
+      // gridView3.addEventListener("input", function (event) {
+      //   var target = event.target;
+      //   if (
+      //     target.tagName === "TD" &&
+      //     target.getAttribute("contenteditable") === "true"
+      //   ) {
+      //     calculatePercentage(target);
+      //     calculateRowAverage();
+      //   }
+      // });
 
-      // Initialize an empty array to store percentage values
-      var percentageArray = [];
-      var rowTotalSum = 0; // Initialize rowTotalSum to 0
+      // // Initialize an empty array to store percentage values
+      // var percentageArray = [];
+      // var rowTotalSum = 0; // Initialize rowTotalSum to 0
 
-      // Function to calculate and display percentage
-      function calculatePercentage(targetCell, enteredValue) {
-        var row = targetCell.parentNode; // Get the parent row
-        var cells = row.getElementsByTagName("td"); // Get all cells in the row
-        var enteredValue = parseFloat(cells[2].textContent); // Get the value from the first cell
+      // // Function to calculate and display percentage
+      // function calculatePercentage(targetCell, enteredValue) {
+      //   var row = targetCell.parentNode; // Get the parent row
+      //   var cells = row.getElementsByTagName("td"); // Get all cells in the row
+      //   var enteredValue = parseFloat(cells[2].textContent); // Get the value from the first cell
 
-        if (!isNaN(enteredValue) && Marks !== 0) {
-          if (enteredValue > Marks) {
-            showToast(
-              "Enter valid value that is not greater than " + Marks,
-              5000
-            );
-            cells[2].textContent = "";
-            cells[3].textContent = "";
-          } else {
-            var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
-            cells[3].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
+      //   if (!isNaN(enteredValue) && Marks !== 0) {
+      //     if (enteredValue > Marks) {
+      //       showToast(
+      //         "Enter valid value that is not greater than " + Marks,
+      //         5000
+      //       );
+      //       cells[2].textContent = "";
+      //       cells[3].textContent = "";
+      //     } else {
+      //       var percentage = (enteredValue / Marks) * 100; // Calculate the percentage
+      //       cells[3].textContent = percentage.toFixed(2) + "%"; // Display the percentage in the second cell
 
-            // Save or update the percentage value in the array
-            var rowIndex = row.rowIndex; // Get the row index
-            percentageArray[rowIndex - 1] = percentage; // Subtract 1 because row indexes are 1-based
+      //       // Save or update the percentage value in the array
+      //       var rowIndex = row.rowIndex; // Get the row index
+      //       percentageArray[rowIndex - 1] = percentage; // Subtract 1 because row indexes are 1-based
 
-            // Recalculate rowTotalSum
-            rowTotalSum = percentageArray.reduce(function (acc, value) {
-              return acc + value;
-            }, 0);
-          }
-        } else {
-          if (targetCell === cells[2] || targetCell === cells[3]) {
-            // Only clear cells[2] and cells[3] when the value is not a valid number
-            cells[2].textContent = "";
-            cells[3].textContent = "";
-          }
-        }
-      }
+      //       // Recalculate rowTotalSum
+      //       rowTotalSum = percentageArray.reduce(function (acc, value) {
+      //         return acc + value;
+      //       }, 0);
+      //     }
+      //   } else {
+      //     if (targetCell === cells[2] || targetCell === cells[3]) {
+      //       // Only clear cells[2] and cells[3] when the value is not a valid number
+      //       cells[2].textContent = "";
+      //       cells[3].textContent = "";
+      //     }
+      //   }
+      // }
 
-      function calculateRowAverage() {
-        if (rowCount > 0) {
-          var rowAverage = rowTotalSum / rowCount;
-          // console.log("Average : " + rowAverage);
-          localStorage.setItem("rowAverage", rowAverage);
-          updateData();
-        } else {
-          console.log("Invalid"); // Clear the average cell if there are no valid values
-        }
-      }
+      // function calculateRowAverage() {
+      //   if (rowCount > 0) {
+      //     var rowAverage = rowTotalSum / rowCount;
+      //     // console.log("Average : " + rowAverage);
+      //     localStorage.setItem("rowAverage", rowAverage);
+      //     updateData();
+      //   } else {
+      //     console.log("Invalid"); // Clear the average cell if there are no valid values
+      //   }
+      // }
 
-      // Function to check if data is valid numeric
-      function isValidNumericData(data) {
-        // Split the data into rows
-        var rows = data.split(/\r?\n/);
+      // // Function to check if data is valid numeric
+      // function isValidNumericData(data) {
+      //   // Split the data into rows
+      //   var rows = data.split(/\r?\n/);
 
-        for (var i = 0; i < rows.length; i++) {
-          var cols = rows[i].split("\t");
-          for (var j = 0; j < cols.length; j++) {
-            // Check if each cell's content is a valid numeric value
-            if (!isNumeric(cols[j])) {
-              return false;
-            }
-          }
-        }
+      //   for (var i = 0; i < rows.length; i++) {
+      //     var cols = rows[i].split("\t");
+      //     for (var j = 0; j < cols.length; j++) {
+      //       // Check if each cell's content is a valid numeric value
+      //       if (!isNumeric(cols[j])) {
+      //         return false;
+      //       }
+      //     }
+      //   }
 
-        return true;
-      }
+      //   return true;
+      // }
 
-      // Function to check if a value is numeric
-      function isNumeric(value) {
-        return /^-?\d*(\.\d+)?$/.test(value);
-      }
+      // // Function to check if a value is numeric
+      // function isNumeric(value) {
+      //   return /^-?\d*(\.\d+)?$/.test(value);
+      // }
 
-      var selectedCell = null; // To store the selected cell
+      // var selectedCell = null; // To store the selected cell
 
-      // Add a click event listener to the table to track the selected cell
-      document
-        .getElementById("gridView3")
-        .addEventListener("click", function (e) {
-          var cell = e.target;
-          if (
-            cell.tagName === "TD" &&
-            cell.getAttribute("contenteditable") === "true"
-          ) {
-            selectedCell = cell;
-          }
-        });
+      // // Add a click event listener to the table to track the selected cell
+      // document
+      //   .getElementById("gridView3")
+      //   .addEventListener("click", function (e) {
+      //     var cell = e.target;
+      //     if (
+      //       cell.tagName === "TD" &&
+      //       cell.getAttribute("contenteditable") === "true"
+      //     ) {
+      //       selectedCell = cell;
+      //     }
+      //   });
 
-      // Add a paste event listener to the entire table
-      document
-        .getElementById("gridView3")
-        .addEventListener("paste", function (e) {
-          e.preventDefault();
-          if (selectedCell) {
-            var clipboardData = e.clipboardData || window.clipboardData;
-            var pastedData = clipboardData.getData("text/plain");
+      // // Add a paste event listener to the entire table
+      // document
+      //   .getElementById("gridView3")
+      //   .addEventListener("paste", function (e) {
+      //     e.preventDefault();
+      //     if (selectedCell) {
+      //       var clipboardData = e.clipboardData || window.clipboardData;
+      //       var pastedData = clipboardData.getData("text/plain");
 
-            // Check if all pasted data is numeric
-            if (!isValidNumericData(pastedData)) {
-              showToast(
-                "Cannot paste text. Please copy integer values only",
-                5000
-              );
-              return; // Stop processing if data is not valid
-            }
+      //       // Check if all pasted data is numeric
+      //       if (!isValidNumericData(pastedData)) {
+      //         showToast(
+      //           "Cannot paste text. Please copy integer values only",
+      //           5000
+      //         );
+      //         return; // Stop processing if data is not valid
+      //       }
 
-            // Split the pasted data into rows
-            var rows = pastedData.split(/\r?\n/);
+      //       // Split the pasted data into rows
+      //       var rows = pastedData.split(/\r?\n/);
 
-            // Determine the number of rows and columns in the clipboard data
-            var numRows = rows.length;
-            var numCols = 0;
-            for (var i = 0; i < rows.length; i++) {
-              var cols = rows[i].split("\t");
-              numCols = Math.max(numCols, cols.length);
-            }
+      //       // Determine the number of rows and columns in the clipboard data
+      //       var numRows = rows.length;
+      //       var numCols = 0;
+      //       for (var i = 0; i < rows.length; i++) {
+      //         var cols = rows[i].split("\t");
+      //         numCols = Math.max(numCols, cols.length);
+      //       }
 
-            // Start pasting data from the selected cell
-            var currentRow = selectedCell.parentElement;
-            var currentCol = selectedCell.cellIndex;
+      //       // Start pasting data from the selected cell
+      //       var currentRow = selectedCell.parentElement;
+      //       var currentCol = selectedCell.cellIndex;
 
-            for (var i = 0; i < numRows; i++) {
-              if (i > 0) {
-                currentRow = currentRow.nextElementSibling;
-                if (!currentRow) {
-                  currentRow = currentRow.parentElement.insertRow();
-                  currentRow.innerHTML =
-                    "<td class='text-center' contenteditable='true'></td>".repeat(
-                      numCols
-                    );
-                }
-                currentCol = selectedCell.cellIndex;
-              }
-              var cols = rows[i].split("\t");
+      //       for (var i = 0; i < numRows; i++) {
+      //         if (i > 0) {
+      //           currentRow = currentRow.nextElementSibling;
+      //           if (!currentRow) {
+      //             currentRow = currentRow.parentElement.insertRow();
+      //             currentRow.innerHTML =
+      //               "<td class='text-center' contenteditable='true'></td>".repeat(
+      //                 numCols
+      //               );
+      //           }
+      //           currentCol = selectedCell.cellIndex;
+      //         }
+      //         var cols = rows[i].split("\t");
 
-              for (var j = 0; j < cols.length; j++) {
-                currentRow.cells[currentCol].textContent = cols[j];
+      //         for (var j = 0; j < cols.length; j++) {
+      //           currentRow.cells[currentCol].textContent = cols[j];
 
-                // Calculate percentage and display it in the next column cell
-                var enteredValue = parseFloat(cols[j]);
+      //           // Calculate percentage and display it in the next column cell
+      //           var enteredValue = parseFloat(cols[j]);
 
-                if (enteredValue > Marks) {
-                  showToast(
-                    "Value " +
-                      enteredValue +
-                      " cannot paste as it is greater than marks",
-                    5000
-                  );
-                  currentRow.cells[currentCol].textContent = "";
-                } else {
-                  // Call calculatePercentage function with the enteredValue
-                  calculatePercentage(
-                    currentRow.cells[currentCol],
-                    enteredValue
-                  );
-                  calculateRowAverage();
-                }
-              }
-            }
-          }
-        });
+      //           if (enteredValue > Marks) {
+      //             showToast(
+      //               "Value " +
+      //                 enteredValue +
+      //                 " cannot paste as it is greater than marks",
+      //               5000
+      //             );
+      //             currentRow.cells[currentCol].textContent = "";
+      //           } else {
+      //             // Call calculatePercentage function with the enteredValue
+      //             calculatePercentage(
+      //               currentRow.cells[currentCol],
+      //               enteredValue
+      //             );
+      //             calculateRowAverage();
+      //           }
+      //         }
+      //       }
+      //     }
+      //   });
 
       //****************************************************************************************************************************************************************************//
       //CREATING FORTH TABLE FEEDBACK
@@ -867,7 +876,8 @@ document.addEventListener("DOMContentLoaded", function () {
       gridView4.innerHTML = ""; // Clear any previous content
 
       var html = "<table>";
-      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter feedback values for each CO given by the student.</label></div><table>";
+      var html =
+        "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter feedback values for each CO given by the student.</label></div><table>";
 
       html += "<tr>";
       html +=
@@ -1078,7 +1088,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headerRow.innerHTML = `
           <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'></th>
           <th colspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>CIE</th>
-          <th class='text-center border border-gray-800 bg-blue-500 text-white'>SEE</th>
+       
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Feedback</th>
           <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>Total CO Attainment</th>
         `;
@@ -1087,7 +1097,7 @@ document.addEventListener("DOMContentLoaded", function () {
         subHeaderRow.innerHTML = `
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>%</th>
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
-          <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
+        
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
         `;
 
@@ -1100,7 +1110,7 @@ document.addEventListener("DOMContentLoaded", function () {
           var calculatedValue = 0;
 
           var coRow = document.createElement("tr");
-          coRow.innerHTML = `<td class='border border-gray-800 font-bold'>CO ${i}</td>`; 
+          coRow.innerHTML = `<td class='border border-gray-800 font-bold'>CO ${i}</td>`;
 
           for (
             var column = i;
@@ -1126,12 +1136,12 @@ document.addEventListener("DOMContentLoaded", function () {
               }
 
               coRow.innerHTML += `<td class='text-center border border-gray-800'>${score}</td>`;
-              
+
               break;
             }
           }
 
-          for (var j = 1; j <= 3; j++) {
+          for (var j = 1; j <= 2; j++) {
             var td = document.createElement("td");
             td.className = "text-center border border-gray-800";
 
@@ -1142,20 +1152,8 @@ document.addEventListener("DOMContentLoaded", function () {
             var rowAverage = localStorage.getItem("rowAverage");
 
             if (j === 1) {
-              if (rowAverage >= 0 && rowAverage <= 35) {
-                score = 0;
-              } else if (rowAverage > 35 && rowAverage <= 50) {
-                score = 1;
-              } else if (rowAverage > 50 && rowAverage <= 70) {
-                score = 2;
-              } else if (rowAverage > 70 && rowAverage <= 100) {
-                score = 3;
-              }
-
-              td.textContent = score;
-            } else if (j === 2) {
               td.textContent = average !== null ? average : "";
-            } else if (j === 3) {
+            } else if (j === 2) {
               // Ensure that the cells exist before trying to access their textContent
               var coRowCellValue3 = coRow.cells[2]
                 ? parseFloat(coRow.cells[2].textContent.trim())
@@ -1163,14 +1161,11 @@ document.addEventListener("DOMContentLoaded", function () {
               var coRowCellValue4 = coRow.cells[3]
                 ? parseFloat(coRow.cells[3].textContent.trim())
                 : 0;
-              var coRowCellValue5 = coRow.cells[4]
-                ? parseFloat(coRow.cells[4].textContent.trim())
-                : 0;
 
               calculatedValue =
-                0.6 * coRowCellValue3 +
-                coRowCellValue4 * 0.3 +
-                coRowCellValue5 * 0.1;
+                0.8 * coRowCellValue3 +
+                // coRowCellValue4 * 0.3 +
+                0.2 * coRowCellValue4;
               calculatedValue = parseFloat(calculatedValue).toFixed(2);
 
               var cellKey = "row_" + i + "_calculatedValue";
@@ -1179,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", function () {
               processData(cellData);
 
               td.textContent = calculatedValue;
-              td.classList.add('font-bold');
+              td.classList.add("font-bold");
             }
             coRow.appendChild(td);
           }
@@ -1235,7 +1230,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // var table = document.createElement("table");
 
       var html = "<table>";
-      var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter CO PO and PSO correlation values.</label></div><table>";
+      var html =
+        "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter CO PO and PSO correlation values.</label></div><table>";
 
       html += "<tr>";
       html +=
@@ -1243,8 +1239,6 @@ document.addEventListener("DOMContentLoaded", function () {
         (numPO + numPSO + 2) +
         " class='text-center bg-blue-500 text-white' style='font-size: 30px;' >PO/PSO Attainment of the Course</th>";
       html += "</tr>";
-      
-      
 
       html += "<tr>";
       html += "<th class='text-center'>PO</th>"; // First column header
@@ -1684,4 +1678,3 @@ function showPrintButton() {
 
 // Attach the printPage function to the print button
 document.getElementById("printButton").addEventListener("click", printPage);
-
