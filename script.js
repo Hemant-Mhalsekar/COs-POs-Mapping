@@ -633,7 +633,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // gridView3.innerHTML = ""; // Clear any previous content
 
       // var html = "<table>";
-      // var html = "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by each student in SEE exam.</label></div><table>";
+      // var html =
+      //   "<div style='text-align: center;'><label style='display: inline;'><img src='img/icons8-info-24.png' alt='Information' style='display: inline; vertical-align: middle;'>Enter marks obtained by each student in SEE exam.</label></div><table>";
 
       // html += "<tr>";
       // html +=
@@ -1087,18 +1088,16 @@ document.addEventListener("DOMContentLoaded", function () {
         headerRow.innerHTML = `
           <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'></th>
           <th colspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>CIE</th>
-          
+       
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Feedback</th>
           <th rowspan='2' class='text-center border border-gray-800 text-white bg-blue-500'>Total CO Attainment</th>
         `;
-
-        // <th class='text-center border border-gray-800 bg-blue-500 text-white'>SEE</th>
 
         var subHeaderRow = document.createElement("tr");
         subHeaderRow.innerHTML = `
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>%</th>
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
-         
+        
           <th class='text-center border border-gray-800 bg-blue-500 text-white'>Score</th>
         `;
 
@@ -1162,14 +1161,11 @@ document.addEventListener("DOMContentLoaded", function () {
               var coRowCellValue4 = coRow.cells[3]
                 ? parseFloat(coRow.cells[3].textContent.trim())
                 : 0;
-              // var coRowCellValue5 = coRow.cells[4]
-              //   ? parseFloat(coRow.cells[4].textContent.trim())
-              //   : 0;
 
               calculatedValue =
                 0.8 * coRowCellValue3 +
                 // coRowCellValue4 * 0.3 +
-                0.2 * coRowCellValue4; //coRowCellValue5 * 0.1;
+                0.2 * coRowCellValue4;
               calculatedValue = parseFloat(calculatedValue).toFixed(2);
 
               var cellKey = "row_" + i + "_calculatedValue";
