@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.getElementById("gridView1").classList.remove("hidden");
       document.getElementById("gridView2").classList.remove("hidden");
-      document.getElementById("gridView3").classList.remove("hidden");
+
       document.getElementById("gridView4").classList.remove("hidden");
       document.getElementById("gridView5").classList.remove("hidden");
       document.getElementById("gridView6").classList.remove("hidden");
