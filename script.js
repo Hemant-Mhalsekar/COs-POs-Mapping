@@ -1003,10 +1003,11 @@ document.addEventListener("DOMContentLoaded", function () {
       for (var i = 1; i <= numPO; i++) {
         html += "<th class='text-center'>PO " + i + "</th>";
         if (i == numPO) {
-          for (var i = 1; i <= numPSO; i++) {
-            html += "<th class='text-center'>PSO " + i + "</th>";
+          for (var j = 1; j <= numPSO; j++) {
+            html += "<th class='text-center'>PSO " + j + "</th>";
           }
         }
+        
       }
       html += "</tr>";
 
