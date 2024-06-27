@@ -374,16 +374,7 @@
         document.getElementById('COInputs').style.display = 'block';
         document.getElementById('displayButton').style.display = 'block';
       }
-
-      // Attach the printPage function to the print button
-      document.getElementById('printButton').addEventListener('click', printPage);
-
-      // Add an event listener to the "Print Page" button to re-invoke the printing process
-      document.getElementById('printButton').addEventListener('click', function () {
-        // Hide the "Print Page" button before printing
-        this.style.display = 'none';
-        printPage();
-      });
+    
     </script>
 </body>
 
